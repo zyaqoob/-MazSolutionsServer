@@ -35,7 +35,7 @@ public class Student extends User implements Serializable{
      * Examn sessions where the student are being evaluated.
      */
     @OneToMany(cascade=ALL, mappedBy="student")
-    private List<ExamSessions> sessions;
+    private List<ExamSession> sessions;
     /**
      * Course where the student is registered.
      */
@@ -59,14 +59,14 @@ public class Student extends User implements Serializable{
      * 
      * @return This method returns a List with the exam sessions of the student.
      */
-    public List<ExamSessions> getSessions() {
+    public List<ExamSession> getSessions() {
         return sessions;
     }
     /**
      * 
      * @param sessions This method set the sessions of the student.
      */
-    public void setSessions(List<ExamSessions> sessions) {
+    public void setSessions(List<ExamSession> sessions) {
         this.sessions = sessions;
     }
     /**
