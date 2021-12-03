@@ -6,19 +6,21 @@
 package entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity representing Course of the application. It contains the following fields:
@@ -27,6 +29,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="course",schema="maz_solutions")
+@XmlRootElement
 public class Course implements Serializable {
     
     /**
@@ -40,15 +43,18 @@ public class Course implements Serializable {
     /**
      * The date of the course start.
      */
-    private LocalDate dateStart;
+    @Temporal(TemporalType.DATE)
+    private Date dateStart;
     /**
      * The date of the course end.
      */
-    private LocalDate dateEnd;
+    @Temporal(TemporalType.DATE)
+    private Date dateEnd;
     /**
      * The subjects of the course.
      */
-    @ManyToMany(mappedBy="courses",fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(schema="maz_solutions",name="course_subject")
     private List<Subject> subjects;
     /**
      * The students of the course.
@@ -87,34 +93,35 @@ public class Course implements Serializable {
      * This method return the date start of the course.
      * @return 
      */
-    public LocalDate getDateStart() {
+    public Date getDateStart() {
         return dateStart;
     }
     /**
      * This method set the date start of the course.
      * @param dateStart 
      */
-    public void setDateStart(LocalDate dateStart) {
+    public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
     /**
      * This method returns the date end of the course.
      * @return 
      */
-    public LocalDate getDateEnd() {
+    public Date getDateEnd() {
         return dateEnd;
     }
     /**
      * This method set the date end of the course.
      * @param dateEnd 
      */
-    public void setDateEnd(LocalDate dateEnd) {
+    public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
     /**
      * This method return a list of the subjects from the course.
      * @return 
      */
+    //@XmlTransient
     public List<Subject> getSubjects() {
         return subjects;
     }
@@ -129,6 +136,7 @@ public class Course implements Serializable {
      * This method get a list of students from the course.
      * @return 
      */
+    @XmlTransient
     public List<Student> getStudents() {
         return students;
     }

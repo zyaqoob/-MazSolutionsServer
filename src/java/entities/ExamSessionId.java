@@ -20,42 +20,42 @@ public class ExamSessionId implements Serializable {
     /**
      * Field that identify Exam.
      */
-    private Long examId;
+    private Long idExam;
     /**
      * Field that identify Student.
      */
-    private Long studentId;
+    private Long idStudent;
 
     /**
      *
-     * @return examId
+     * @return idExam
      */
     public Long getExamId() {
-        return examId;
+        return idExam;
     }
 
     /**
      * Field that represent exam id.
-     * @param examId the examId to set.
+     * @param idExam the examId to set.
      */
-    public void setExamId(Long examId) {
-        this.examId = examId;
+    public void setExamId(Long idExam) {
+        this.idExam = idExam;
     }
 
     /**
      *
-     * @return studentId
+     * @return idStudent
      */
     public Long getStudentId() {
-        return studentId;
+        return idStudent;
     }
 
     /**
      *  Field that represent studentId.
-     * @param studentId
+     * @param idStudent
      */
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setStudentId(Long idStudent) {
+        this.idStudent = idStudent;
     }
 /**
  * Integer representation of examId and studentId instance. 
@@ -64,8 +64,8 @@ public class ExamSessionId implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 29 * hash + Objects.hashCode(this.examId);
-        hash = 29 * hash + Objects.hashCode(this.studentId);
+        hash = 29 * hash + Objects.hashCode(this.idExam);
+        hash = 29 * hash + Objects.hashCode(this.idStudent);
         return hash;
     }
 /**
@@ -86,10 +86,10 @@ public class ExamSessionId implements Serializable {
             return false;
         }
         final ExamSessionId other = (ExamSessionId) obj;
-        if (!Objects.equals(this.examId, other.examId)) {
+        if (!Objects.equals(this.idExam, other.idExam)) {
             return false;
         }
-        if (!Objects.equals(this.studentId, other.studentId)) {
+        if (!Objects.equals(this.idStudent, other.idStudent)) {
             return false;
         }
         return true;
@@ -97,7 +97,7 @@ public class ExamSessionId implements Serializable {
 
     @Override
     public String toString() {
-        return "ExamSessionId{" + "examId=" + examId + ", studentId=" + studentId + '}';
+        return "ExamSessionId{" + "examId=" + idExam + ", studentId=" + idStudent + '}';
     }
     
 }

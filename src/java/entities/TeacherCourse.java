@@ -6,15 +6,18 @@
 package entities;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 /**
  *
  * @author Aitor Ruiz de Gauna
@@ -30,12 +33,15 @@ public class TeacherCourse implements Serializable {
     @EmbeddedId
     //Object that contains the two id's of the class TeacherCourse.
     private TeacherCourseId idTeacherCourseId;
-    // Date when the TeacherCourse starts. 
+    // Date when the TeacherCourse starts.
+    @Temporal(TemporalType.DATE)
     private Date dateStart;
     // Date when the TeacherCourse ends.
+    @Temporal(TemporalType.DATE)
     private Date dateEnd;
     //Collection of the subject that the teacher has.
-    @ManyToMany(mappedBy="teacherCourses", fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(schema="maz_solutions",name="teacher_course_subject")
     private Set<Subject>subjects;
     //Teacher of the TeacherCourse
     @ManyToOne
