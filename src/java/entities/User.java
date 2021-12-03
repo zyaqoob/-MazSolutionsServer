@@ -6,8 +6,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +21,9 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
@@ -31,6 +36,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="user",schema="maz_solutions")
 @Inheritance(strategy = InheritanceType.JOINED)
+@XmlRootElement
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,10 +46,11 @@ public class User implements Serializable {
      * Identification field for the user.
      */
     private Long userId;
-    @Column(unique = true)
+    
     /**
      * Identification field for the user.
      */
+    @Column(unique = true)
     private String login;
     /**
      * Email field for the user.
@@ -60,7 +67,8 @@ public class User implements Serializable {
     /**
      * Last password change date field for the user.
      */
-    private LocalDateTime lastPasswordChange;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar lastPasswordChange;
     /**
      * Status field for the user(ENABLED, DISALBED).
      */
@@ -74,7 +82,8 @@ public class User implements Serializable {
     /**
      * Birth date for the user.
      */
-    private LocalDate birthDate;
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
     /**
      * Full name for the user.
      */
@@ -153,14 +162,15 @@ public class User implements Serializable {
      * 
      * @return Method wich return the last password change date.
      */
-    public LocalDateTime getLastPasswordChange() {
+    public Calendar getLastPasswordChange() {    
         return lastPasswordChange;
     }
+
     /**
      * 
      * @param lastPasswordChange Method to set the last password change date.
      */
-    public void setLastPasswordChange(LocalDateTime lastPasswordChange) {
+    public void setLastPasswordChange(Calendar lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
     }
     /**
@@ -181,14 +191,14 @@ public class User implements Serializable {
      * 
      * @return Method wich returns the bird date of the user.
      */
-    public LocalDate getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
     /**
      * 
      * @param birthDate Method to set the users birth date.
      */
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
     /**

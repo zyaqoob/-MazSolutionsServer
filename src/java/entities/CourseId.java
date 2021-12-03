@@ -5,11 +5,13 @@
  */
 package entities;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Miguel Ángel Sánchez
  */
-public class CourseId {
+public class CourseId implements Serializable{
     
     private Long userId;
     private Long idSubject;

@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +18,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *  Entity representing Student of the application. It contains the following fields:
@@ -25,12 +30,14 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="student",schema="maz_solutions")
+@XmlRootElement
 public class Student extends User implements Serializable{
     
     /**
      * Year when the Student is registered.
      */
-    private LocalDate year;
+    @Temporal(TemporalType.DATE)
+    private Date year;
     /**
      * Examn sessions where the student are being evaluated.
      */
@@ -45,20 +52,21 @@ public class Student extends User implements Serializable{
      * 
      * @return This method returns the year of the student.
      */
-    public LocalDate getYear() {
+    public Date getYear() {
         return year;
     }
     /**
      * 
      * @param year This method set the year of the student.
      */
-    public void setYear(LocalDate year) {
+    public void setYear(Date year) {
         this.year = year;
     }
     /**
      * 
      * @return This method returns a List with the exam sessions of the student.
      */
+    @XmlTransient
     public List<ExamSession> getSessions() {
         return sessions;
     }
@@ -90,6 +98,7 @@ public class Student extends User implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.getUserId());
         hash = 53 * hash + Objects.hashCode(this.year);
         hash = 53 * hash + Objects.hashCode(this.sessions);
         hash = 53 * hash + Objects.hashCode(this.course);
@@ -120,6 +129,9 @@ public class Student extends User implements Serializable{
             return false;
         }
         if (!Objects.equals(this.course, other.course)) {
+            return false;
+        }
+        if (!Objects.equals(this.getUserId(), other.getUserId())) {
             return false;
         }
         return true;

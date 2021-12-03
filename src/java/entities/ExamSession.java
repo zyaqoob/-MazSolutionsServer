@@ -6,13 +6,12 @@
 package entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -57,13 +56,13 @@ public class ExamSession implements Serializable {
      * Data and time start of the examSession.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime dateTimeStart;
+    private Calendar dateTimeStart;
 
     /**
      * Data and time end of the examSession.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime dateTimeEnd;
+    private Calendar dateTimeEnd;
 
     /**
      *
@@ -120,7 +119,7 @@ public class ExamSession implements Serializable {
      *
      * @return dateTimeStart.
      */
-    public LocalDateTime getDateTimeStart() {
+    public Calendar getDateTimeStart() {    
         return dateTimeStart;
     }
 
@@ -129,7 +128,7 @@ public class ExamSession implements Serializable {
      *
      * @param dateTimeStart the dateTimeStart to set
      */
-    public void setDateTimeStart(LocalDateTime dateTimeStart) {
+    public void setDateTimeStart(Calendar dateTimeStart) {    
         this.dateTimeStart = dateTimeStart;
     }
 
@@ -137,7 +136,7 @@ public class ExamSession implements Serializable {
      *
      * @return dateTimeEnd.
      */
-    public LocalDateTime getDateTimeEnd() {
+    public Calendar getDateTimeEnd() {    
         return dateTimeEnd;
     }
 
@@ -146,7 +145,7 @@ public class ExamSession implements Serializable {
      *
      * @param dateTimeEnd the dateTimeEnd to set
      */
-    public void setDateTimeEnd(LocalDateTime dateTimeEnd) {
+    public void setDateTimeEnd(Calendar dateTimeEnd) {    
         this.dateTimeEnd = dateTimeEnd;
     }
 
