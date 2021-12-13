@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -26,6 +28,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="exam",schema="maz_solutions")
+@XmlRootElement
 public class Exam implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -91,6 +94,7 @@ public class Exam implements Serializable {
      *
      * @param <List> sessions. return collection of sessions.
      */
+    @XmlTransient
     public List<ExamSession> getSessions() {
         return sessions;
     }

@@ -10,9 +10,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import static javax.persistence.CascadeType.ALL;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -31,11 +33,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name="course",schema="maz_solutions")
 @XmlRootElement
 public class Course implements Serializable {
-    
+    private static final long serialVersionUID = 1L;
     /**
      * Identification field for the course.
      */
-    @EmbeddedId CourseId id;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idCourse;
     /**
      * Name field for the course.
      */
@@ -65,15 +69,15 @@ public class Course implements Serializable {
      * This method returns the course id.
      * @return 
      */
-    public CourseId getId() {
-        return id;
+    public Long getIdCourse() {
+        return idCourse;
     }
     /**
      * This method set the course id.
-     * @param id 
+     * @param idCourse 
      */
-    public void setId(CourseId id) {
-        this.id = id;
+    public void setIdCourse(Long idCourse) {
+        this.idCourse = idCourse;
     }
     /**
      * This method returns the course name.
@@ -122,6 +126,7 @@ public class Course implements Serializable {
      * @return 
      */
     //@XmlTransient
+    @XmlTransient
     public List<Subject> getSubjects() {
         return subjects;
     }
@@ -154,7 +159,7 @@ public class Course implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
+        hash = 53 * hash + Objects.hashCode(this.idCourse);
         hash = 53 * hash + Objects.hashCode(this.name);
         hash = 53 * hash + Objects.hashCode(this.dateStart);
         hash = 53 * hash + Objects.hashCode(this.dateEnd);
@@ -183,7 +188,7 @@ public class Course implements Serializable {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.idCourse, other.idCourse)) {
             return false;
         }
         if (!Objects.equals(this.dateStart, other.dateStart)) {
@@ -206,14 +211,7 @@ public class Course implements Serializable {
      */
     @Override
     public String toString() {
-        return "Course{" + "id=" + id + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + subjects + ", students=" + students + '}';
+        return "Course{" + "id=" + idCourse + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + subjects + ", students=" + students + '}';
     }
-    
-    
-    
 
-    
-
-    
-    
 }

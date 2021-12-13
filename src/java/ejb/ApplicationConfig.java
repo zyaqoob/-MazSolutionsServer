@@ -30,7 +30,12 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ejb.CourseFacadeREST.class);
+        resources.add(ejb.ExamFacadeREST.class);
+        resources.add(ejb.ExamSessionFacadeREST.class);
         resources.add(ejb.StudentFacadeREST.class);
+        resources.add(ejb.SubjectFacadeREST.class);
+        resources.add(ejb.TeacherCourseFacadeREST.class);
+        resources.add(ejb.TeacherFacadeREST.class);
         resources.add(ejb.UserFacadeREST.class);
     }
     

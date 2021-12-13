@@ -5,7 +5,7 @@
  */
 package ejb;
 
-import entities.Course;
+import entities.Exam;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,27 +25,27 @@ import javax.ws.rs.core.MediaType;
  * @author 2dam
  */
 @Stateless
-@Path("entities.course")
-public class CourseFacadeREST extends AbstractFacade<Course> {
+@Path("entities.exam")
+public class ExamFacadeREST extends AbstractFacade<Exam> {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
 
-    public CourseFacadeREST() {
-        super(Course.class);
+    public ExamFacadeREST() {
+        super(Exam.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Course entity) {
+    public void create(Exam entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Course entity) {
+    public void edit(@PathParam("id") Long id, Exam entity) {
         super.edit(entity);
     }
 
@@ -58,21 +58,21 @@ public class CourseFacadeREST extends AbstractFacade<Course> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Course find(@PathParam("id") Long id) {
+    public Exam find(@PathParam("id") Long id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Course> findAll() {
+    public List<Exam> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Course> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Exam> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

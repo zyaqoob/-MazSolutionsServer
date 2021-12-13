@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,6 +29,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="subject",schema="maz_solutions")
+@XmlRootElement
 public class Subject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -93,6 +96,7 @@ public class Subject implements Serializable {
     * Method that return the TeacherCourse of the subject.
     * @return teacherCourse
     */
+    @XmlTransient
     public Set<TeacherCourse> getTeacherCourses() {
         return teacherCourses;
     }
@@ -107,6 +111,7 @@ public class Subject implements Serializable {
     * Method that return the Exams of the subject.
     * @return exams
     */
+    @XmlTransient
     public Set<Exam> getExams() {
         return exams;
     }
@@ -121,6 +126,7 @@ public class Subject implements Serializable {
      * Method that return the courses where the subject is teached.
      * @return courses
      */
+    @XmlTransient
     public Set<Course> getCourses() {
         return courses;
     }

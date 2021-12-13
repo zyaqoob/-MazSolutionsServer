@@ -12,6 +12,8 @@ import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -21,6 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="teacher",schema="maz_solutions")
+@XmlRootElement
 public class Teacher extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;    
@@ -56,6 +59,7 @@ public class Teacher extends User implements Serializable {
      *
      * @return teacherCourses.
      */
+    @XmlTransient
     public List<TeacherCourse> getTeacherCourses() {    
         return teacherCourses;
     }
