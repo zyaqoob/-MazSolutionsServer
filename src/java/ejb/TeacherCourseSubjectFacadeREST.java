@@ -60,14 +60,14 @@ public class TeacherCourseSubjectFacadeREST extends AbstractFacade<TeacherCourse
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
     public void create(TeacherCourseSubject entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
     public void edit(@PathParam("id") PathSegment id, TeacherCourseSubject entity) {
         super.edit(entity);
     }
@@ -81,7 +81,7 @@ public class TeacherCourseSubjectFacadeREST extends AbstractFacade<TeacherCourse
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public TeacherCourseSubject find(@PathParam("id") PathSegment id) {
         entities.TeacherCourseSubjectId key = getPrimaryKey(id);
         return super.find(key);
@@ -89,14 +89,14 @@ public class TeacherCourseSubjectFacadeREST extends AbstractFacade<TeacherCourse
 
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public List<TeacherCourseSubject> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public List<TeacherCourseSubject> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }

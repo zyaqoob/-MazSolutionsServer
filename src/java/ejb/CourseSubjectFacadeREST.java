@@ -67,7 +67,7 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
     public void edit(@PathParam("id") PathSegment id, CourseSubject entity) {
         super.edit(entity);
     }
@@ -81,7 +81,7 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public CourseSubject find(@PathParam("id") PathSegment id) {
         entities.CourseSubjectId key = getPrimaryKey(id);
         return super.find(key);
@@ -89,14 +89,14 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
 
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public List<CourseSubject> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public List<CourseSubject> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
