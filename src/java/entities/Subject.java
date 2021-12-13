@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
@@ -42,14 +43,14 @@ public class Subject implements Serializable {
     //Password to register in the subject
     private String password;
     //TeacherCourse where the subject appears
-    @ManyToMany(mappedBy="subjects", fetch=FetchType.EAGER)
-    private Set<TeacherCourse>teacherCourses;
+   @OneToMany(cascade=ALL,mappedBy="subject")
+    private List<TeacherCourseSubject> teacherCourseSubjects;
     //Collection of exams that the subject has had
     @OneToMany(cascade=ALL,mappedBy="subject")
     private Set<Exam>exams;
     //Collection of courses where the subject is teached
-    @ManyToMany(mappedBy="subjects",fetch=FetchType.EAGER)
-    private Set<Course>courses;
+    @OneToMany(cascade=ALL,mappedBy="subject")
+    private List<CourseSubject> courseSubjects;
     /**
     * Method that return the identifier of the subject.
     * @return idSubject
@@ -97,20 +98,21 @@ public class Subject implements Serializable {
     * @return teacherCourse
     */
     @XmlTransient
-    public Set<TeacherCourse> getTeacherCourses() {
-        return teacherCourses;
+    public List<TeacherCourseSubject> getTeacherCourseSubjects() {    
+        return teacherCourseSubjects;
     }
     /**
-    * Method that set the value of the TeacherCourse of the subject.
-    * @param teacherCourses
-    */
-    public void setTeacherCourses(Set<TeacherCourse> teacherCourses) {
-        this.teacherCourses = teacherCourses;
+     * Method that set the value of the TeacherCourse of the subject.
+     * @param teacherCourseSubjects
+     */
+    public void setTeacherCourseSubjects(List<TeacherCourseSubject> teacherCourseSubjects) {    
+        this.teacherCourseSubjects = teacherCourseSubjects;
     }
+
     /**
-    * Method that return the Exams of the subject.
-    * @return exams
-    */
+     * Method that return the Exams of the subject.
+     * @return exams
+     */
     @XmlTransient
     public Set<Exam> getExams() {
         return exams;
@@ -127,17 +129,16 @@ public class Subject implements Serializable {
      * @return courses
      */
     @XmlTransient
-    public Set<Course> getCourses() {
-        return courses;
+    public List<CourseSubject> getCourseSubjects() {    
+        return courseSubjects;
     }
     /**
      * Method that set the value of the courses where the subject is teached.
-     * @param courses 
+     * @param courseSubjects 
      */
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-    
+    public void setCourseSubjects(List<CourseSubject> courseSubjects) {
+        this.courseSubjects = courseSubjects;
+    }  
     /**
      * Integer representation for Subject instance.
      * @return 
@@ -148,9 +149,9 @@ public class Subject implements Serializable {
         hash = 31 * hash + Objects.hashCode(this.idSubject);
         hash = 31 * hash + Objects.hashCode(this.name);
         hash = 31 * hash + Objects.hashCode(this.password);
-        hash = 31 * hash + Objects.hashCode(this.teacherCourses);
+        hash = 31 * hash + Objects.hashCode(this.teacherCourseSubjects);
         hash = 31 * hash + Objects.hashCode(this.exams);
-        hash = 31 * hash + Objects.hashCode(this.courses);
+        hash = 31 * hash + Objects.hashCode(this.courseSubjects);
         return hash;
     }  
 
@@ -178,7 +179,7 @@ public class Subject implements Serializable {
      */
     @Override
     public String toString() {
-        return "Subject{" + "idSubject=" + idSubject + ", name=" + name + ", password=" + password + ", teacherCourses=" + teacherCourses + ", exams=" + exams + ", courses=" + courses + '}';
+        return "Subject{" + "idSubject=" + idSubject + ", name=" + name + ", password=" + password + ", teacherCourses=" + teacherCourseSubjects + ", exams=" + exams + ", courses=" + courseSubjects + '}';
     }
     
 }

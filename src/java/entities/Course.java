@@ -57,9 +57,8 @@ public class Course implements Serializable {
     /**
      * The subjects of the course.
      */
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(schema="maz_solutions",name="course_subject")
-    private List<Subject> subjects;
+    @OneToMany(cascade=ALL,mappedBy="course")
+    private List<CourseSubject> courseSubjects;
     /**
      * The students of the course.
      */
@@ -127,15 +126,15 @@ public class Course implements Serializable {
      */
     //@XmlTransient
     @XmlTransient
-    public List<Subject> getSubjects() {
-        return subjects;
+    public List<CourseSubject> getCourseSubjects() {
+        return courseSubjects;
     }
     /**
      * This method set a list of subjects in the course.
-     * @param subjects 
+     * @param courseSubjects
      */
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
+    public void setCourseSubject(List<CourseSubject> courseSubjects) {    
+        this.courseSubjects = courseSubjects;
     }
     /**
      * This method get a list of students from the course.
@@ -163,7 +162,7 @@ public class Course implements Serializable {
         hash = 53 * hash + Objects.hashCode(this.name);
         hash = 53 * hash + Objects.hashCode(this.dateStart);
         hash = 53 * hash + Objects.hashCode(this.dateEnd);
-        hash = 53 * hash + Objects.hashCode(this.subjects);
+        hash = 53 * hash + Objects.hashCode(this.courseSubjects);
         hash = 53 * hash + Objects.hashCode(this.students);
         return hash;
     }
@@ -197,7 +196,7 @@ public class Course implements Serializable {
         if (!Objects.equals(this.dateEnd, other.dateEnd)) {
             return false;
         }
-        if (!Objects.equals(this.subjects, other.subjects)) {
+        if (!Objects.equals(this.courseSubjects, other.courseSubjects)) {
             return false;
         }
         if (!Objects.equals(this.students, other.students)) {
@@ -211,7 +210,7 @@ public class Course implements Serializable {
      */
     @Override
     public String toString() {
-        return "Course{" + "id=" + idCourse + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + subjects + ", students=" + students + '}';
+        return "Course{" + "id=" + idCourse + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + courseSubjects + ", students=" + students + '}';
     }
 
 }

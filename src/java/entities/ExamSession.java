@@ -50,6 +50,7 @@ public class ExamSession implements Serializable {
     /**
      * An object of Student.
      */
+    
     @ManyToOne
     private Student student;
 
