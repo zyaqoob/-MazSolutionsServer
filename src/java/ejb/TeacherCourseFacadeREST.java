@@ -5,7 +5,7 @@
  */
 package ejb;
 
-import entities.User;
+import entities.TeacherCourse;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,27 +25,27 @@ import javax.ws.rs.core.MediaType;
  * @author 2dam
  */
 @Stateless
-@Path("entities.user")
-public class UserFacadeREST extends AbstractFacade<User> {
+@Path("entities.teachercourse")
+public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
 
-    public UserFacadeREST() {
-        super(User.class);
+    public TeacherCourseFacadeREST() {
+        super(TeacherCourse.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
-    public void create(User entity) {
+    public void create(TeacherCourse entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML})
-    public void edit(@PathParam("id") Long id, User entity) {
+    public void edit(@PathParam("id") Long id, TeacherCourse entity) {
         super.edit(entity);
     }
 
@@ -58,21 +58,21 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public User find(@PathParam("id") Long id) {
+    public TeacherCourse find(@PathParam("id") Long id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML})
-    public List<User> findAll() {
+    public List<TeacherCourse> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML})
-    public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<TeacherCourse> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

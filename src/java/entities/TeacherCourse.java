@@ -9,15 +9,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.EmbeddedId;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 /**
  *
  * @author Aitor Ruiz de Gauna
@@ -27,12 +30,13 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="teacher_course",schema="maz_solutions")
+@XmlRootElement
 public class TeacherCourse implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    //Object that contains the two id's of the class TeacherCourse.
-    private TeacherCourseId idTeacherCourseId;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idTeacherCourse;
     // Date when the TeacherCourse starts.
     @Temporal(TemporalType.DATE)
     private Date dateStart;
@@ -40,9 +44,8 @@ public class TeacherCourse implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dateEnd;
     //Collection of the subject that the teacher has.
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(schema="maz_solutions",name="teacher_course_subject")
-    private Set<Subject>subjects;
+    @OneToMany(cascade=ALL,mappedBy="teacherCourse")
+    private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Teacher of the TeacherCourse
     @ManyToOne
     private Teacher teacher;
@@ -50,15 +53,15 @@ public class TeacherCourse implements Serializable {
      * Method that returns the class that contains the id's of TeacherCourse.
      * @return idTeacherCourseId;
      */
-    public TeacherCourseId getIdTeacherCourseId() {
-        return idTeacherCourseId;
+    public Long getIdTeacherCourse() {
+        return idTeacherCourse;
     }
     /**
      * Method that set the value of the object of the class TeacherCourseId that contains the id's of TeacherCourse.
-     * @param idTeacherCourseId 
+     * @param idTeacherCourse 
      */
-    public void setIdTeacherCourseId(TeacherCourseId idTeacherCourseId) {
-        this.idTeacherCourseId = idTeacherCourseId;
+    public void setIdTeacherCourseId(Long idTeacherCourse) {
+        this.idTeacherCourse = idTeacherCourse;
     }
     /**
      * Method that returns the date start of the TeacherCourse.
@@ -92,16 +95,18 @@ public class TeacherCourse implements Serializable {
      * Method that return the value of the collection of subjects of TeacherCourse.
      * @return 
      */
-    public Set<Subject> getSubjects() {
-        return subjects;
+    @XmlTransient
+    public Set<TeacherCourseSubject> getTeacherCourseSubjects() {    
+        return teacherCourseSubjects;
     }
     /**
      * Method that set the value of the collection of subjects of TeacherCourse.
-     * @param subjects 
+     * @param teacherCourseSubjects 
      */
-    public void setSubjects(Set<Subject> subjects) {
-        this.subjects = subjects;
+    public void setTeacherCourseSubjects(Set<TeacherCourseSubject> teacherCourseSubjects) {    
+        this.teacherCourseSubjects = teacherCourseSubjects;
     }
+
     /**
      * Method that return the value of the collection of teachers of TeacherCourse.
      * @return teacher
@@ -123,10 +128,10 @@ public class TeacherCourse implements Serializable {
     @Override   
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.idTeacherCourseId);
+        hash = 67 * hash + Objects.hashCode(this.idTeacherCourse);
         hash = 67 * hash + Objects.hashCode(this.dateStart);
         hash = 67 * hash + Objects.hashCode(this.dateEnd);
-        hash = 67 * hash + Objects.hashCode(this.subjects);
+        hash = 67 * hash + Objects.hashCode(this.teacherCourseSubjects);
         hash = 67 * hash + Objects.hashCode(this.teacher);
         return hash;
     }
@@ -148,7 +153,7 @@ public class TeacherCourse implements Serializable {
             return false;
         }
         final TeacherCourse other = (TeacherCourse) obj;
-        if (!Objects.equals(this.idTeacherCourseId, other.idTeacherCourseId)) {
+        if (!Objects.equals(this.idTeacherCourse, other.idTeacherCourse)) {
             return false;
         }
         return true;
@@ -159,6 +164,6 @@ public class TeacherCourse implements Serializable {
      */
     @Override
     public String toString() {
-        return "TeacherCourse{" + "idTeacherCourseId=" + idTeacherCourseId + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + subjects + ", teacher=" + teacher + '}';
+        return "TeacherCourse{" + "idTeacherCourseId=" + idTeacherCourse + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + teacherCourseSubjects+  ", teacher=" + teacher + '}';
     }
 }

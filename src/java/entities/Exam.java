@@ -6,9 +6,8 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
-import javax.persistence.EmbeddedId;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -26,6 +27,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="exam",schema="maz_solutions")
+@XmlRootElement
 public class Exam implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -51,7 +53,7 @@ public class Exam implements Serializable {
      * Collection of examSession.
      */
     @OneToMany(mappedBy = "exam", fetch = FetchType.EAGER)
-    private List<ExamSession> sessions;
+    private Set<ExamSession> sessions;
 
     /**
      *
@@ -88,10 +90,11 @@ public class Exam implements Serializable {
     }
 
     /**
-     *
-     * @param <List> sessions. return collection of sessions.
+     * Method that return the sessions.
+     * @return sessions
      */
-    public List<ExamSession> getSessions() {
+    @XmlTransient
+    public Set<ExamSession> getSessions() {
         return sessions;
     }
 
@@ -101,7 +104,7 @@ public class Exam implements Serializable {
      * @param sessions the collection of ExamSession to set.
      */
 
-    public void setSessions(List<ExamSession> sessions) {
+    public void setSessions(Set<ExamSession> sessions) {
         this.sessions = sessions;
     }
 

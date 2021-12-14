@@ -8,14 +8,15 @@ package entities;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
@@ -25,16 +26,16 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name="exam_session",schema="maz_solutions")
+@XmlRootElement
 public class ExamSession implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
      * Field that identify ExamSession.
      */
-    @EmbeddedId
+    @Id 
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private ExamSessionId examSessionId;
-
+    private Long idExamSession;
     /**
      * Field that represent marks obtained.
      */
@@ -49,6 +50,7 @@ public class ExamSession implements Serializable {
     /**
      * An object of Student.
      */
+    
     @ManyToOne
     private Student student;
 
@@ -153,16 +155,16 @@ public class ExamSession implements Serializable {
      *
      * @return examSessionId
      */
-    public ExamSessionId getExamSessionId() {    
-        return examSessionId;
+    public Long getIdExamSession() {    
+        return idExamSession;
     }
 
     /**
      * an object of  ExamSessionId.
-     * @param examSessionId the examSessionId to set.
+     * @param idExamSession the examSessionId to set.
      */
-    public void setExamSessionId(ExamSessionId examSessionId) {
-        this.examSessionId = examSessionId;
+    public void setIdExamSession(Long idExamSession) {
+        this.idExamSession= idExamSession;
     }
 
     /**
@@ -172,7 +174,7 @@ public class ExamSession implements Serializable {
     @Override   
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.examSessionId);
+        hash = 79 * hash + Objects.hashCode(this.idExamSession);
         hash = 79 * hash + this.mark;
         hash = 79 * hash + Objects.hashCode(this.exam);
         hash = 79 * hash + Objects.hashCode(this.student);
@@ -184,7 +186,7 @@ public class ExamSession implements Serializable {
     /**
      * compares two objects of ExamSessions.
      *
-     * @param object the other object of ExamSession to compare.
+     * @param obj the other object of ExamSession to compare.
      * @return true incase they are same.
      */
    
@@ -201,7 +203,7 @@ public class ExamSession implements Serializable {
             return false;
         }
         final ExamSession other = (ExamSession) obj;
-        if (!Objects.equals(this.examSessionId, other.examSessionId)) {
+        if (!Objects.equals(this.idExamSession, other.idExamSession)) {
             return false;
         }
         return true;
@@ -209,7 +211,7 @@ public class ExamSession implements Serializable {
 
     @Override
     public String toString() {
-        return "ExamSession{" + "examSessionId=" + examSessionId + ", mark=" + mark + ", exam=" + exam + ", student=" + student + ", dateTimeStart=" + dateTimeStart + ", dateTimeEnd=" + dateTimeEnd + '}';
+        return "ExamSession{" + "examSessionId=" + idExamSession + ", mark=" + mark + ", exam=" + exam + ", student=" + student + ", dateTimeStart=" + dateTimeStart + ", dateTimeEnd=" + dateTimeEnd + '}';
     }
 
 }

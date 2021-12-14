@@ -7,8 +7,6 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -45,7 +43,7 @@ public class User implements Serializable {
     /**
      * Identification field for the user.
      */
-    private Long userId;
+    private Long idUser;
     
     /**
      * Identification field for the user.
@@ -92,15 +90,15 @@ public class User implements Serializable {
      * 
      * @return Return the id.
      */
-    public Long getUserId() {
-        return userId;
+    public Long getIdUser() {
+        return idUser;
     }
     /**
      * 
-     * @param userId Method to set the id
+     * @param idUser Method to set the id
      */
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserId(Long idUser) {
+        this.idUser = idUser;
     }
     /**
      * 
@@ -240,7 +238,7 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 67 * hash + Objects.hashCode(this.userId);
+        hash = 67 * hash + Objects.hashCode(this.idUser);
         hash = 67 * hash + Objects.hashCode(this.login);
         hash = 67 * hash + Objects.hashCode(this.email);
         hash = 67 * hash + Objects.hashCode(this.password);
@@ -265,7 +263,7 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+        if ((this.idUser == null && other.idUser != null) || (this.idUser != null && !this.idUser.equals(other.idUser))) {
             return false;
         }
         return true;
@@ -278,7 +276,7 @@ public class User implements Serializable {
      */
     @Override
     public String toString() {
-        return "User{" + "userId=" + userId + ", login=" + login + ", email=" + email + ", password=" + password + ", telephone=" + telephone + ", lastPasswordChange=" + lastPasswordChange + ", status=" + status + ", birthDate=" + birthDate + ", fullName=" + fullName + '}';
+        return "User{" + "userId=" + idUser + ", login=" + login + ", email=" + email + ", password=" + password + ", telephone=" + telephone + ", lastPasswordChange=" + lastPasswordChange + ", status=" + status + ", birthDate=" + birthDate + ", fullName=" + fullName + '}';
     }
     
 }

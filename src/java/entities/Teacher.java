@@ -6,12 +6,14 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -21,6 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="teacher",schema="maz_solutions")
+@XmlRootElement
 public class Teacher extends User implements Serializable {
 
     private static final long serialVersionUID = 1L;    
@@ -33,7 +36,7 @@ public class Teacher extends User implements Serializable {
      * A collection of TeacherCourses.
      */
     @OneToMany(cascade = ALL, mappedBy = "teacher")
-    private List<TeacherCourse> teacherCourses;
+    private Set<TeacherCourse> teacherCourses;
 
     /**
      *
@@ -56,7 +59,8 @@ public class Teacher extends User implements Serializable {
      *
      * @return teacherCourses.
      */
-    public List<TeacherCourse> getTeacherCourses() {    
+    @XmlTransient
+    public Set<TeacherCourse> getTeacherCourses() {    
         return teacherCourses;
     }
 
@@ -65,7 +69,7 @@ public class Teacher extends User implements Serializable {
      *
      * @param teacherCourses the teacherCourses to set.
      */
-    public void setTeacherCourses(List<TeacherCourse> teacherCourses) {    
+    public void setTeacherCourses(Set<TeacherCourse> teacherCourses) {    
         this.teacherCourses = teacherCourses;
     }
 
@@ -77,7 +81,7 @@ public class Teacher extends User implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 53 * hash + Objects.hashCode(this.getUserId());
+        hash = 53 * hash + Objects.hashCode(this.getIdUser());
         hash = 53 * hash + Float.floatToIntBits(this.salary);
         hash = 53 * hash + Objects.hashCode(this.teacherCourses);
         return hash;
@@ -87,7 +91,7 @@ public class Teacher extends User implements Serializable {
      * Compares two Teacher objects. This method consider a Teacher equal to
      * another Teacher if their id fields have the same value.
      *
-     * @param object the other Teacher object to compare.
+     * @param obj the other Teacher object to compare.
      * @return true in case they are same.
      */
     @Override
@@ -102,7 +106,7 @@ public class Teacher extends User implements Serializable {
             return false;
         }
         final Teacher other = (Teacher) obj;
-        if (!Objects.equals(this.getUserId(), other.getUserId())) {
+        if (!Objects.equals(this.getIdUser(), other.getIdUser())) {
             return false;
         }
         return true;
@@ -114,7 +118,7 @@ public class Teacher extends User implements Serializable {
      */
     @Override
     public String toString() {
-        return "Teacher{" + "idTeacher=" + getUserId() + ", salary=" + salary + ", teacherCourses=" + teacherCourses + '}';
+        return "Teacher{" + "idTeacher=" + getIdUser() + ", salary=" + salary + ", teacherCourses=" + teacherCourses + '}';
     }
 
 }

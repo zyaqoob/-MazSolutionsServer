@@ -7,14 +7,13 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,11 +30,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name="course",schema="maz_solutions")
 @XmlRootElement
 public class Course implements Serializable {
-    
+    private static final long serialVersionUID = 1L;
     /**
      * Identification field for the course.
      */
-    @EmbeddedId CourseId id;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idCourse;
     /**
      * Name field for the course.
      */
@@ -53,27 +54,26 @@ public class Course implements Serializable {
     /**
      * The subjects of the course.
      */
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(schema="maz_solutions",name="course_subject")
-    private List<Subject> subjects;
+    @OneToMany(cascade=ALL,mappedBy="course")
+    private Set<CourseSubject> courseSubjects;
     /**
      * The students of the course.
      */
     @OneToMany(cascade=ALL, mappedBy="course")
-    private List<Student> students;
+    private Set<Student> students;
     /**
      * This method returns the course id.
      * @return 
      */
-    public CourseId getId() {
-        return id;
+    public Long getIdCourse() {
+        return idCourse;
     }
     /**
      * This method set the course id.
-     * @param id 
+     * @param idCourse 
      */
-    public void setId(CourseId id) {
-        this.id = id;
+    public void setIdCourse(Long idCourse) {
+        this.idCourse = idCourse;
     }
     /**
      * This method returns the course name.
@@ -118,33 +118,34 @@ public class Course implements Serializable {
         this.dateEnd = dateEnd;
     }
     /**
-     * This method return a list of the subjects from the course.
+     * This method return a set of the subjects from the course.
      * @return 
      */
     //@XmlTransient
-    public List<Subject> getSubjects() {
-        return subjects;
+    @XmlTransient
+    public Set<CourseSubject> getCourseSubjects() {
+        return courseSubjects;
     }
     /**
-     * This method set a list of subjects in the course.
-     * @param subjects 
+     * This method set a set of subjects in the course.
+     * @param courseSubjects
      */
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
+    public void setCourseSubject(Set<CourseSubject> courseSubjects) {    
+        this.courseSubjects = courseSubjects;
     }
     /**
-     * This method get a list of students from the course.
+     * This method get a set of students from the course.
      * @return 
      */
     @XmlTransient
-    public List<Student> getStudents() {
+    public Set<Student> getStudents() {
         return students;
     }
     /**
-     * This method set a list of students in the course.
+     * This method set a set of students in the course.
      * @param students 
      */
-    public void setStudents(List<Student> students) {
+    public void setStudents(Set<Student> students) {
         this.students = students;
     }
     /**
@@ -154,11 +155,11 @@ public class Course implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
+        hash = 53 * hash + Objects.hashCode(this.idCourse);
         hash = 53 * hash + Objects.hashCode(this.name);
         hash = 53 * hash + Objects.hashCode(this.dateStart);
         hash = 53 * hash + Objects.hashCode(this.dateEnd);
-        hash = 53 * hash + Objects.hashCode(this.subjects);
+        hash = 53 * hash + Objects.hashCode(this.courseSubjects);
         hash = 53 * hash + Objects.hashCode(this.students);
         return hash;
     }
@@ -183,7 +184,7 @@ public class Course implements Serializable {
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if (!Objects.equals(this.id, other.id)) {
+        if (!Objects.equals(this.idCourse, other.idCourse)) {
             return false;
         }
         if (!Objects.equals(this.dateStart, other.dateStart)) {
@@ -192,7 +193,7 @@ public class Course implements Serializable {
         if (!Objects.equals(this.dateEnd, other.dateEnd)) {
             return false;
         }
-        if (!Objects.equals(this.subjects, other.subjects)) {
+        if (!Objects.equals(this.courseSubjects, other.courseSubjects)) {
             return false;
         }
         if (!Objects.equals(this.students, other.students)) {
@@ -206,14 +207,7 @@ public class Course implements Serializable {
      */
     @Override
     public String toString() {
-        return "Course{" + "id=" + id + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + subjects + ", students=" + students + '}';
+        return "Course{" + "id=" + idCourse + ", name=" + name + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + courseSubjects + ", students=" + students + '}';
     }
-    
-    
-    
 
-    
-
-    
-    
 }
