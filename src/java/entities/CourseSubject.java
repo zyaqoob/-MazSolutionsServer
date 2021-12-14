@@ -9,17 +9,17 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author 2dam
+ * 
+ * @author Aitor Ruiz de Gauna,Miguel Sanchez,Zeeshan Yaqoob.
+ */
+/**
+ * Entity that represents the relation between courses and subjects.
  */
 @Entity
 @Table(name="CourseSubject",schema="maz_solutions")
@@ -27,49 +27,87 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CourseSubject implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    /**
+     * Class that contains the id's of the CourseSubject entity.
+     */
     @EmbeddedId
     private CourseSubjectId courseSubjectId;
-    
+    /**
+     * Total Hours that the courseSubject has.
+     */
     private float totalHours;
+    /**
+     * Course of the subject.
+     */
     @ManyToOne
     @JoinColumn(name = "idCourse", updatable = false, insertable = false)
     private Course course;
+    /**
+     * Subject of the course.
+     */
     @ManyToOne
     @JoinColumn(name = "idSubject", updatable = false, insertable = false)
     private Subject subject;
-
+    /**
+     * Method that return the id's of the entity.
+     * @return courseSubjectId
+     */
     public CourseSubjectId getCourseSubjectId() {
         return courseSubjectId;
     }
-
+    /**
+     * Method that set the value of the id's.
+     * @param courseSubjectId 
+     */
     public void setCourseSubjectId(CourseSubjectId courseSubjectId) {
         this.courseSubjectId = courseSubjectId;
     }
-
+    /**
+     * Method that return the totalHours.
+     * @return totalHours
+     */
     public float getTotalHours() {
         return totalHours;
     }
-
+    /**
+     * Method that set the value of the totalHours
+     * @param totalHours 
+     */
     public void setTotalHours(float totalHours) {
         this.totalHours = totalHours;
     }
-
+    /**
+     * Method that return the course.
+     * @return course
+     */
     public Course getCourse() {
         return course;
     }
-
+    /**
+     * Method that set the value of the course.
+     * @param course 
+     */
     public void setCourse(Course course) {
         this.course = course;
     }
-
+    /**
+     * Method that return the subject.
+     * @return subject
+     */
     public Subject getSubject() {
         return subject;
     }
-
+    /**
+     * Method that set the value of the subject.
+     * @param subject 
+     */
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
-
+    /**
+     * Integer representation for CourseSubject instance.
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -79,7 +117,12 @@ public class CourseSubject implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.subject);
         return hash;
     }
-
+     /**
+     * Compares two CourseSubject objects for equality. This method consider a CourseSubject 
+     * equal to another CourseSubject if their id fields have the same value. 
+     * @param obj The other CourseSubject to compare to
+     * @return Returns true or false depending if the fields are equals.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -106,7 +149,10 @@ public class CourseSubject implements Serializable {
         }
         return true;
     }
-
+    /**
+     * Obtains a string representation of the CourseSubject.
+     * @return The String representing the CourseSubject.
+     */
     @Override
     public String toString() {
         return "CourseSubject{" + "courseSubjectId=" + courseSubjectId + ", totalHours=" + totalHours + ", course=" + course + ", subject=" + subject + '}';

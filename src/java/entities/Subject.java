@@ -6,16 +6,13 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -44,13 +41,13 @@ public class Subject implements Serializable {
     private String password;
     //TeacherCourse where the subject appears
    @OneToMany(cascade=ALL,mappedBy="subject")
-    private List<TeacherCourseSubject> teacherCourseSubjects;
+    private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Collection of exams that the subject has had
     @OneToMany(cascade=ALL,mappedBy="subject")
     private Set<Exam>exams;
     //Collection of courses where the subject is teached
     @OneToMany(cascade=ALL,mappedBy="subject")
-    private List<CourseSubject> courseSubjects;
+    private Set<CourseSubject> courseSubjects;
     /**
     * Method that return the identifier of the subject.
     * @return idSubject
@@ -98,14 +95,14 @@ public class Subject implements Serializable {
     * @return teacherCourse
     */
     @XmlTransient
-    public List<TeacherCourseSubject> getTeacherCourseSubjects() {    
+    public Set<TeacherCourseSubject> getTeacherCourseSubjects() {    
         return teacherCourseSubjects;
     }
     /**
      * Method that set the value of the TeacherCourse of the subject.
      * @param teacherCourseSubjects
      */
-    public void setTeacherCourseSubjects(List<TeacherCourseSubject> teacherCourseSubjects) {    
+    public void setTeacherCourseSubjects(Set<TeacherCourseSubject> teacherCourseSubjects) {    
         this.teacherCourseSubjects = teacherCourseSubjects;
     }
 
@@ -129,14 +126,14 @@ public class Subject implements Serializable {
      * @return courses
      */
     @XmlTransient
-    public List<CourseSubject> getCourseSubjects() {    
+    public Set<CourseSubject> getCourseSubjects() {    
         return courseSubjects;
     }
     /**
      * Method that set the value of the courses where the subject is teached.
      * @param courseSubjects 
      */
-    public void setCourseSubjects(List<CourseSubject> courseSubjects) {
+    public void setCourseSubjects(Set<CourseSubject> courseSubjects) {
         this.courseSubjects = courseSubjects;
     }  
     /**

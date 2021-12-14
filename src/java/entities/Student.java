@@ -7,14 +7,10 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -44,7 +40,7 @@ public class Student extends User implements Serializable {
      * Examn sessions where the student are being evaluated.
      */
     @OneToMany(cascade = ALL, mappedBy = "student")
-    private List<ExamSession> sessions;
+    private Set<ExamSession> sessions;
     /**
      * Course where the student is registered.
      */
@@ -69,10 +65,10 @@ public class Student extends User implements Serializable {
 
     /**
      *
-     * @return This method returns a List with the exam sessions of the student.
+     * @return This method returns a Set with the exam sessions of the student.
      */
     @XmlTransient
-    public List<ExamSession> getSessions() {
+    public Set<ExamSession> getSessions() {
         return sessions;
     }
 
@@ -80,7 +76,7 @@ public class Student extends User implements Serializable {
      *
      * @param sessions This method set the sessions of the student.
      */
-    public void setSessions(List<ExamSession> sessions) {
+    public void setSessions(Set<ExamSession> sessions) {
         this.sessions = sessions;
     }
 
@@ -107,7 +103,7 @@ public class Student extends User implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.getUserId());
+        hash = 53 * hash + Objects.hashCode(this.getIdUser());
         hash = 53 * hash + Objects.hashCode(this.year);
         hash = 53 * hash + Objects.hashCode(this.sessions);
         hash = 53 * hash + Objects.hashCode(this.course);
@@ -142,7 +138,7 @@ public class Student extends User implements Serializable {
         if (!Objects.equals(this.course, other.course)) {
             return false;
         }
-        if (!Objects.equals(this.getUserId(), other.getUserId())) {
+        if (!Objects.equals(this.getIdUser(), other.getIdUser())) {
             return false;
         }
         return true;

@@ -9,9 +9,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,7 +16,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 2dam
+ * @author Aitor Ruiz de Gauna,Miguel Sanchez,Zeeshan Yaqoob.
+ */
+/**
+ * Entity that represents the relationship between TeacherCourses and subjects.
  */
 @Entity
 @Table(name="TeacherCourseSubject",schema="maz_solutions")
@@ -27,48 +27,87 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TeacherCourseSubject implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    /**
+     * Class that contains the id's of the TeacherCourseSubject entity.
+     */
     @EmbeddedId
     private TeacherCourseSubjectId teacherCourseSubjectId;
+    /**
+     * Total Hours that the TeacherCourseSubject has.
+     */
     private float totalHours;
+    /**
+     * TeacherCourse of the subject.
+     */
     @ManyToOne
     @JoinColumn(name = "idTeacherCourse", updatable = false, insertable = false)
     private TeacherCourse teacherCourse;
     @ManyToOne
+    /**
+     * Subject of the TeacherCourse.
+     */
     @JoinColumn(name = "idSubject", updatable = false, insertable = false)
     private Subject subject;
-
+     /**
+     * Method that return the id's of the entity.
+     * @return teacherCourseSubjectId
+     */
     public TeacherCourseSubjectId getTeacherCourseSubjectId() {
         return teacherCourseSubjectId;
     }
-
+    /**
+     * Method that set the value of the id's.
+     * @param teacherCourseSubjectId 
+     */
     public void setTeacherCourseSubjectId(TeacherCourseSubjectId teacherCourseSubjectId) {
         this.teacherCourseSubjectId = teacherCourseSubjectId;
     }
-
+    /**
+     * Method that return the totalHours.
+     * @return totalHours
+     */
     public float getTotalHours() {
         return totalHours;
     }
-
+    /**
+     * Method that set the value of the totalHours
+     * @param totalHours 
+     */
     public void setTotalHours(float totalHours) {
         this.totalHours = totalHours;
     }
-
+    /**
+     * Method that return the TeacherCourse.
+     * @return teacherCourse
+     */
     public TeacherCourse getTeacherCourse() {
         return teacherCourse;
     }
-
+     /**
+     * Method that set the value of the TeacherCourse.
+     * @param teacherCourse 
+     */
     public void setTeacherCourse(TeacherCourse teacherCourse) {
         this.teacherCourse = teacherCourse;
     }
-
+     /**
+     * Method that return the subject.
+     * @return subject
+     */
     public Subject getSubject() {
         return subject;
     }
-
+    /**
+     * Method that set the value of the subject.
+     * @param subject 
+     */
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
-
+     /**
+     * Integer representation for TeacherCourseSubject instance.
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -78,7 +117,12 @@ public class TeacherCourseSubject implements Serializable {
         hash = 53 * hash + Objects.hashCode(this.subject);
         return hash;
     }
-
+    /**
+     * Compares two TeacherCourseSubject objects for equality. This method consider a TeacherCourseSubject 
+     * equal to another TeacherCourseSubject if their id fields have the same value. 
+     * @param obj The other TeacherCourseSubject to compare to
+     * @return Returns true or false depending if the fields are equals.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -105,7 +149,10 @@ public class TeacherCourseSubject implements Serializable {
         }
         return true;
     }
-
+    /**
+     * Obtains a string representation of the TeacherCourseSubject.
+     * @return The String representing the TeacherCourseSubject.
+     */
     @Override
     public String toString() {
         return "TeacherCourseSubject{" + "teacherCourseSubjectId=" + teacherCourseSubjectId + ", totalHours=" + totalHours + ", teacher=" + teacherCourse + ", subject=" + subject + '}';

@@ -10,28 +10,52 @@ import java.util.Objects;
 
 /**
  *
- * @author 2dam
+ * @author Aitor Ruiz de Gauna,Miguel Sanchez,Zeeshan Yaqoob.
+ */
+/**
+ * Class that contains the id's of the CourseSubject.
  */
 public class CourseSubjectId implements Serializable{
+    /**
+     * The id of the course
+     */
     private Long idCourse;
+    /**
+     * The id of the subject
+     */
     private Long idSubject;
-
+    /**
+     * Method that return the idCourse.
+     * @return idCourse
+     */
     public Long getIdCourse() {
         return idCourse;
     }
-
+    /**
+     * Method that set the value of the idCourse
+     * @param idCourse 
+     */
     public void setIdCourse(Long idCourse) {
         this.idCourse = idCourse;
     }
-
+    /**
+     * Method that return the idSubject.
+     * @return idSubject
+     */
     public Long getIdSubject() {
         return idSubject;
     }
-
+    /**
+     * Method that set the value of the idSubject
+     * @param idSubject 
+     */
     public void setIdSubject(Long idSubject) {
         this.idSubject = idSubject;
     }
-
+     /**
+     * Integer representation for CourseSubjectId instance.
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -39,7 +63,12 @@ public class CourseSubjectId implements Serializable{
         hash = 59 * hash + Objects.hashCode(this.idSubject);
         return hash;
     }
-
+     /**
+     * Compares two CourseSubjectId objects for equality. This method consider a CourseSubjectId 
+     * equal to another CourseSubjectId if their id fields have the same value. 
+     * @param obj The other CourseSubjectId to compare to
+     * @return Returns true or false depending if the fields are equals.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -60,7 +89,10 @@ public class CourseSubjectId implements Serializable{
         }
         return true;
     }
-
+    /**
+     * Obtains a string representation of the CourseSubjectId.
+     * @return The String representing the CourseSubjectId.
+     */
     @Override
     public String toString() {
         return "CourseSubjectId{" + "idCourse=" + idCourse + ", idSubject=" + idSubject + '}';

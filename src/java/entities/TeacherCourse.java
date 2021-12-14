@@ -7,7 +7,6 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
@@ -46,7 +45,7 @@ public class TeacherCourse implements Serializable {
     private Date dateEnd;
     //Collection of the subject that the teacher has.
     @OneToMany(cascade=ALL,mappedBy="teacherCourse")
-    private List<TeacherCourseSubject> teacherCourseSubjects;
+    private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Teacher of the TeacherCourse
     @ManyToOne
     private Teacher teacher;
@@ -97,14 +96,14 @@ public class TeacherCourse implements Serializable {
      * @return 
      */
     @XmlTransient
-    public List<TeacherCourseSubject> getTeacherCourseSubjects() {    
+    public Set<TeacherCourseSubject> getTeacherCourseSubjects() {    
         return teacherCourseSubjects;
     }
     /**
      * Method that set the value of the collection of subjects of TeacherCourse.
      * @param teacherCourseSubjects 
      */
-    public void setTeacherCourseSubjects(List<TeacherCourseSubject> teacherCourseSubjects) {    
+    public void setTeacherCourseSubjects(Set<TeacherCourseSubject> teacherCourseSubjects) {    
         this.teacherCourseSubjects = teacherCourseSubjects;
     }
 

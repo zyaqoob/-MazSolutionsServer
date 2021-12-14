@@ -11,6 +11,6 @@ package entities;
  */
 public enum UserStatus {
     
-    ENABLED, DISALBED
+    ENABLED, DISABLED
     
 }
