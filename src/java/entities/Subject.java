@@ -32,16 +32,16 @@ import javax.xml.bind.annotation.XmlTransient;
         name="findAllSubjects",query="SELECT s FROM Subject s ORDER BY s.idSubject ASC"
     ),
     @NamedQuery(
-        name="findSubjectByStudent",query="SELECT s FROM Subject s WHERE s.courseSubjects.course.students.idUser=:idStudent"
+        name="findSubjectByStudent",query="SELECT s FROM Subject s, CourseSubject cs,Student st WHERE cs.course.idCourse=st.course.idCourse and cs.subject.idSubject=s.idSubject"
     ),
     @NamedQuery(
-        name="findSubjectsByCourse",query="SELECT s FROM Subject s WHERE s.courseSubjects.course.idCourse=:idCourse"
+        name="findSubjectsByCourse",query="SELECT s FROM Subject s, CourseSubject cs WHERE cs.course.idCourse=:idCourse and cs.subject.idSubject=s.idSubject"
     ),
     @NamedQuery(
-        name="findSubjectsByTeacherCourse",query="SELECT s FROM Subject s WHERE s.teacherCourseSubjects.teacherCourse.idTeacherCourse=:idTeacherCourse"    
+        name="findSubjectsByTeacherCourse",query="SELECT s FROM Subject s,TeacherCourseSubject ts WHERE ts.teacherCourse.idTeacherCourse=:idTeacherCourse and ts.subject.idSubject=s.idSubject"    
     ),
     @NamedQuery(
-        name="findSubjectByExam",query="SELECT s FROM Subject s WHERE s.exams.idExam=:idExam"    
+        name="findSubjectByExam",query="SELECT s FROM Subject s,Exam e WHERE e.idExam=:idExam and e.subject.idSubject=s.idSubject"    
     )    
 })
 @Entity
