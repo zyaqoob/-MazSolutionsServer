@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,6 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  *Entity that has the info of the courses of the Teacher.
  */
+@NamedQueries({
+    @NamedQuery(
+    name="findAllTeacherCourses", query="SELECT t FROM TeacherCourse t ORDER BY t.idTeacherCourse")
+})
 @Entity
 @Table(name="teacher_course",schema="maz_solutions")
 @XmlRootElement
