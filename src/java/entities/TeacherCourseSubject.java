@@ -111,10 +111,7 @@ public class TeacherCourseSubject implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 53 * hash + Objects.hashCode(this.teacherCourseSubjectId);
-        hash = 53 * hash + Float.floatToIntBits(this.totalHours);
-        hash = 53 * hash + Objects.hashCode(this.teacherCourse);
-        hash = 53 * hash + Objects.hashCode(this.subject);
+        hash = 53 * hash + Objects.hashCode(this.teacherCourseSubjectId);    
         return hash;
     }
     /**

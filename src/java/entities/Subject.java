@@ -29,6 +29,9 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @NamedQueries({
     @NamedQuery(
+        name="findSubjectById",query="SELECT s FROM Subject s WHERE s.idSubject=:id"
+    ),
+    @NamedQuery(
         name="findAllSubjects",query="SELECT s FROM Subject s ORDER BY s.idSubject ASC"
     ),
     @NamedQuery(
@@ -163,11 +166,6 @@ public class Subject implements Serializable {
     public int hashCode() {
         int hash = 3;
         hash = 31 * hash + Objects.hashCode(this.idSubject);
-        hash = 31 * hash + Objects.hashCode(this.name);
-        hash = 31 * hash + Objects.hashCode(this.password);
-        hash = 31 * hash + Objects.hashCode(this.teacherCourseSubjects);
-        hash = 31 * hash + Objects.hashCode(this.exams);
-        hash = 31 * hash + Objects.hashCode(this.courseSubjects);
         return hash;
     }  
 

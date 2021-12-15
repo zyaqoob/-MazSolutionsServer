@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
         name="findAllTeacherCourses", query="SELECT t FROM TeacherCourse t ORDER BY t.idTeacherCourse ASC"
     ),
     @NamedQuery(
-        name="findTeacherCourseByTeacher", query="SELECT t FROM TeacherCourse t WHERE t.teacher.idUser=:idTeacher"
+        name="findTeacherCourseByTeacher", query="SELECT t FROM TeacherCourse t, Teacher te WHERE te.idUser=:idTeacher and te.idUser=t.teacher.idUser"
     ),
     @NamedQuery(
         name="findTeacherCoursesBySubject",query="SELECT t FROM TeacherCourse t, TeacherCourseSubject ts WHERE ts.subject.idSubject=:idSubject"
@@ -144,11 +144,7 @@ public class TeacherCourse implements Serializable {
     @Override   
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.idTeacherCourse);
-        hash = 67 * hash + Objects.hashCode(this.dateStart);
-        hash = 67 * hash + Objects.hashCode(this.dateEnd);
-        hash = 67 * hash + Objects.hashCode(this.teacherCourseSubjects);
-        hash = 67 * hash + Objects.hashCode(this.teacher);
+        hash = 67 * hash + Objects.hashCode(this.idTeacherCourse);  
         return hash;
     }
 

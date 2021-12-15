@@ -11,6 +11,7 @@ import entities.TeacherCourse;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,11 +32,11 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("entities.teachercourse")
-public class TeacherCourseFacadeREST{
+public class TeacherCourseFacadeREST {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
-
+    private Logger LOGGER = Logger.getLogger(TeacherCourseFacadeREST.class.getName());
 
     @POST
     @Consumes({MediaType.APPLICATION_XML})
@@ -44,6 +45,7 @@ public class TeacherCourseFacadeREST{
             em.persist(entity);
             em.flush();
         } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
     }
@@ -56,6 +58,7 @@ public class TeacherCourseFacadeREST{
             em.merge(entity);
             em.flush();
         } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
     }
@@ -67,6 +70,7 @@ public class TeacherCourseFacadeREST{
             em.remove(em.merge(entity));
             em.flush();
         } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
     }
@@ -74,11 +78,12 @@ public class TeacherCourseFacadeREST{
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public TeacherCourse find(Long id) {
+    public TeacherCourse find(@PathParam("id")Long id) {
         TeacherCourse teacherCourse = null;
         try {
             teacherCourse = (TeacherCourse) em.createNamedQuery("findTeacherCourseById").setParameter("idTeacherCourse", id).getSingleResult();
         } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
         return teacherCourse;
@@ -86,11 +91,12 @@ public class TeacherCourseFacadeREST{
 
     @GET
     @Produces({MediaType.APPLICATION_XML})
-    public Set<TeacherCourse> findAllTeacherCourses() {
+    public Set<TeacherCourse> findAll() {
         Set<TeacherCourse> teacherCourses = null;
         try {
             teacherCourses = new HashSet<>(em.createNamedQuery("findAllTeacherCourses").getResultList());
         } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
         return teacherCourses;
@@ -101,9 +107,11 @@ public class TeacherCourseFacadeREST{
     @Produces({MediaType.APPLICATION_XML})
     public TeacherCourse findTeacherCourseByTeacher(Teacher teacher) {
         TeacherCourse teacherCourse = null;
+        Long id=teacher.getIdUser();
         try {
-            teacherCourse = (TeacherCourse) em.createNamedQuery("findTeacherCourseByTeacher").setParameter("idUser", teacher.getIdUser()).getSingleResult();
+            teacherCourse = (TeacherCourse) em.createNamedQuery("findTeacherCourseByTeacher").setParameter("idUser",id).getSingleResult();
         } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
         return teacherCourse;
@@ -114,31 +122,27 @@ public class TeacherCourseFacadeREST{
     @Produces({MediaType.APPLICATION_XML})
     public Set<TeacherCourse> findTeacherCoursesBySubject(Subject subject) {
         Set<TeacherCourse> teacherCourses = null;
+        Long id=subject.getIdSubject();
         try {
-            teacherCourses = new HashSet<>(em.createNamedQuery("findTeacherCoursesBySubject").setParameter("idSubject", subject.getIdSubject()).getResultList());
+            teacherCourses = new HashSet<>(em.createNamedQuery("findTeacherCoursesBySubject").setParameter("idSubject", id).getResultList());
         } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
         return teacherCourses;
     }
     /**
-    @GET
-    @Path("{from/{to}")
-    @Produces({MediaType.APPLICATION_XML})
-    public List<TeacherCourse> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }**/
+     * @GET @Path("{from/{to}")
+     * @Produces({MediaType.APPLICATION_XML}) public List<TeacherCourse>
+     * findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+     * return super.findRange(new int[]{from, to}); }
+     *
+     * @GET
+     * @Path("count")
+     * @Produces(MediaType.TEXT_PLAIN) public String countREST() { return
+     * String.valueOf(super.count()); }
+     *
+     * @Override protected EntityManager getEntityManager() { return em; }*
+     */
 
 }
