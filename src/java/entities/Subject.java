@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,11 +35,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
         name="findAllSubjects",query="SELECT s FROM Subject s ORDER BY s.idSubject ASC"
     ),
+    /*@NamedQuery(
+        name="findSubjectsByStudent",query="SELECT s FROM Subject s WHERE s.idSubject=:id"
+    ),*/
     @NamedQuery(
-        name="findSubjectByStudent",query="SELECT s FROM Subject s, CourseSubject cs,Student st WHERE cs.course.idCourse=st.course.idCourse and cs.subject.idSubject=s.idSubject"
-    ),
-    @NamedQuery(
-        name="findSubjectsByCourse",query="SELECT s FROM Subject s, CourseSubject cs WHERE cs.course.idCourse=:idCourse and cs.subject.idSubject=s.idSubject"
+        name="findSubjectsByCourse",query="SELECT s FROM Subject s, CourseSubject cs WHERE  cs.course.idCourse=:idCourse and cs.subject.idSubject=s.idSubject"
     ),
     @NamedQuery(
         name="findSubjectsByTeacherCourse",query="SELECT s FROM Subject s,TeacherCourseSubject ts WHERE ts.teacherCourse.idTeacherCourse=:idTeacherCourse and ts.subject.idSubject=s.idSubject"    
@@ -62,13 +63,13 @@ public class Subject implements Serializable {
     //Password to register in the subject
     private String password;
     //TeacherCourse where the subject appears
-   @OneToMany(cascade=ALL,mappedBy="subject")
+    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Collection of exams that the subject has had
-    @OneToMany(cascade=ALL,mappedBy="subject")
+    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
     private Set<Exam>exams;
     //Collection of courses where the subject is teached
-    @OneToMany(cascade=ALL,mappedBy="subject")
+    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
     private Set<CourseSubject> courseSubjects;
     /**
     * Method that return the identifier of the subject.

@@ -5,6 +5,8 @@
  */
 package ejb;
 
+import entities.Course;
+import entities.Student;
 import entities.Subject;
 import java.util.HashSet;
 import java.util.List;
@@ -30,21 +32,25 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("entities.subject")
-public class SubjectFacadeREST {
+public class SubjectFacadeREST extends AbstractFacade<Subject>{
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
     private Logger LOGGER = Logger.getLogger(SubjectFacadeREST.class.getName());
+
+    public SubjectFacadeREST() {
+        super(Subject.class);
+    }
     /**
      * 
      * @param entity 
      */
     @POST
+    @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Subject entity) {
           try {
-            em.persist(entity);
-            em.flush();
+            super.create(entity);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
@@ -52,14 +58,15 @@ public class SubjectFacadeREST {
     }
     /**
      * 
+     * @param entity 
      */
     @PUT
     @Path("{id}")
+    @Override
     @Consumes({MediaType.APPLICATION_XML})
-    public void edit(@PathParam("id") Long id, Subject entity) {
+    public void edit(Subject entity) {
         try {
-            em.merge(entity);
-            em.flush();
+           super.edit(entity);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
@@ -84,10 +91,19 @@ public class SubjectFacadeREST {
         }
         return subject;
     }
-
+    @GET
+    @Override
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Subject>findAll(){
+        try{
+            return super.findAll();
+        }catch(Exception e){
+            throw new InternalServerErrorException(e);
+        }
+    }
     @GET
     @Produces({MediaType.APPLICATION_XML})
-    public Set<Subject> findAll() {
+    public Set<Subject> findAllSubject() {
         Set<Subject> subjects=null;
         try{
             subjects=new HashSet<>(em.createNamedQuery("findAllSubjects").getResultList());
@@ -97,7 +113,37 @@ public class SubjectFacadeREST {
         }
         return subjects;
     }
-    /**
+    @GET
+    @Path("student/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Set<Subject>findSubjectsByStudent(Student entity){
+        Long id=entity.getIdUser();
+        Set<Subject>subjects=null;
+        try{
+            subjects=new HashSet<>(em.createNamedQuery("findSubjectByStudent").setParameter("id", id).getResultList());
+        }catch(Exception e){
+            throw new InternalServerErrorException(e);
+        }
+        return subjects;
+    }
+    @GET
+    @Path("course/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Set<Subject>findSubjectsByCourse(Course entity){
+        Long id=entity.getIdCourse();
+        Set<Subject>subjects=null;
+        try{
+            subjects=new HashSet<>(em.createNamedQuery("findSubjectsByCourse").setParameter("idCourse",id).getResultList());
+        }catch(Exception e){
+            throw new InternalServerErrorException(e);
+        }
+        return subjects;
+    }
+    @Override
+    protected EntityManager getEntityManager() {
+       return em;
+    }
+    
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML})
@@ -111,10 +157,4 @@ public class SubjectFacadeREST {
     public String countREST() {
         return String.valueOf(super.count());
     }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    **/
 }

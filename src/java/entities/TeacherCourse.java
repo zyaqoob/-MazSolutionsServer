@@ -111,7 +111,6 @@ public class TeacherCourse implements Serializable {
      * Method that return the value of the collection of subjects of TeacherCourse.
      * @return 
      */
-    @XmlTransient
     public Set<TeacherCourseSubject> getTeacherCourseSubjects() {    
         return teacherCourseSubjects;
     }
@@ -127,6 +126,7 @@ public class TeacherCourse implements Serializable {
      * Method that return the value of the collection of teachers of TeacherCourse.
      * @return teacher
      */
+    @XmlTransient
     public Teacher getTeacher() {
         return teacher;
     }

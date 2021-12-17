@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -80,6 +81,7 @@ public class TeacherCourseSubject implements Serializable {
      * Method that return the TeacherCourse.
      * @return teacherCourse
      */
+    @XmlTransient
     public TeacherCourse getTeacherCourse() {
         return teacherCourse;
     }
@@ -94,6 +96,7 @@ public class TeacherCourseSubject implements Serializable {
      * Method that return the subject.
      * @return subject
      */
+    @XmlTransient
     public Subject getSubject() {
         return subject;
     }
