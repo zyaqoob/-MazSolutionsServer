@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -91,14 +92,14 @@ public class User implements Serializable {
      */
     private String fullName;
     @OneToMany(cascade = ALL, mappedBy = "user",fetch=FetchType.EAGER)
-    private LastSignIn lastSignIn;
+    private Set<LastSignIn> lastSignIn;
 
     @XmlTransient
-    public LastSignIn getLastSignIn() {
+    public Set<LastSignIn> getLastSignIn() {
         return lastSignIn;
     }
 
-    public void setLastSignIn(LastSignIn lastSignIn) {
+    public void setLastSignIn(Set<LastSignIn> lastSignIn) {
         this.lastSignIn = lastSignIn;
     }
     

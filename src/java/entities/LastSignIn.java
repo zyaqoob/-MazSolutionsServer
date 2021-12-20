@@ -13,6 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -21,6 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author 2dam
  */
 @Entity
+@Table(name="lastSignIn",schema="maz_solutions")
 @XmlRootElement
 public class LastSignIn implements Serializable {
 
@@ -29,11 +33,13 @@ public class LastSignIn implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar lastSignIn;
     
     @ManyToOne
     private User user;
-
+    
+    
     public Calendar getLastSignIn() {
         return lastSignIn;
     }
