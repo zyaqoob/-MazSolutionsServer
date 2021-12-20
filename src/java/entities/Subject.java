@@ -10,9 +10,12 @@ import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,6 +28,26 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  * Entity that contains the info of a subject.
  */
+@NamedQueries({
+    @NamedQuery(
+        name="findSubjectById",query="SELECT s FROM Subject s WHERE s.idSubject=:id"
+    ),
+    @NamedQuery(
+        name="findAllSubjects",query="SELECT s FROM Subject s ORDER BY s.idSubject ASC"
+    ),
+    /*@NamedQuery(
+        name="findSubjectsByStudent",query="SELECT s FROM Subject s WHERE s.idSubject=:id"
+    ),*/
+    @NamedQuery(
+        name="findSubjectsByCourse",query="SELECT s FROM Subject s, CourseSubject cs WHERE  cs.course.idCourse=:idCourse and cs.subject.idSubject=s.idSubject"
+    ),
+    @NamedQuery(
+        name="findSubjectsByTeacherCourse",query="SELECT s FROM Subject s,TeacherCourseSubject ts WHERE ts.teacherCourse.idTeacherCourse=:idTeacherCourse and ts.subject.idSubject=s.idSubject"    
+    ),
+    @NamedQuery(
+        name="findSubjectByExam",query="SELECT s FROM Subject s,Exam e WHERE e.idExam=:idExam and e.subject.idSubject=s.idSubject"    
+    )    
+})
 @Entity
 @Table(name="subject",schema="maz_solutions")
 @XmlRootElement
@@ -40,13 +63,13 @@ public class Subject implements Serializable {
     //Password to register in the subject
     private String password;
     //TeacherCourse where the subject appears
-   @OneToMany(cascade=ALL,mappedBy="subject")
+    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Collection of exams that the subject has had
-    @OneToMany(cascade=ALL,mappedBy="subject")
+    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
     private Set<Exam>exams;
     //Collection of courses where the subject is teached
-    @OneToMany(cascade=ALL,mappedBy="subject")
+    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
     private Set<CourseSubject> courseSubjects;
     /**
     * Method that return the identifier of the subject.
@@ -144,11 +167,6 @@ public class Subject implements Serializable {
     public int hashCode() {
         int hash = 3;
         hash = 31 * hash + Objects.hashCode(this.idSubject);
-        hash = 31 * hash + Objects.hashCode(this.name);
-        hash = 31 * hash + Objects.hashCode(this.password);
-        hash = 31 * hash + Objects.hashCode(this.teacherCourseSubjects);
-        hash = 31 * hash + Objects.hashCode(this.exams);
-        hash = 31 * hash + Objects.hashCode(this.courseSubjects);
         return hash;
     }  
 

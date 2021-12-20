@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,7 +36,7 @@ public class Teacher extends User implements Serializable {
     /**
      * A collection of TeacherCourses.
      */
-    @OneToMany(cascade = ALL, mappedBy = "teacher")
+    @OneToMany(cascade = ALL, mappedBy = "teacher",fetch=FetchType.EAGER)
     private Set<TeacherCourse> teacherCourses;
 
     /**

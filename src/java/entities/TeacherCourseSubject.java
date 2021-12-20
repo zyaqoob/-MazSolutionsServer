@@ -41,11 +41,11 @@ public class TeacherCourseSubject implements Serializable {
      */
     @ManyToOne
     @JoinColumn(name = "idTeacherCourse", updatable = false, insertable = false)
-    private TeacherCourse teacherCourse;
-    @ManyToOne
+    private TeacherCourse teacherCourse;   
     /**
      * Subject of the TeacherCourse.
      */
+    @ManyToOne
     @JoinColumn(name = "idSubject", updatable = false, insertable = false)
     private Subject subject;
      /**
@@ -111,10 +111,7 @@ public class TeacherCourseSubject implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 53 * hash + Objects.hashCode(this.teacherCourseSubjectId);
-        hash = 53 * hash + Float.floatToIntBits(this.totalHours);
-        hash = 53 * hash + Objects.hashCode(this.teacherCourse);
-        hash = 53 * hash + Objects.hashCode(this.subject);
+        hash = 53 * hash + Objects.hashCode(this.teacherCourseSubjectId);    
         return hash;
     }
     /**

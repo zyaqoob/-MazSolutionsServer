@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -39,7 +40,7 @@ public class Student extends User implements Serializable {
     /**
      * Examn sessions where the student are being evaluated.
      */
-    @OneToMany(cascade = ALL, mappedBy = "student")
+    @OneToMany(cascade = ALL, mappedBy = "student",fetch=FetchType.EAGER)
     private Set<ExamSession> sessions;
     /**
      * Course where the student is registered.
@@ -67,7 +68,6 @@ public class Student extends User implements Serializable {
      *
      * @return This method returns a Set with the exam sessions of the student.
      */
-    @XmlTransient
     public Set<ExamSession> getSessions() {
         return sessions;
     }
@@ -84,6 +84,7 @@ public class Student extends User implements Serializable {
      *
      * @return This method returns a course.
      */
+    @XmlTransient
     public Course getCourse() {
         return course;
     }
@@ -104,9 +105,6 @@ public class Student extends User implements Serializable {
     public int hashCode() {
         int hash = 7;
         hash = 53 * hash + Objects.hashCode(this.getIdUser());
-        hash = 53 * hash + Objects.hashCode(this.year);
-        hash = 53 * hash + Objects.hashCode(this.sessions);
-        hash = 53 * hash + Objects.hashCode(this.course);
         return hash;
     }
 

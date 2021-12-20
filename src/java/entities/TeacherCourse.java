@@ -11,10 +11,13 @@ import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,6 +31,20 @@ import javax.xml.bind.annotation.XmlTransient;
 /**
  *Entity that has the info of the courses of the Teacher.
  */
+@NamedQueries({
+    @NamedQuery(
+        name="findTeacherCourseById", query="SELECT t FROM TeacherCourse t WHERE t.idTeacherCourse=:idTeacherCourse"
+    ),
+    @NamedQuery(
+        name="findAllTeacherCourses", query="SELECT t FROM TeacherCourse t ORDER BY t.idTeacherCourse ASC"
+    ),
+    @NamedQuery(
+        name="findTeacherCourseByTeacher", query="SELECT t FROM TeacherCourse t, Teacher te WHERE te.idUser=:idTeacher and te.idUser=t.teacher.idUser"
+    ),
+    @NamedQuery(
+        name="findTeacherCoursesBySubject",query="SELECT t FROM TeacherCourse t, TeacherCourseSubject ts WHERE ts.subject.idSubject=:idSubject"
+    )
+})
 @Entity
 @Table(name="teacher_course",schema="maz_solutions")
 @XmlRootElement
@@ -44,7 +61,7 @@ public class TeacherCourse implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dateEnd;
     //Collection of the subject that the teacher has.
-    @OneToMany(cascade=ALL,mappedBy="teacherCourse")
+    @OneToMany(cascade=ALL,mappedBy="teacherCourse",fetch=FetchType.EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Teacher of the TeacherCourse
     @ManyToOne
@@ -128,11 +145,7 @@ public class TeacherCourse implements Serializable {
     @Override   
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.idTeacherCourse);
-        hash = 67 * hash + Objects.hashCode(this.dateStart);
-        hash = 67 * hash + Objects.hashCode(this.dateEnd);
-        hash = 67 * hash + Objects.hashCode(this.teacherCourseSubjects);
-        hash = 67 * hash + Objects.hashCode(this.teacher);
+        hash = 67 * hash + Objects.hashCode(this.idTeacherCourse);  
         return hash;
     }
 
