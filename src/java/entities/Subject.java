@@ -30,22 +30,28 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @NamedQueries({
     @NamedQuery(
-        name="findSubjectById",query="SELECT s FROM Subject s WHERE s.idSubject=:id"
+        name="findSubjectById",
+            query="SELECT s FROM Subject s WHERE s.idSubject=:id"
     ),
     @NamedQuery(
-        name="findAllSubjects",query="SELECT s FROM Subject s ORDER BY s.idSubject ASC"
-    ),
-    /*@NamedQuery(
-        name="findSubjectsByStudent",query="SELECT s FROM Subject s WHERE s.idSubject=:id"
-    ),*/
-    @NamedQuery(
-        name="findSubjectsByCourse",query="SELECT s FROM Subject s, CourseSubject cs WHERE  cs.course.idCourse=:idCourse and cs.subject.idSubject=s.idSubject"
+        name="findAllSubjects",
+            query="SELECT s FROM Subject s ORDER BY s.idSubject ASC"
     ),
     @NamedQuery(
-        name="findSubjectsByTeacherCourse",query="SELECT s FROM Subject s,TeacherCourseSubject ts WHERE ts.teacherCourse.idTeacherCourse=:idTeacherCourse and ts.subject.idSubject=s.idSubject"    
+        name="findSubjectsByStudent",
+            query="SELECT cs.subject FROM Subject s,Student st, Course c, CourseSubject cs WHERE st.fullName=:fullName and c.idCourse=st.course.idCourse and cs.course.idCourse=st.course.idCourse"       
     ),
     @NamedQuery(
-        name="findSubjectByExam",query="SELECT s FROM Subject s,Exam e WHERE e.idExam=:idExam and e.subject.idSubject=s.idSubject"    
+        name="findSubjectsByCourse",
+            query="SELECT cs.subject FROM CourseSubject cs WHERE  cs.course.name=:name"
+    ),
+    @NamedQuery(
+        name="findSubjectsByTeacherCourse",
+            query="SELECT ts.subject FROM TeacherCourseSubject ts WHERE ts.teacherCourse.idTeacherCourse=:idTeacherCourse"    
+    ),
+    @NamedQuery(
+        name="findSubjectByExam",
+            query="SELECT e.subject FROM Exam e WHERE e.idExam=:idExam"    
     )    
 })
 @Entity

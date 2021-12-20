@@ -21,6 +21,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -36,6 +38,14 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 
 //@MappedSuperclass
+@NamedQueries({
+    @NamedQuery(name="findUserByEmail", 
+            query="SELECT u FROM User u WHERE u.email=:email"),
+    @NamedQuery(name="findUserByPassword",
+            query="SELECT u FROM User u WHERE u.password=:password"),
+    @NamedQuery(name="login",
+            query="SELECT u FROM User u WHERE u.login=:login and u.password=:password"),
+})
 @Entity
 @Table(name="user",schema="maz_solutions")
 @Inheritance(strategy = InheritanceType.JOINED)

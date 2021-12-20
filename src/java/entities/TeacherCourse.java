@@ -33,16 +33,20 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @NamedQueries({
     @NamedQuery(
-        name="findTeacherCourseById", query="SELECT t FROM TeacherCourse t WHERE t.idTeacherCourse=:idTeacherCourse"
+        name="findTeacherCourseById",
+            query="SELECT t FROM TeacherCourse t WHERE t.idTeacherCourse=:idTeacherCourse"
     ),
     @NamedQuery(
-        name="findAllTeacherCourses", query="SELECT t FROM TeacherCourse t ORDER BY t.idTeacherCourse ASC"
+        name="findAllTeacherCourses", 
+            query="SELECT t FROM TeacherCourse t ORDER BY t.idTeacherCourse ASC"
     ),
     @NamedQuery(
-        name="findTeacherCourseByTeacher", query="SELECT t FROM TeacherCourse t, Teacher te WHERE te.idUser=:idTeacher and te.idUser=t.teacher.idUser"
+        name="findTeacherCoursesByTeacher", 
+            query="SELECT t FROM TeacherCourse t WHERE t.teacher.fullName=:fullName"
     ),
     @NamedQuery(
-        name="findTeacherCoursesBySubject",query="SELECT t FROM TeacherCourse t, TeacherCourseSubject ts WHERE ts.subject.idSubject=:idSubject"
+        name="findTeacherCoursesBySubject",
+            query="SELECT ts.teacherCourse FROM TeacherCourseSubject ts WHERE ts.subject.name=:name"
     )
 })
 @Entity

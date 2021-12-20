@@ -7,12 +7,14 @@ package ejb;
 
 import entities.User;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -70,6 +72,25 @@ public class UserFacadeREST extends AbstractFacade<User> {
     }
 
     @GET
+    @Path("email/{email}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
+    public User findUserByEmail(@PathParam("email") String email) {
+        User user = null;
+        byte[] array = new byte[10];
+        new Random().nextBytes(array);
+        try {
+            user = (User) em.createNamedQuery("findUserByEmail").setParameter("email", email).getSingleResult();
+            if (user != null&&em.contains(user))
+                user.setPassword(new String(array));
+            else
+                em.merge(user);
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e);
+        }
+        return user;
+    }
+
+    @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
@@ -87,5 +108,5 @@ public class UserFacadeREST extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }
