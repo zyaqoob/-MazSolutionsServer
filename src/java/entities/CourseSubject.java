@@ -112,9 +112,6 @@ public class CourseSubject implements Serializable {
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.courseSubjectId);
-        hash = 79 * hash + Float.floatToIntBits(this.totalHours);
-        hash = 79 * hash + Objects.hashCode(this.course);
-        hash = 79 * hash + Objects.hashCode(this.subject);
         return hash;
     }
      /**

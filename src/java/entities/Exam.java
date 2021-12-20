@@ -134,9 +134,6 @@ public class Exam implements Serializable {
     public int hashCode() {
         int hash = 3;
         hash = 19 * hash + Objects.hashCode(this.idExam);
-        hash = 19 * hash + Objects.hashCode(this.examStatement);
-        hash = 19 * hash + Objects.hashCode(this.subject);
-        hash = 19 * hash + Objects.hashCode(this.sessions);
         return hash;
     }
 

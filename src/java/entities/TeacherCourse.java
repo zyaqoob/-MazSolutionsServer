@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -60,7 +61,7 @@ public class TeacherCourse implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dateEnd;
     //Collection of the subject that the teacher has.
-    @OneToMany(cascade=ALL,mappedBy="teacherCourse")
+    @OneToMany(cascade=ALL,mappedBy="teacherCourse",fetch=FetchType.EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Teacher of the TeacherCourse
     @ManyToOne
@@ -111,6 +112,7 @@ public class TeacherCourse implements Serializable {
      * Method that return the value of the collection of subjects of TeacherCourse.
      * @return 
      */
+    @XmlTransient
     public Set<TeacherCourseSubject> getTeacherCourseSubjects() {    
         return teacherCourseSubjects;
     }
@@ -126,7 +128,6 @@ public class TeacherCourse implements Serializable {
      * Method that return the value of the collection of teachers of TeacherCourse.
      * @return teacher
      */
-    @XmlTransient
     public Teacher getTeacher() {
         return teacher;
     }

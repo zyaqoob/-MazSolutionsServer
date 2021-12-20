@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,12 +55,12 @@ public class Course implements Serializable {
     /**
      * The subjects of the course.
      */
-    @OneToMany(cascade=ALL,mappedBy="course")
+    @OneToMany(cascade=ALL,mappedBy="course",fetch=FetchType.EAGER)
     private Set<CourseSubject> courseSubjects;
     /**
      * The students of the course.
      */
-    @OneToMany(cascade=ALL, mappedBy="course")
+    @OneToMany(cascade=ALL, mappedBy="course",fetch=FetchType.EAGER)
     private Set<Student> students;
     /**
      * This method returns the course id.
@@ -121,7 +122,6 @@ public class Course implements Serializable {
      * This method return a set of the subjects from the course.
      * @return 
      */
-    //@XmlTransient
     @XmlTransient
     public Set<CourseSubject> getCourseSubjects() {
         return courseSubjects;
@@ -137,7 +137,6 @@ public class Course implements Serializable {
      * This method get a set of students from the course.
      * @return 
      */
-    @XmlTransient
     public Set<Student> getStudents() {
         return students;
     }
@@ -155,12 +154,7 @@ public class Course implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.idCourse);
-        hash = 53 * hash + Objects.hashCode(this.name);
-        hash = 53 * hash + Objects.hashCode(this.dateStart);
-        hash = 53 * hash + Objects.hashCode(this.dateEnd);
-        hash = 53 * hash + Objects.hashCode(this.courseSubjects);
-        hash = 53 * hash + Objects.hashCode(this.students);
+        hash = 53 * hash + Objects.hashCode(this.idCourse);     
         return hash;
     }
     /**
