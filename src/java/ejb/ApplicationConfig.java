@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(ejb.CourseSubjectFacadeREST.class);
         resources.add(ejb.ExamFacadeREST.class);
         resources.add(ejb.ExamSessionFacadeREST.class);
+        resources.add(ejb.LastSignInFacadeREST.class);
         resources.add(ejb.StudentFacadeREST.class);
         resources.add(ejb.SubjectFacadeREST.class);
         resources.add(ejb.TeacherCourseFacadeREST.class);

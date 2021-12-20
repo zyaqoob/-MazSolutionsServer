@@ -5,7 +5,7 @@
  */
 package ejb;
 
-import entities.User;
+import entities.LastSignIn;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,27 +25,27 @@ import javax.ws.rs.core.MediaType;
  * @author 2dam
  */
 @Stateless
-@Path("entities.user")
-public class UserFacadeREST extends AbstractFacade<User> {
+@Path("entities.lastsignin")
+public class LastSignInFacadeREST extends AbstractFacade<LastSignIn> {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
 
-    public UserFacadeREST() {
-        super(User.class);
+    public LastSignInFacadeREST() {
+        super(LastSignIn.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(User entity) {
+    public void create(LastSignIn entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, User entity) {
+    public void edit(@PathParam("id") Long id, LastSignIn entity) {
         super.edit(entity);
     }
 
@@ -58,21 +58,21 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User find(@PathParam("id") Long id) {
+    public LastSignIn find(@PathParam("id") Long id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> findAll() {
+    public List<LastSignIn> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<LastSignIn> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

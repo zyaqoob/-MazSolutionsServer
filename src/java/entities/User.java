@@ -25,6 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -92,6 +93,7 @@ public class User implements Serializable {
     @OneToMany(cascade = ALL, mappedBy = "user",fetch=FetchType.EAGER)
     private LastSignIn lastSignIn;
 
+    @XmlTransient
     public LastSignIn getLastSignIn() {
         return lastSignIn;
     }

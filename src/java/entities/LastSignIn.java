@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -20,6 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author 2dam
  */
 @Entity
+@XmlRootElement
 public class LastSignIn implements Serializable {
 
     private static final long serialVersionUID = 1L;
