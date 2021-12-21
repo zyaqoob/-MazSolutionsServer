@@ -11,23 +11,34 @@ import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 
 /**
  * Entity representing Teacher that extends from user.
  *
  * @author Zeeshan Yaqoob
  */
+@NamedQueries({
+    @NamedQuery(name = "findAllTeacher",
+            query = "SELECT t FROM Teacher t")
+    ,@NamedQuery(name = "findTeacherBySubject",
+            query = "SELECT tcs.teacherCourse.teacher FROM TeacherCourseSubject tcs WHERE tcs.subject.name=:subject_name")
+    ,@NamedQuery(name = "findTeacherByCourse",
+            query = "SELECT tc.teacher FROM TeacherCourse tc WHERE tc.idTeacherCourse=:id_teacher_course")
+    ,@NamedQuery(name = "findTeachersByStudent",
+            query = "SELECT tsc.teacherCourse.teacher FROM TeacherCourseSubject tsc,CourseSubject cs,Student s WHERE tsc.subject.idSubject=cs.subject and s.course=cs.course and s.fullName=:student_name")
+})
 @Entity
-@Table(name="teacher",schema="maz_solutions")
+@Table(name = "teacher", schema = "maz_solutions")
 @XmlRootElement
 public class Teacher extends User implements Serializable {
 
-    private static final long serialVersionUID = 1L;    
+    private static final long serialVersionUID = 1L;
     /**
      * Field that represent salary of the teacher.
      */
@@ -36,7 +47,7 @@ public class Teacher extends User implements Serializable {
     /**
      * A collection of TeacherCourses.
      */
-    @OneToMany(cascade = ALL, mappedBy = "teacher",fetch=FetchType.EAGER)
+    @OneToMany(cascade = ALL, mappedBy = "teacher", fetch = FetchType.EAGER)
     private Set<TeacherCourse> teacherCourses;
 
     /**
@@ -61,7 +72,7 @@ public class Teacher extends User implements Serializable {
      * @return teacherCourses.
      */
     @XmlTransient
-    public Set<TeacherCourse> getTeacherCourses() {    
+    public Set<TeacherCourse> getTeacherCourses() {
         return teacherCourses;
     }
 
@@ -70,7 +81,7 @@ public class Teacher extends User implements Serializable {
      *
      * @param teacherCourses the teacherCourses to set.
      */
-    public void setTeacherCourses(Set<TeacherCourse> teacherCourses) {    
+    public void setTeacherCourses(Set<TeacherCourse> teacherCourses) {
         this.teacherCourses = teacherCourses;
     }
 
@@ -103,7 +114,7 @@ public class Teacher extends User implements Serializable {
         if (obj == null) {
             return false;
         }
-    if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
         final Teacher other = (Teacher) obj;
