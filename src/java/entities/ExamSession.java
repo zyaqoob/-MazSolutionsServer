@@ -13,20 +13,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
 /**
  * Entity representing ExamSession.
  *
  * @author Zeeshan Yaqoob
  */
+@NamedQueries({
+    @NamedQuery(name = "findAllExamSession", query = "SELECT es FROM ExamSession es")
+    ,
+    @NamedQuery(name = "findExamSessionsByStudent", query = "SELECT es FROM ExamSession es WHERE es.student.fullName=:fullName")
+    ,
+    @NamedQuery(name = "findExamSessionsBySubject", query = "SELECT es FROM ExamSession es WHERE es.exam.subject.name=:subject_name")
+})
 @Entity
-@Table(name="exam_session",schema="maz_solutions")
+@Table(name = "exam_session", schema = "maz_solutions")
 @XmlRootElement
 public class ExamSession implements Serializable {
 
@@ -34,7 +42,7 @@ public class ExamSession implements Serializable {
     /**
      * Field that identify ExamSession.
      */
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idExamSession;
     /**
@@ -51,7 +59,6 @@ public class ExamSession implements Serializable {
     /**
      * An object of Student.
      */
-    
     @ManyToOne
     private Student student;
 
@@ -123,7 +130,7 @@ public class ExamSession implements Serializable {
      *
      * @return dateTimeStart.
      */
-    public Calendar getDateTimeStart() {    
+    public Calendar getDateTimeStart() {
         return dateTimeStart;
     }
 
@@ -132,7 +139,7 @@ public class ExamSession implements Serializable {
      *
      * @param dateTimeStart the dateTimeStart to set
      */
-    public void setDateTimeStart(Calendar dateTimeStart) {    
+    public void setDateTimeStart(Calendar dateTimeStart) {
         this.dateTimeStart = dateTimeStart;
     }
 
@@ -140,7 +147,7 @@ public class ExamSession implements Serializable {
      *
      * @return dateTimeEnd.
      */
-    public Calendar getDateTimeEnd() {    
+    public Calendar getDateTimeEnd() {
         return dateTimeEnd;
     }
 
@@ -149,7 +156,7 @@ public class ExamSession implements Serializable {
      *
      * @param dateTimeEnd the dateTimeEnd to set
      */
-    public void setDateTimeEnd(Calendar dateTimeEnd) {    
+    public void setDateTimeEnd(Calendar dateTimeEnd) {
         this.dateTimeEnd = dateTimeEnd;
     }
 
@@ -157,23 +164,25 @@ public class ExamSession implements Serializable {
      *
      * @return examSessionId
      */
-    public Long getIdExamSession() {    
+    public Long getIdExamSession() {
         return idExamSession;
     }
 
     /**
-     * an object of  ExamSessionId.
+     * an object of ExamSessionId.
+     *
      * @param idExamSession the examSessionId to set.
      */
     public void setIdExamSession(Long idExamSession) {
-        this.idExamSession= idExamSession;
+        this.idExamSession = idExamSession;
     }
 
     /**
      * Interger representation of examSession instance.
+     *
      * @return
      */
-    @Override   
+    @Override
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + Objects.hashCode(this.idExamSession);
@@ -191,8 +200,6 @@ public class ExamSession implements Serializable {
      * @param obj the other object of ExamSession to compare.
      * @return true incase they are same.
      */
-   
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

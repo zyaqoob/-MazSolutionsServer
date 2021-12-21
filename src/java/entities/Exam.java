@@ -14,19 +14,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 
 /**
  * Entity representing Exam.
  *
  * @author Zeeshan Yaqoob
  */
+@NamedQueries({
+    @NamedQuery(name = "findAllExam", query = "SELECT e FROM Exam e")
+    ,@NamedQuery(name = "findExamsBySubject",
+            query = "SELECT e FROM Exam e WHERE e.subject.name=:subject_name")
+    ,@NamedQuery(name = "findExamsByStudent",
+            query = "SELECT es.exam FROM ExamSession es WHERE es.student.fullName=:student_name")
+    ,@NamedQuery(name = "findExamByExamSession",
+            query = "SELECT es.exam FROM ExamSession es WHERE es.exam.idExam=:idExam")
+
+})
 @Entity
-@Table(name="exam",schema="maz_solutions")
+@Table(name = "exam", schema = "maz_solutions")
 @XmlRootElement
 public class Exam implements Serializable {
 
@@ -91,6 +102,7 @@ public class Exam implements Serializable {
 
     /**
      * Method that return the sessions.
+     *
      * @return sessions
      */
     @XmlTransient
@@ -103,7 +115,6 @@ public class Exam implements Serializable {
      *
      * @param sessions the collection of ExamSession to set.
      */
-
     public void setSessions(Set<ExamSession> sessions) {
         this.sessions = sessions;
     }
@@ -130,7 +141,7 @@ public class Exam implements Serializable {
      *
      * @return
      */
-    @Override    
+    @Override
     public int hashCode() {
         int hash = 3;
         hash = 19 * hash + Objects.hashCode(this.idExam);
@@ -143,8 +154,6 @@ public class Exam implements Serializable {
      * @param object the other Exam object to compare.
      * @return true if they are same.
      */
-    
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
