@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,6 +29,20 @@ import javax.xml.bind.annotation.XmlTransient;
  * name, dateStart, dateEnd, subjects, students.
  * @author Miguel Angel Sanchez
  */
+@NamedQueries({
+    @NamedQuery(
+        name="findCourseById", query="SELECT c FROM Course c WHERE c.idCourse=:idCourse"
+    ),
+    @NamedQuery(
+        name="findAllCourses", query="SELECT c FROM Course c ORDER BY c.idCourse DESC"
+    ),
+    @NamedQuery(
+        name="findCourseByStudent", query="SELECT s.course FROM Student s WHERE s.idUser=:idUser"
+    ),
+    @NamedQuery(
+        name="findCoursesBySubject",query="SELECT cs.course FROM CourseSubject cs WHERE cs.subject.idSubject=:idSubject"
+    )
+})
 @Entity
 @Table(name="course",schema="maz_solutions")
 @XmlRootElement
