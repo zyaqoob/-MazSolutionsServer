@@ -13,6 +13,8 @@ import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,6 +28,20 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Miguel Ángel Sánchez
  */
+@NamedQueries({
+    @NamedQuery(
+        name="findStudentById", query="SELECT s FROM Student s WHERE s.idUser=:idUser"
+    ),
+    @NamedQuery(
+        name="findStudentsByCourse", query="SELECT s FROM Student s WHERE s.course.idCourse=:idCourse"
+    ),
+    @NamedQuery(
+        name="findAllStudents", query="SELECT s FROM Student s ORDER BY s.idUser DESC"
+    ),
+    @NamedQuery(
+        name="findStudentByExSes",query="SELECT es.student FROM ExamSession es WHERE es.idExamSession=:idExamSession"
+    )
+})
 @Entity
 @Table(name = "student", schema = "maz_solutions")
 @XmlRootElement
