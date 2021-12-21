@@ -115,28 +115,26 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
     }
 
     @GET
-    @Path("teacher/{id}")
+    @Path("teacher/{fullname}")
     @Produces({MediaType.APPLICATION_XML})
-    public TeacherCourse findTeacherCourseByTeacher(Teacher teacher) {
-        TeacherCourse teacherCourse = null;
-        Long id = teacher.getIdUser();
+    public Set<TeacherCourse> findTeacherCoursesByTeacher(@PathParam("fullname")String fullName) {
+        Set<TeacherCourse> teacherCourses = null;       
         try {
-            teacherCourse = (TeacherCourse) em.createNamedQuery("findTeacherCourseByTeacher").setParameter("idUser", id).getSingleResult();
+            teacherCourses = new HashSet<>(em.createNamedQuery("findTeacherCoursesByTeacher").setParameter("fullName", fullName).getResultList());
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
-        return teacherCourse;
+        return teacherCourses;
     }
 
     @GET
-    @Path("subject/{id}")
+    @Path("subject/{name}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<TeacherCourse> findTeacherCoursesBySubject(Subject subject) {
+    public Set<TeacherCourse> findTeacherCoursesBySubject(@PathParam("name")String name) {
         Set<TeacherCourse> teacherCourses = null;
-        Long id = subject.getIdSubject();
         try {
-            teacherCourses = new HashSet<>(em.createNamedQuery("findTeacherCoursesBySubject").setParameter("idSubject", id).getResultList());
+            teacherCourses = new HashSet<>(em.createNamedQuery("findTeacherCoursesBySubject").setParameter("name",name).getResultList());
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);

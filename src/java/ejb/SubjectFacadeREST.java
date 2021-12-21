@@ -113,31 +113,53 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         }
         return subjects;
     }
-    @GET
-    @Path("student/{id}")
+   @GET
+    @Path("student/{fullName}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<Subject>findSubjectsByStudent(Student entity){
-        Long id=entity.getIdUser();
+    public Set<Subject>findSubjectsByStudent(@PathParam("fullName")String fullName){
         Set<Subject>subjects=null;
         try{
-            subjects=new HashSet<>(em.createNamedQuery("findSubjectByStudent").setParameter("id", id).getResultList());
+            subjects=new HashSet<>(em.createNamedQuery("findSubjectsByStudent").setParameter("fullName",fullName).getResultList());
         }catch(Exception e){
             throw new InternalServerErrorException(e);
         }
         return subjects;
     }
     @GET
-    @Path("course/{id}")
+    @Path("course/{name}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<Subject>findSubjectsByCourse(Course entity){
-        Long id=entity.getIdCourse();
+    public Set<Subject>findSubjectsByCourse(@PathParam("name")String name){
         Set<Subject>subjects=null;
         try{
-            subjects=new HashSet<>(em.createNamedQuery("findSubjectsByCourse").setParameter("idCourse",id).getResultList());
+            subjects=new HashSet<>(em.createNamedQuery("findSubjectsByCourse").setParameter("name",name).getResultList());
         }catch(Exception e){
             throw new InternalServerErrorException(e);
         }
         return subjects;
+    }
+    @GET
+    @Path("teacherCourse/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Set<Subject>findSubjectsByTeacherCourse(@PathParam("name")Long name){
+        Set<Subject>subjects=null;
+        try{
+            subjects=new HashSet<>(em.createNamedQuery("findSubjectsByTeacherCourse").setParameter("idTeacherCourse",name).getResultList());
+        }catch(Exception e){
+            throw new InternalServerErrorException(e);
+        }
+        return subjects;
+    }
+    @GET
+    @Path("exam/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Subject findSubjectByExam(@PathParam("id")Long id){
+        Subject subject=null;
+        try{
+            subject=(Subject) em.createNamedQuery("findSubjectByExam").setParameter("idExam",id).getSingleResult();
+        }catch(Exception e){
+            throw new InternalServerErrorException(e);
+        }
+        return subject;
     }
     @Override
     protected EntityManager getEntityManager() {

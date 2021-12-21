@@ -7,12 +7,15 @@ package ejb;
 
 import entities.User;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -70,6 +73,60 @@ public class UserFacadeREST extends AbstractFacade<User> {
     }
 
     @GET
+    @Path("email/{email}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
+    public User findUserByEmail(@PathParam("email") String email) {
+        User user = null;
+        String password = null;
+        String[]characterLowCase={"a","b","c","d","e","f","g","r","t"};
+        String[]characterCapital={"L","M","N","W","Y","P","X","Z","Q"};
+        String[]numbers={"1","2","3","4","5","6","7","8","9"};
+        password=characterLowCase[(int)(Math.random() * 9)]+characterCapital[(int) (Math.random() * 9)]+numbers[(int) (Math.random() * 9)]+characterLowCase[(int)(Math.random() * 9)]+characterCapital[(int) (Math.random() * 9)]+numbers[(int) (Math.random() * 9)];           
+        
+        byte[] array = new byte[10];
+        new Random().nextBytes(array);
+        try {
+            user = (User) em.createNamedQuery("findUserByEmail").setParameter("email", email).getSingleResult();
+            if (user != null&&em.contains(user))
+                user.setPassword(password);
+            else if(!em.contains(user))
+                em.merge(user);
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e);
+        }
+        return user;
+    }
+    @GET
+    @Path("password/{login}/{password}/{newPassword}")
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_XML})
+    public User findUserByPassword(@PathParam("login")String login,@PathParam("password")String password,@PathParam("newPassword")String newPassword){
+        User user=null;
+        try{
+            user=(User)em.createNamedQuery("findUserByPassword").setParameter("password",password).setParameter("login",login).getSingleResult();
+            if(user!=null&&em.contains(user)){
+                user.setPassword(newPassword);
+            }else if(!em.contains(user))
+                em.merge(user);
+        }catch(Exception e){
+            throw new InternalServerErrorException(e);
+        }
+        return user;
+    }
+    @GET
+    @Path("login/{login}/{password}")
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_XML})
+    public User login(@PathParam("login")String login,@PathParam("password")String password){
+        User user=null;
+        try{
+            user=(User)em.createNamedQuery("findUserByPassword").setParameter("password",password).setParameter("login",login).getSingleResult();
+            if(user==null)
+                throw new NotAuthorizedException("Authentication failure");
+        }catch(NotAuthorizedException e){
+            throw new NotAuthorizedException(e);
+        }
+        return user;
+    }
+    @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
@@ -87,5 +144,5 @@ public class UserFacadeREST extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }
