@@ -5,7 +5,9 @@
  */
 package ejb;
 
+import crypto.Crypto;
 import entities.User;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Random;
 import javax.ejb.Stateless;
@@ -77,55 +79,68 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
     public User findUserByEmail(@PathParam("email") String email) {
         User user = null;
-        String password = null;
-        String[]characterLowCase={"a","b","c","d","e","f","g","r","t"};
-        String[]characterCapital={"L","M","N","W","Y","P","X","Z","Q"};
-        String[]numbers={"1","2","3","4","5","6","7","8","9"};
-        password=characterLowCase[(int)(Math.random() * 9)]+characterCapital[(int) (Math.random() * 9)]+numbers[(int) (Math.random() * 9)]+characterLowCase[(int)(Math.random() * 9)]+characterCapital[(int) (Math.random() * 9)]+numbers[(int) (Math.random() * 9)];           
-        
+        String password;
+        String hashedPassword;
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[10];
+        random.nextBytes(bytes);
+        password = new String(bytes);
+        //Hashear la password
+        //Enviar password hasheada a la db
+
+        //Enviar password sin hashear al usuario
+        //password = characterLowCase[(int) (Math.random() * 9)] + characterCapital[(int) (Math.random() * 9)] + numbers[(int) (Math.random() * 9)] + characterLowCase[(int) (Math.random() * 9)] + characterCapital[(int) (Math.random() * 9)] + numbers[(int) (Math.random() * 9)];
         byte[] array = new byte[10];
         new Random().nextBytes(array);
         try {
+            hashedPassword = new String(Crypto.cifrar(password));
+            hashedPassword = Crypto.descifrar(hashedPassword);
             user = (User) em.createNamedQuery("findUserByEmail").setParameter("email", email).getSingleResult();
-            if (user != null&&em.contains(user))
-                user.setPassword(password);
-            else if(!em.contains(user))
+            if (user != null && em.contains(user)) {
+                user.setPassword(hashedPassword);
+            } else if (!em.contains(user)) {
                 em.merge(user);
+            }
         } catch (Exception e) {
             throw new InternalServerErrorException(e);
         }
         return user;
     }
+
     @GET
     @Path("password/{login}/{password}/{newPassword}")
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_XML})
-    public User findUserByPassword(@PathParam("login")String login,@PathParam("password")String password,@PathParam("newPassword")String newPassword){
-        User user=null;
-        try{
-            user=(User)em.createNamedQuery("findUserByPassword").setParameter("password",password).setParameter("login",login).getSingleResult();
-            if(user!=null&&em.contains(user)){
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
+    public User findUserByPassword(@PathParam("login") String login, @PathParam("password") String password, @PathParam("newPassword") String newPassword) {
+        User user = null;
+        try {
+            user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", password).setParameter("login", login).getSingleResult();
+            if (user != null && em.contains(user)) {
                 user.setPassword(newPassword);
-            }else if(!em.contains(user))
+            } else if (!em.contains(user)) {
                 em.merge(user);
-        }catch(Exception e){
+            }
+        } catch (Exception e) {
             throw new InternalServerErrorException(e);
         }
         return user;
     }
+
     @GET
     @Path("login/{login}/{password}")
-    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_XML})
-    public User login(@PathParam("login")String login,@PathParam("password")String password){
-        User user=null;
-        try{
-            user=(User)em.createNamedQuery("findUserByPassword").setParameter("password",password).setParameter("login",login).getSingleResult();
-            if(user==null)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
+    public User login(@PathParam("login") String login, @PathParam("password") String password) {
+        User user = null;
+        try {
+            user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", password).setParameter("login", login).getSingleResult();
+            if (user == null) {
                 throw new NotAuthorizedException("Authentication failure");
-        }catch(NotAuthorizedException e){
+            }
+        } catch (NotAuthorizedException e) {
             throw new NotAuthorizedException(e);
         }
         return user;
     }
+
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
