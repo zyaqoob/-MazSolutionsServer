@@ -81,20 +81,17 @@ public class UserFacadeREST extends AbstractFacade<User> {
         User user = null;
         String password;
         String hashedPassword;
-        SecureRandom random = new SecureRandom();
-        byte bytes[] = new byte[10];
-        random.nextBytes(bytes);
-        password = new String(bytes);
+        String charLow[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+        String charUpper[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+        String number[] = {"0","1","2","3","4","5","6","7","8","9"};
         //Hashear la password
         //Enviar password hasheada a la db
-
         //Enviar password sin hashear al usuario
-        //password = characterLowCase[(int) (Math.random() * 9)] + characterCapital[(int) (Math.random() * 9)] + numbers[(int) (Math.random() * 9)] + characterLowCase[(int) (Math.random() * 9)] + characterCapital[(int) (Math.random() * 9)] + numbers[(int) (Math.random() * 9)];
-        byte[] array = new byte[10];
-        new Random().nextBytes(array);
+        password = charLow[(int) (Math.random() * charLow.length)] + charUpper[(int) (Math.random() * charUpper.length)] + number[(int) (Math.random() * 9)] + charLow[(int) (Math.random() * charLow.length)] + charUpper[(int) (Math.random() * charUpper.length)] + number[(int) (Math.random() * 9)];
+        //byte[] array = new byte[10];
+        //new Random().nextBytes(array);
         try {
-            hashedPassword = new String(Crypto.cifrar(password));
-            hashedPassword = Crypto.descifrar(hashedPassword);
+            hashedPassword = Crypto.cifrar(password);
             user = (User) em.createNamedQuery("findUserByEmail").setParameter("email", email).getSingleResult();
             if (user != null && em.contains(user)) {
                 user.setPassword(hashedPassword);

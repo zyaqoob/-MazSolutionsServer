@@ -8,6 +8,7 @@ package crypto;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -18,6 +19,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
@@ -32,9 +34,10 @@ import javax.crypto.NoSuchPaddingException;
  */
 public class Crypto {
 
-    public static byte[] cifrar(String mensaje) {
+    public static String cifrar(String mensaje) {
         PublicKey publicKey;
         KeyFactory keyFactory;
+        String base64CipherText=null;
         byte[]key=fileReader("C:\\Users\\2dam\\Documents\\NetBeansProjects\\MazSolutionsServer\\PublicKey.txt");
         byte[] encodedMessage = null;
         try {
@@ -43,12 +46,13 @@ public class Crypto {
             X509EncodedKeySpec spec = new X509EncodedKeySpec(key);
             publicKey = keyFactory.generatePublic(spec);
             cipherRSA.init(Cipher.ENCRYPT_MODE, publicKey);
-            encodedMessage = cipherRSA.doFinal(mensaje.getBytes());
+            encodedMessage = cipherRSA.doFinal(mensaje.getBytes(StandardCharsets.UTF_8));
+            base64CipherText = Base64.getEncoder().encodeToString(encodedMessage);
             //fileWriter("mensajecifrado.txt", encodedMessage);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return encodedMessage;
+        return base64CipherText;
     }
 
     public static String descifrar(String password) {
@@ -66,10 +70,10 @@ public class Crypto {
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
             //IvParameterSpec ivParam = new IvParameterSpec(new byte[16]);	
             // Iniciamos el Cipher en ENCRYPT_MODE y le pasamos la clave privada y el ivParam
+            byte[] cipherBytes = Base64.getDecoder().decode(password);
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[]fileContent=password.getBytes();
-            // Le decimos que descifre
-            byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(fileContent, 16,fileContent.length));
+            //Le decimos que descifre
+            byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(cipherBytes, 16,cipherBytes.length));
             // Texto descifrado
             desc = new String(decodedMessage);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
