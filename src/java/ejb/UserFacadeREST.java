@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,10 +8,22 @@ package ejb;
 
 import crypto.Crypto;
 import entities.User;
-import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -23,6 +36,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+
+
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -103,7 +118,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
         }
         return user;
     }
-
+    
     @GET
     @Path("password/{login}/{password}/{newPassword}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
@@ -121,7 +136,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
         }
         return user;
     }
-
+    
     @GET
     @Path("login/{login}/{password}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
@@ -156,5 +171,35 @@ public class UserFacadeREST extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
+    private void sendPasswordToUser(String s,String correo){
+        try {
+            Properties properties = new Properties();
+            properties.put("mail.stmp.auth", true);
+            properties.put("mail.stmp.starttls.enable", true);
+            properties.put("mail.stmp.host", "smtp.mail.yahoo.com");
+            properties.put("mail.stmp.port", "465");
+            properties.put("mail.stmp.ssl.trust", "smtp.mail.yahoo.com");
+            properties.put("mail.imap.partialfetch", false);
+            
+            Session session = Session.getInstance(properties, new Authenticator(){
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication(){
+                    return new PasswordAuthentication("maz.solutions","abcd*1234");
+                }
+            });
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("maz.solutions@yahoo.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
+            message.setSubject("Password Change");
+            
+            Multipart multipart = new MimeMultipart();
+            MimeBodyPart mimeBodyPart = new MimeBodyPart();
+            
+        } catch (AddressException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MessagingException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }
