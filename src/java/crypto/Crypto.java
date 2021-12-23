@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -36,9 +37,8 @@ public class Crypto {
 
     public static String cifrar(String mensaje) {
         PublicKey publicKey;
-        KeyFactory keyFactory;
-        String base64CipherText=null;
-        byte[]key=fileReader("C:\\Users\\2dam\\Documents\\NetBeansProjects\\MazSolutionsServer\\PublicKey.txt");
+        KeyFactory keyFactory;       
+        byte[]key=fileReader("D:\\year2\\RetoFinal-CrudApplication\\MazSolutionsServer\\PublicKey.txt");
         byte[] encodedMessage = null;
         try {
             keyFactory = KeyFactory.getInstance("RSA");
@@ -46,13 +46,13 @@ public class Crypto {
             X509EncodedKeySpec spec = new X509EncodedKeySpec(key);
             publicKey = keyFactory.generatePublic(spec);
             cipherRSA.init(Cipher.ENCRYPT_MODE, publicKey);
-            encodedMessage = cipherRSA.doFinal(mensaje.getBytes(StandardCharsets.UTF_8));
-            base64CipherText = Base64.getEncoder().encodeToString(encodedMessage);
+            encodedMessage = cipherRSA.doFinal(mensaje.getBytes());
+            
             //fileWriter("mensajecifrado.txt", encodedMessage);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return base64CipherText;
+        return new String(encodedMessage);
     }
 
     public static String descifrar(String password) {
@@ -60,7 +60,7 @@ public class Crypto {
         PrivateKey privateKey;
         Cipher cipher;
         String desc = null;
-        byte[]key = fileReader("C:\\Users\\2dam\\Documents\\NetBeansProjects\\MazSolutionsServer\\PrivateKey.txt");
+        byte[]key = fileReader("D:\\year2\\RetoFinal-CrudApplication\\MazSolutionsServer\\PrivateKey.txt");
         try {
             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
             factoriaRSA = KeyFactory.getInstance("RSA");
@@ -98,6 +98,20 @@ public class Crypto {
             e.printStackTrace();
         }
         return ret;
+    }
+    
+    public static String hashPassword(String password){
+        MessageDigest messageDigest;
+        String base64=null;
+        try {
+            messageDigest=MessageDigest.getInstance("SHA");
+            messageDigest.update(password.getBytes("UTF-8"));
+            password=new String(messageDigest.digest());
+            base64=Base64.getEncoder().encodeToString(password.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return base64;
     }
 
 }
