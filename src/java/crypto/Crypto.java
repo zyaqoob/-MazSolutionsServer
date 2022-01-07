@@ -38,7 +38,7 @@ public class Crypto {
     public static String cifrar(String mensaje) {
         PublicKey publicKey;
         KeyFactory keyFactory;       
-        byte[]key=fileReader("D:\\year2\\RetoFinal-CrudApplication\\MazSolutionsServer\\PublicKey.txt");
+        byte[]key=fileReader("C:\\Users\\Aitor\\Documents\\NetBeansProjects\\MazSolutionsServer\\PublicKey.txt");
         byte[] encodedMessage = null;
         try {
             keyFactory = KeyFactory.getInstance("RSA");
@@ -60,7 +60,7 @@ public class Crypto {
         PrivateKey privateKey;
         Cipher cipher;
         String desc = null;
-        byte[]key = fileReader("D:\\year2\\RetoFinal-CrudApplication\\MazSolutionsServer\\PrivateKey.txt");
+        byte[]key = fileReader("C:\\Users\\Aitor\\Documents\\NetBeansProjects\\MazSolutionsServer\\PrivateKey.txt");
         try {
             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
             factoriaRSA = KeyFactory.getInstance("RSA");
@@ -70,10 +70,9 @@ public class Crypto {
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
             //IvParameterSpec ivParam = new IvParameterSpec(new byte[16]);	
             // Iniciamos el Cipher en ENCRYPT_MODE y le pasamos la clave privada y el ivParam
-            byte[] cipherBytes = Base64.getDecoder().decode(password);
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             //Le decimos que descifre
-            byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(cipherBytes, 16,cipherBytes.length));
+            byte[] decodedMessage = cipher.doFinal(password.getBytes());
             // Texto descifrado
             desc = new String(decodedMessage);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {

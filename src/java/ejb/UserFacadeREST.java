@@ -52,7 +52,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
-
+    private String mensaje;
     public UserFacadeREST() {
         super(User.class);
     }
@@ -91,9 +91,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
     public List<User> findAll() {
-        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\z332h\\OneDrive\\Escritorio\\pepe.txt")) {
-            String mensaje=Crypto.cifrar("QdQTUliRpfjScPqRCgn4nkFMtes=");
-            fos.write(mensaje.getBytes());
+        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\Aitor\\Desktop\\pepe.txt")) {
+            mensaje=Crypto.cifrar("abcd*1234");
             //String mensajeDesc=Crypto.descifrar(mensaje);
             //fos.write(Crypto.descifrar(mensajeDesc).getBytes());
         } catch (IOException e) {
@@ -139,7 +138,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public User findUserByPassword(@PathParam("login") String login, @PathParam("password") String password, @PathParam("newPassword") String newPassword) {
         User user = null;
         try {
-           String  hashedPassword=Crypto.hashPassword(password);
+           String hashedPassword=Crypto.hashPassword(password);
             user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", hashedPassword).setParameter("login", login).getSingleResult();
             if (user != null && em.contains(user)) {
                 newPassword=Crypto.hashPassword(newPassword);
@@ -160,9 +159,10 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public User login(@PathParam("login") String login, @PathParam("password") String password) {
         User user = null;
         try {
-            password=Crypto.descifrar(password);
-            password=Crypto.hashPassword(password);
-            user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", password).setParameter("login", login).getSingleResult();
+            
+            String cifPassword=Crypto.descifrar(mensaje);
+            //password=Crypto.hashPassword(password);
+            user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", cifPassword).setParameter("login", login).getSingleResult();
             if (user == null) {
                 throw new NotAuthorizedException("Authentication failure");
             }
