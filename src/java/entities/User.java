@@ -66,6 +66,7 @@ public class User implements Serializable {
     /**
      * Email field for the user.
      */
+    @Column(unique = true)
     private String email;
     /**
      * Password field for the user.
