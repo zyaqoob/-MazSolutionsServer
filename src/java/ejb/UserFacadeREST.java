@@ -91,13 +91,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
     public List<User> findAll() {
-        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\Aitor\\Desktop\\pepe.txt")) {
-            mensaje=Crypto.cifrar("abcd*1234");
-            //String mensajeDesc=Crypto.descifrar(mensaje);
-            //fos.write(Crypto.descifrar(mensajeDesc).getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mensaje=Crypto.cifrar("abcd*1234");
         return super.findAll();
     }
 
@@ -161,6 +155,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
         try {
             
             String cifPassword=Crypto.descifrar(mensaje);
+            System.out.println(cifPassword);
             //password=Crypto.hashPassword(password);
             user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", cifPassword).setParameter("login", login).getSingleResult();
             if (user == null) {

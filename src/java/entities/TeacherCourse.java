@@ -70,6 +70,8 @@ public class TeacherCourse implements Serializable {
     //Teacher of the TeacherCourse
     @ManyToOne
     private Teacher teacher;
+    
+    private String name;
     /**
      * Method that returns the class that contains the id's of TeacherCourse.
      * @return idTeacherCourseId;
@@ -84,10 +86,20 @@ public class TeacherCourse implements Serializable {
     public void setIdTeacherCourseId(Long idTeacherCourse) {
         this.idTeacherCourse = idTeacherCourse;
     }
+
+    
+    public String getName() {
+        return name;
+    }
+
     /**
      * Method that returns the date start of the TeacherCourse.
      * @return dateStart
      */
+    public void setName(String name) {    
+        this.name = name;
+    }
+
     public Date getDateStart() {
         return dateStart;
     }

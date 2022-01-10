@@ -37,8 +37,9 @@ public class Crypto {
 
     public static String cifrar(String mensaje) {
         PublicKey publicKey;
+        String path=Crypto.class.getResource("PublicKey.txt").getPath();
         KeyFactory keyFactory;       
-        byte[]key=fileReader("C:\\Users\\Aitor\\Documents\\NetBeansProjects\\MazSolutionsServer\\PublicKey.txt");
+        byte[]key=fileReader(path);
         byte[] encodedMessage = null;
         try {
             keyFactory = KeyFactory.getInstance("RSA");
@@ -52,15 +53,18 @@ public class Crypto {
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new String(encodedMessage);
+        //We use the method covertStringToHex to get the hex value of the String
+        return hexadecimal(encodedMessage);
     }
 
     public static String descifrar(String password) {
+        password=new String(hexStringToByteArray(password));
         KeyFactory factoriaRSA;
+        String path=Crypto.class.getResource("PrivateKey.txt").getPath();
         PrivateKey privateKey;
         Cipher cipher;
         String desc = null;
-        byte[]key = fileReader("C:\\Users\\Aitor\\Documents\\NetBeansProjects\\MazSolutionsServer\\PrivateKey.txt");
+        byte[]key = fileReader(path);
         try {
             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
             factoriaRSA = KeyFactory.getInstance("RSA");
@@ -112,5 +116,36 @@ public class Crypto {
         }
         return base64;
     }
+    
+    private static String convertStringToHex(String password) {
+        StringBuilder hex = new StringBuilder();
+        for(int i=0; i<password.length(); i++){
+            int decimal=(int)i;
+            hex.append(Integer.toHexString(decimal));
+        }
+        return hex.toString();
+    }
+    
+    static String hexadecimal(byte[] resumen) {
+        String hex = "";
+        for (int i = 0; i < resumen.length; i++) {
+            String h = Integer.toHexString(resumen[i] & 0xFF);
+            if (h.length() == 1)
+                    hex += "0";
+            hex += h;
+        }
+        return hex.toUpperCase();
+    }
 
+
+    
+    public static byte[] hexStringToByteArray(String password) {
+        int len = password.length();
+        byte[] mensajeByte = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            mensajeByte[i / 2] = (byte) ((Character.digit(password.charAt(i), 16) << 4)
+                    + Character.digit(password.charAt(i + 1), 16));
+        }
+        return mensajeByte;
+    }
 }
