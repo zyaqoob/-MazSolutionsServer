@@ -24,38 +24,42 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
 /**
  *
  * @author Aitor Ruiz de Gauna
  */
 /**
- *Entity that has the info of the courses of the Teacher.
+ * Entity that has the info of the courses of the Teacher.
  */
 @NamedQueries({
     @NamedQuery(
-        name="findTeacherCourseById",
-            query="SELECT t FROM TeacherCourse t WHERE t.idTeacherCourse=:idTeacherCourse"
-    ),
+            name = "findTeacherCourseById",
+            query = "SELECT t FROM TeacherCourse t WHERE t.idTeacherCourse=:idTeacherCourse"
+    )
+    ,
     @NamedQuery(
-        name="findAllTeacherCourses", 
-            query="SELECT t FROM TeacherCourse t ORDER BY t.idTeacherCourse ASC"
-    ),
+            name = "findAllTeacherCourses",
+            query = "SELECT t FROM TeacherCourse t ORDER BY t.idTeacherCourse ASC"
+    )
+    ,
     @NamedQuery(
-        name="findTeacherCoursesByTeacher", 
-            query="SELECT t FROM TeacherCourse t WHERE t.teacher.fullName=:fullName"
-    ),
+            name = "findTeacherCoursesByTeacher",
+            query = "SELECT t FROM TeacherCourse t WHERE t.teacher.fullName=:fullName"
+    )
+    ,
     @NamedQuery(
-        name="findTeacherCoursesBySubject",
-            query="SELECT ts.teacherCourse FROM TeacherCourseSubject ts WHERE ts.subject.name=:name"
+            name = "findTeacherCoursesBySubject",
+            query = "SELECT ts.teacherCourse FROM TeacherCourseSubject ts WHERE ts.subject.name=:name"
     )
 })
 @Entity
-@Table(name="teacher_course",schema="maz_solutions")
+@Table(name = "teacher_course", schema = "maz_solutions")
 @XmlRootElement
 public class TeacherCourse implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idTeacherCourse;
     // Date when the TeacherCourse starts.
@@ -65,108 +69,131 @@ public class TeacherCourse implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dateEnd;
     //Collection of the subject that the teacher has.
-    @OneToMany(cascade=ALL,mappedBy="teacherCourse",fetch=FetchType.EAGER)
+    @OneToMany(cascade = ALL, mappedBy = "teacherCourse", fetch = FetchType.EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Teacher of the TeacherCourse
     @ManyToOne
     private Teacher teacher;
-    
+
     private String name;
+
     /**
      * Method that returns the class that contains the id's of TeacherCourse.
+     *
      * @return idTeacherCourseId;
      */
     public Long getIdTeacherCourse() {
         return idTeacherCourse;
     }
+
     /**
-     * Method that set the value of the object of the class TeacherCourseId that contains the id's of TeacherCourse.
-     * @param idTeacherCourse 
+     * Method that set the value of the object of the class TeacherCourseId that
+     * contains the id's of TeacherCourse.
+     *
+     * @param idTeacherCourse
      */
     public void setIdTeacherCourseId(Long idTeacherCourse) {
         this.idTeacherCourse = idTeacherCourse;
     }
 
-    
     public String getName() {
         return name;
     }
 
-    /**
-     * Method that returns the date start of the TeacherCourse.
-     * @return dateStart
-     */
-    public void setName(String name) {    
+    public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Method that returns the date start of the TeacherCourse.
+     *
+     * @return dateStart
+     */
     public Date getDateStart() {
         return dateStart;
     }
+
     /**
      * Method that set the value of the dateStart of the TeacherCourse.
-     * @param dateStart 
+     *
+     * @param dateStart
      */
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
+
     /**
      * Method that return the value of the dateEnd of TeacherCourse.
-     * @return 
+     *
+     * @return
      */
     public Date getDateEnd() {
         return dateEnd;
     }
+
     /**
      * Method that set the value of the dateEnd of TeacherCourse.
-     * @param dateEnd 
+     *
+     * @param dateEnd
      */
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
+
     /**
-     * Method that return the value of the collection of subjects of TeacherCourse.
-     * @return 
+     * Method that return the value of the collection of subjects of
+     * TeacherCourse.
+     *
+     * @return
      */
     @XmlTransient
-    public Set<TeacherCourseSubject> getTeacherCourseSubjects() {    
+    public Set<TeacherCourseSubject> getTeacherCourseSubjects() {
         return teacherCourseSubjects;
     }
+
     /**
      * Method that set the value of the collection of subjects of TeacherCourse.
-     * @param teacherCourseSubjects 
+     *
+     * @param teacherCourseSubjects
      */
-    public void setTeacherCourseSubjects(Set<TeacherCourseSubject> teacherCourseSubjects) {    
+    public void setTeacherCourseSubjects(Set<TeacherCourseSubject> teacherCourseSubjects) {
         this.teacherCourseSubjects = teacherCourseSubjects;
     }
 
     /**
-     * Method that return the value of the collection of teachers of TeacherCourse.
+     * Method that return the value of the collection of teachers of
+     * TeacherCourse.
+     *
      * @return teacher
      */
     public Teacher getTeacher() {
         return teacher;
     }
+
     /**
      * Method that set the value of the collection of subjects of TeacherCourse.
-     * @param teacher 
+     *
+     * @param teacher
      */
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
+
     /**
      * Integer representation for TeacherCourse instance.
-     * @return 
+     *
+     * @return
      */
-    @Override   
+    @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.idTeacherCourse);  
+        hash = 67 * hash + Objects.hashCode(this.idTeacherCourse);
         return hash;
     }
 
     /**
      * Method that compares if two objects of TeacherCourse are equals.
+     *
      * @param obj
      * @return boolean
      */
@@ -187,12 +214,14 @@ public class TeacherCourse implements Serializable {
         }
         return true;
     }
+
     /**
      * Method that return a String of the parameters of TeacherCourse.
+     *
      * @return String
      */
     @Override
     public String toString() {
-        return "TeacherCourse{" + "idTeacherCourseId=" + idTeacherCourse + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + teacherCourseSubjects+  ", teacher=" + teacher + '}';
+        return "TeacherCourse{" + "idTeacherCourseId=" + idTeacherCourse + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + teacherCourseSubjects + ", teacher=" + teacher + '}';
     }
 }

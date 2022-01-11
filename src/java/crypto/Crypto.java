@@ -58,7 +58,7 @@ public class Crypto {
     }
 
     public static String descifrar(String password) {
-        password=new String(hexStringToByteArray(password));
+        //password=new String(hexStringToByteArray(password));
         KeyFactory factoriaRSA;
         String path=Crypto.class.getResource("PrivateKey.txt").getPath();
         PrivateKey privateKey;
@@ -71,14 +71,15 @@ public class Crypto {
             privateKey = factoriaRSA.generatePrivate(spec);
             cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             // Iniciamos el Cipher en ENCRYPT_MODE y le pasamos la clave privada
-            cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+            //cipher.init(Cipher.ENCRYPT_MODE, privateKey);
             //IvParameterSpec ivParam = new IvParameterSpec(new byte[16]);	
             // Iniciamos el Cipher en ENCRYPT_MODE y le pasamos la clave privada y el ivParam
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             //Le decimos que descifre
-            byte[] decodedMessage = cipher.doFinal(password.getBytes());
+            byte[] decodedMessage = cipher.doFinal(hexStringToByteArray(password));
             // Texto descifrado
             desc = new String(decodedMessage);
+            //System.out.println(desc);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(Crypto.class.getName()).log(Level.SEVERE, null, ex);
         }
