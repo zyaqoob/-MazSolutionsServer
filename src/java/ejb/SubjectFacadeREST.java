@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import crypto.Crypto;
 import entities.Course;
 import entities.Student;
 import entities.Subject;
@@ -50,6 +51,9 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Subject entity) {
           try {
+            String password=Crypto.descifrar(entity.getPassword());
+            password=Crypto.hashPassword(password);
+            entity.setPassword(password);
             super.create(entity);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
@@ -66,6 +70,9 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(Subject entity) {
         try {
+            String password=Crypto.descifrar(entity.getPassword());
+            password=Crypto.hashPassword(password);
+            entity.setPassword(password);
            super.edit(entity);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());

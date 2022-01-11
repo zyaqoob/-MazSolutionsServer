@@ -91,13 +91,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
     public List<User> findAll() {
-        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\Aitor\\Desktop\\pepe.txt")) {
-            mensaje=Crypto.cifrar("abcd*1234");
-            //String mensajeDesc=Crypto.descifrar(mensaje);
-            //fos.write(Crypto.descifrar(mensajeDesc).getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mensaje=Crypto.cifrar("abcd*1234");
         return super.findAll();
     }
 
@@ -138,7 +132,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public User findUserByPassword(@PathParam("login") String login, @PathParam("password") String password, @PathParam("newPassword") String newPassword) {
         User user = null;
         try {
-           String hashedPassword=Crypto.hashPassword(password);
+            password=Crypto.descifrar(password);
+            String hashedPassword=Crypto.hashPassword(password);
             user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", hashedPassword).setParameter("login", login).getSingleResult();
             if (user != null && em.contains(user)) {
                 newPassword=Crypto.hashPassword(newPassword);
@@ -160,9 +155,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
         User user = null;
         try {
             
-            String cifPassword=Crypto.descifrar(mensaje);
-            //password=Crypto.hashPassword(password);
-            user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", cifPassword).setParameter("login", login).getSingleResult();
+            password=Crypto.descifrar(password);
+            password=Crypto.hashPassword(password);
+            user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", password).setParameter("login", login).getSingleResult();
             if (user == null) {
                 throw new NotAuthorizedException("Authentication failure");
             }
@@ -194,11 +189,16 @@ public class UserFacadeREST extends AbstractFacade<User> {
     private void sendPasswordToUser(String password, String correo) {
         try {
             Properties properties = new Properties();
+            //Que tipo de email
             properties.put("mail.smtp.host", "smtp.gmail.com");
+            //Puerto
             properties.put("mail.smtp.port", "465");
+            //Seguridad?? preguntar duda
             properties.put("mail.smtp.ssl.enable", "true");
+            //necesario autenticarse
             properties.put("mail.smtp.auth", "true");
-
+            
+            //aquí hacemos la autentificacion
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
@@ -206,8 +206,11 @@ public class UserFacadeREST extends AbstractFacade<User> {
                 }
             });
             Message message = new MimeMessage(session);
+            //email que manda el mensaje
             message.setFrom(new InternetAddress("mazsolutionsgi2@gmail.com"));
+            //a quien se manda el mensaje
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correo));
+            //asunto
             message.setSubject("Password Change");
 
             Multipart multipart = new MimeMultipart();
