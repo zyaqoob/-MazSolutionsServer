@@ -67,7 +67,7 @@ public class Subject implements Serializable {
     //Name of the subject.
     private String name;
     //Password to register in the subject
-    private String password;
+    private int totalHours;
     //TeacherCourse where the subject appears
     @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
@@ -109,15 +109,15 @@ public class Subject implements Serializable {
     * Method that return the password of the subject.
     * @return password
     */
-    public String getPassword() {
-        return password;
+    public int getTotalHours() {
+        return totalHours;
     }
     /**
     * Method that set the value of the password of the subject.
-    * @param password
+    * @param totalHours
     */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setTotalHours(int totalHours) {
+        this.totalHours = totalHours;
     }
     /**
     * Method that return the TeacherCourse of the subject.
@@ -200,7 +200,7 @@ public class Subject implements Serializable {
      */
     @Override
     public String toString() {
-        return "Subject{" + "idSubject=" + idSubject + ", name=" + name + ", password=" + password + ", teacherCourses=" + teacherCourseSubjects + ", exams=" + exams + ", courses=" + courseSubjects + '}';
+        return "Subject{" + "idSubject=" + idSubject + ", name=" + name + ", password=" + totalHours + ", teacherCourses=" + teacherCourseSubjects + ", exams=" + exams + ", courses=" + courseSubjects + '}';
     }
     
 }
