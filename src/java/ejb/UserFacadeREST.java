@@ -53,6 +53,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
     private String mensaje;
+
     public UserFacadeREST() {
         super(User.class);
     }
@@ -61,8 +62,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(User entity) {
-        String password=Crypto.descifrar(entity.getPassword());
-        password=Crypto.hashPassword(password);
+        String password = Crypto.descifrar(entity.getPassword());
+        password = Crypto.hashPassword(password);
         entity.setPassword(password);
         super.create(entity);
     }
@@ -84,14 +85,27 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public User find(@PathParam("id") Long id) {
-        return super.find(id);
+        User userChild = super.find(id);
+        User user = new User();
+        user.setFullName(userChild.getFullName());
+        user.setEmail(userChild.getEmail());
+        user.setLogin(userChild.getLogin());
+        user.setPassword(userChild.getPassword());
+        user.setLastPasswordChange(userChild.getLastPasswordChange());
+        user.setLastSignIn(userChild.getLastSignIn());
+        user.setUserId(userChild.getIdUser());
+        user.setPrivilege(userChild.getPrivilege());
+        user.setTelephone(userChild.getTelephone());
+        user.setBirthDate(userChild.getBirthDate());
+        user.setStatus(userChild.getStatus());
+        return user;
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
     public List<User> findAll() {
-        mensaje=Crypto.cifrar("abcd*1234");
+        mensaje = Crypto.cifrar("abcd*1234");
         return super.findAll();
     }
 
@@ -113,12 +127,24 @@ public class UserFacadeREST extends AbstractFacade<User> {
         //new Random().nextBytes(array);
         try {
             hashedPassword = Crypto.hashPassword(password);
-            user = (User) em.createNamedQuery("findUserByEmail").setParameter("email", email).getSingleResult();
-            if (user != null && em.contains(user)) {
-                user.setPassword(hashedPassword);
-                sendPasswordToUser(password, user.getEmail());
+            User userChild = (User) em.createNamedQuery("findUserByEmail").setParameter("email", email).getSingleResult();
+            user = new User();
+            user.setFullName(userChild.getFullName());
+            user.setEmail(userChild.getEmail());
+            user.setLogin(userChild.getLogin());
+            user.setPassword(userChild.getPassword());
+            user.setLastPasswordChange(userChild.getLastPasswordChange());
+            user.setLastSignIn(userChild.getLastSignIn());
+            user.setUserId(userChild.getIdUser());
+            user.setPrivilege(userChild.getPrivilege());
+            user.setTelephone(userChild.getTelephone());
+            user.setBirthDate(userChild.getBirthDate());
+            user.setStatus(userChild.getStatus());
+            if (em.contains(user)) {
+                userChild.setPassword(hashedPassword);
+                sendPasswordToUser(password, userChild.getEmail());
             } else if (!em.contains(user)) {
-                em.merge(user);
+                em.merge(userChild);
             }
         } catch (Exception e) {
             throw new InternalServerErrorException(e);
@@ -132,11 +158,26 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public User findUserByPassword(@PathParam("login") String login, @PathParam("password") String password, @PathParam("newPassword") String newPassword) {
         User user = null;
         try {
-            password=Crypto.descifrar(password);
-            String hashedPassword=Crypto.hashPassword(password);
-            user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", hashedPassword).setParameter("login", login).getSingleResult();
-            if (user != null && em.contains(user)) {
-                newPassword=Crypto.hashPassword(newPassword);
+            password = Crypto.descifrar(password);
+            String hashedPassword = Crypto.hashPassword(password);
+            User userChild = (User) em.createNamedQuery("findUserByPassword").
+                    setParameter("password", hashedPassword).
+                    setParameter("login", login).
+                    getSingleResult();
+            user = new User();
+            user.setFullName(userChild.getFullName());
+            user.setEmail(userChild.getEmail());
+            user.setLogin(userChild.getLogin());
+            user.setPassword(userChild.getPassword());
+            user.setLastPasswordChange(userChild.getLastPasswordChange());
+            user.setLastSignIn(userChild.getLastSignIn());
+            user.setUserId(userChild.getIdUser());
+            user.setPrivilege(userChild.getPrivilege());
+            user.setTelephone(userChild.getTelephone());
+            user.setBirthDate(userChild.getBirthDate());
+            user.setStatus(userChild.getStatus());
+            if (em.contains(user)) {
+                newPassword = Crypto.hashPassword(newPassword);
                 user.setPassword(newPassword);
                 sendPasswordToUser("Password change correctly", user.getEmail());
             } else if (!em.contains(user)) {
@@ -154,10 +195,25 @@ public class UserFacadeREST extends AbstractFacade<User> {
     public User login(@PathParam("login") String login, @PathParam("password") String password) {
         User user = null;
         try {
-            
-            password=Crypto.descifrar(password);
-            password=Crypto.hashPassword(password);
-            user = (User) em.createNamedQuery("findUserByPassword").setParameter("password", password).setParameter("login", login).getSingleResult();
+
+            password = Crypto.descifrar(password);
+            password = Crypto.hashPassword(password);
+            User userChild = (User) em.createNamedQuery("findUserByPassword").
+                    setParameter("password", password).
+                    setParameter("login", login).
+                    getSingleResult();
+            user = new User();
+            user.setFullName(userChild.getFullName());
+            user.setEmail(userChild.getEmail());
+            user.setLogin(userChild.getLogin());
+            user.setPassword(userChild.getPassword());
+            user.setLastPasswordChange(userChild.getLastPasswordChange());
+            user.setLastSignIn(userChild.getLastSignIn());
+            user.setUserId(userChild.getIdUser());
+            user.setPrivilege(userChild.getPrivilege());
+            user.setTelephone(userChild.getTelephone());
+            user.setBirthDate(userChild.getBirthDate());
+            user.setStatus(userChild.getStatus());
             if (user == null) {
                 throw new NotAuthorizedException("Authentication failure");
             }
@@ -197,7 +253,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             properties.put("mail.smtp.ssl.enable", "true");
             //necesario autenticarse
             properties.put("mail.smtp.auth", "true");
-            
+
             //aquí hacemos la autentificacion
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
