@@ -84,6 +84,7 @@ public class Student extends User implements Serializable {
      *
      * @return This method returns a Set with the exam sessions of the student.
      */
+    @XmlTransient
     public Set<ExamSession> getSessions() {
         return sessions;
     }
