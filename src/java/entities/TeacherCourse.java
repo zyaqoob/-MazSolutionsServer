@@ -36,6 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "findTeacherCourseById",
             query = "SELECT t FROM TeacherCourse t WHERE t.idTeacherCourse=:idTeacherCourse"
+    ),
+    @NamedQuery(
+            name="findTeacherCourseByName", query="SELECT t from TeacherCourse t WHERE t.name=:name"
     )
     ,
     @NamedQuery(
@@ -45,7 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
     @NamedQuery(
             name = "findTeacherCoursesByTeacher",
-            query = "SELECT t FROM TeacherCourse t WHERE t.teacher.fullName=:fullName"
+            query = "SELECT tc FROM TeacherCourse tc,Teacher t WHERE t.fullName=:fullName and t.teacherCourse.idTeacherCourse=tc.idTeacherCourse"
     )
     ,
     @NamedQuery(
@@ -72,8 +75,8 @@ public class TeacherCourse implements Serializable {
     @OneToMany(cascade = ALL, mappedBy = "teacherCourse", fetch = FetchType.EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Teacher of the TeacherCourse
-    @ManyToOne
-    private Teacher teacher;
+    @OneToMany(mappedBy = "teacherCourse", fetch = FetchType.EAGER)
+    private Set<Teacher> teachers;
 
     private String name;
 
@@ -166,17 +169,18 @@ public class TeacherCourse implements Serializable {
      *
      * @return teacher
      */
-    public Teacher getTeacher() {
-        return teacher;
+    @XmlTransient
+    public Set<Teacher> getTeachers() {
+        return teachers;
     }
 
     /**
      * Method that set the value of the collection of subjects of TeacherCourse.
      *
-     * @param teacher
+     * @param teachers
      */
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeachers(Set<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     /**
@@ -222,6 +226,6 @@ public class TeacherCourse implements Serializable {
      */
     @Override
     public String toString() {
-        return "TeacherCourse{" + "idTeacherCourseId=" + idTeacherCourse + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + teacherCourseSubjects + ", teacher=" + teacher + '}';
+        return "TeacherCourse{" + "idTeacherCourseId=" + idTeacherCourse + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", subjects=" + teacherCourseSubjects + ", teacher=" + teachers + '}';
     }
 }

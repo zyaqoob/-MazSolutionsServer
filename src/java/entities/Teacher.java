@@ -11,6 +11,7 @@ import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,12 +27,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "findAllTeacher",
             query = "SELECT t FROM Teacher t")
-    ,@NamedQuery(name = "findTeacherBySubject",
-            query = "SELECT tcs.teacherCourse.teacher FROM TeacherCourseSubject tcs WHERE tcs.subject.name=:subject_name")
     ,@NamedQuery(name = "findTeacherByCourse",
-            query = "SELECT tc.teacher FROM TeacherCourse tc WHERE tc.idTeacherCourse=:id_teacher_course")
-    ,@NamedQuery(name = "findTeachersByStudent",
-            query = "SELECT tsc.teacherCourse.teacher FROM TeacherCourseSubject tsc,CourseSubject cs,Student s WHERE tsc.subject.idSubject=cs.subject and s.course=cs.course and s.fullName=:student_name")
+            query = "SELECT t FROM Teacher t WHERE t.teacherCourse.idTeacherCourse=:id_teacher_course")
 })
 @Entity
 @Table(name = "teacher", schema = "maz_solutions")
@@ -47,8 +44,8 @@ public class Teacher extends User implements Serializable {
     /**
      * A collection of TeacherCourses.
      */
-    @OneToMany(cascade = ALL, mappedBy = "teacher", fetch = FetchType.EAGER)
-    private Set<TeacherCourse> teacherCourses;
+    @ManyToOne(cascade=ALL)
+    private TeacherCourse teacherCourse;
 
     /**
      *
@@ -71,18 +68,17 @@ public class Teacher extends User implements Serializable {
      *
      * @return teacherCourses.
      */
-    @XmlTransient
-    public Set<TeacherCourse> getTeacherCourses() {
-        return teacherCourses;
+    public  TeacherCourse getTeacherCourse() {
+        return teacherCourse;
     }
 
     /**
      * A collection of TeacherCourse.
      *
-     * @param teacherCourses the teacherCourses to set.
+     * @param teacherCourse the teacherCourses to set.
      */
-    public void setTeacherCourses(Set<TeacherCourse> teacherCourses) {
-        this.teacherCourses = teacherCourses;
+    public void setTeacherCourse(TeacherCourse teacherCourse) {
+        this.teacherCourse = teacherCourse;
     }
 
     /**
@@ -95,7 +91,7 @@ public class Teacher extends User implements Serializable {
         int hash = 3;
         hash = 53 * hash + Objects.hashCode(this.getIdUser());
         hash = 53 * hash + Float.floatToIntBits(this.salary);
-        hash = 53 * hash + Objects.hashCode(this.teacherCourses);
+        hash = 53 * hash + Objects.hashCode(this.teacherCourse);
         return hash;
     }
 
@@ -130,7 +126,7 @@ public class Teacher extends User implements Serializable {
      */
     @Override
     public String toString() {
-        return "Teacher{" + "idTeacher=" + getIdUser() + ", salary=" + salary + ", teacherCourses=" + teacherCourses + '}';
+        return "Teacher{" + "idTeacher=" + getIdUser() + ", salary=" + salary + ", teacherCourses=" + teacherCourse + '}';
     }
 
 }
