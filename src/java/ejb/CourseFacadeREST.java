@@ -100,7 +100,7 @@ public class CourseFacadeREST extends AbstractFacade<Course> {
     @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<Course> findAllCourses() {
-        Set<Course> courses = null;
+        Set<Course> courses = new HashSet<>();
         try {
             courses = new HashSet<>(em.createNamedQuery("findAllCourses").getResultList());
         } catch (Exception e) {

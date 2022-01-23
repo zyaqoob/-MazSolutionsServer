@@ -153,6 +153,7 @@ public class Course implements Serializable {
      * This method get a set of students from the course.
      * @return 
      */
+    @XmlTransient
     public Set<Student> getStudents() {
         return students;
     }
