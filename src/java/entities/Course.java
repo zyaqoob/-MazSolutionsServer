@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     ),
     @NamedQuery(
         name="findCoursesBySubject",query="SELECT cs.course FROM CourseSubject cs WHERE cs.subject.idSubject=:idSubject"
+    ),
+    @NamedQuery(
+        name="findCourseByName", query="SELECT c FROM Course c WHERE c.name=:name"
     )
 })
 @Entity

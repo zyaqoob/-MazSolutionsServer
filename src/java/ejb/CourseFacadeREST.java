@@ -98,6 +98,20 @@ public class CourseFacadeREST extends AbstractFacade<Course> {
     }
     
     @GET
+    @Path("course/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Course findCourseByName(@PathParam("name") String name) {
+        Course course = null;
+        try {
+            course = (Course) em.createNamedQuery("findCourseByName").setParameter("name", name).getSingleResult();
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return course;
+    }
+    
+    @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<Course> findAllCourses() {
         Set<Course> courses = new HashSet<>();
