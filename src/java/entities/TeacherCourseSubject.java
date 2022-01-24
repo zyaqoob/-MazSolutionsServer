@@ -7,6 +7,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -39,7 +40,7 @@ public class TeacherCourseSubject implements Serializable {
     /**
      * TeacherCourse of the subject.
      */
-    @ManyToOne
+    @ManyToOne(cascade=ALL)
     @JoinColumn(name = "idTeacherCourse", updatable = false, insertable = false)
     private TeacherCourse teacherCourse;   
     /**

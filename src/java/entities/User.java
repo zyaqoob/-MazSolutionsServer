@@ -123,7 +123,7 @@ public class User implements Serializable {
      * 
      * @param idUser Method to set the id
      */
-    public void setUserId(Long idUser) {
+    public void setIdUser(Long idUser) {
         this.idUser = idUser;
     }
     /**

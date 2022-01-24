@@ -65,10 +65,10 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     }
 
     @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
+    @Path("{login}")
+    public void remove(@PathParam("login") String login) {
         try {
-            Teacher teacher = find(id);
+            Teacher teacher = findTeacherByName(login);
             super.remove(teacher);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
