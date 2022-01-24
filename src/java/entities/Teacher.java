@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -45,7 +48,7 @@ public class Teacher extends User implements Serializable {
     /**
      * A collection of TeacherCourses.
      */
-    @ManyToOne(cascade=ALL)
+    @ManyToOne
     private TeacherCourse teacherCourse;
 
     /**

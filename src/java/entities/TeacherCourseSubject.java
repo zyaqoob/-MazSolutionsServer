@@ -40,7 +40,7 @@ public class TeacherCourseSubject implements Serializable {
     /**
      * TeacherCourse of the subject.
      */
-    @ManyToOne(cascade=ALL)
+    @ManyToOne
     @JoinColumn(name = "idTeacherCourse", updatable = false, insertable = false)
     private TeacherCourse teacherCourse;   
     /**

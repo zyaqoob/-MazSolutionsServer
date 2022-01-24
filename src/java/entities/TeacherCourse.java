@@ -72,7 +72,7 @@ public class TeacherCourse implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dateEnd;
     //Collection of the subject that the teacher has.
-    @OneToMany(cascade = ALL, mappedBy = "teacherCourse", fetch = FetchType.EAGER)
+    @OneToMany(cascade=ALL,mappedBy = "teacherCourse", fetch = FetchType.EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Teacher of the TeacherCourse
     @OneToMany(mappedBy = "teacherCourse", fetch = FetchType.EAGER)
@@ -95,7 +95,7 @@ public class TeacherCourse implements Serializable {
      *
      * @param idTeacherCourse
      */
-    public void setIdTeacherCourseId(Long idTeacherCourse) {
+    public void setIdTeacherCourse(Long idTeacherCourse) {
         this.idTeacherCourse = idTeacherCourse;
     }
 
