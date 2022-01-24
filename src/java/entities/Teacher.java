@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT t FROM Teacher t")
     ,@NamedQuery(name = "findTeacherByCourse",
             query = "SELECT t FROM Teacher t WHERE t.teacherCourse.idTeacherCourse=:id_teacher_course")
+    ,@NamedQuery(name="findTeacherByLogin",query="SELECT t from Teacher t WHERE t.login=:login")
 })
 @Entity
 @Table(name = "teacher", schema = "maz_solutions")
