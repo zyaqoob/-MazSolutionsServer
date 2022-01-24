@@ -77,16 +77,16 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
     @GET
     @Path("teacher/{fullname}")
     @Produces({MediaType.APPLICATION_XML})
-    public Student find(@PathParam("fullname") String name) {
-        Student student = null;
+    public Set<Student> find(@PathParam("fullname") String name) {
+        Set<Student> students = null;
         try {
-            student = (Student) em.createNamedQuery("findStudentsByTeacher").setParameter("fullname", name).getResultList();
+            students = new HashSet<>(em.createNamedQuery("findStudentsByTeacher").setParameter("full_name", name).getResultList());
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
         
-        return student;
+        return students;
     }
     
     @GET
