@@ -40,6 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     ),
     @NamedQuery(
         name="findStudentByExSes",query="SELECT es.student FROM ExamSession es WHERE es.idExamSession=:idExamSession"
+    ),
+    @NamedQuery(
+        name="findStudentByEmail",query="SELECT s FROM Student s WHERE s.email=:email"
     )
 })
 @Entity
