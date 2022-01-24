@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     ),
     @NamedQuery(
         name="findStudentByEmail",query="SELECT s FROM Student s WHERE s.email=:email"
+    ),
+    @NamedQuery(
+        name="findStudentsByTeacher",query="Select s FROM Student s, Teacher t WHERE t.fullName=:full_name AND t.teacherCourse.name=s.course.name"
     )
 })
 @Entity
@@ -57,7 +60,7 @@ public class Student extends User implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date year;
     /**
-     * Examn sessions where the student are being evaluated.
+     * Exam sessions where the student are being evaluated.
      */
     @OneToMany(cascade = ALL, mappedBy = "student",fetch=FetchType.EAGER)
     private Set<ExamSession> sessions;
