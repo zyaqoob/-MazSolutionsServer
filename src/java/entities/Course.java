@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -74,12 +75,12 @@ public class Course implements Serializable {
     /**
      * The subjects of the course.
      */
-    @OneToMany(cascade=ALL,mappedBy="course",fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.MERGE,mappedBy="course",fetch=FetchType.EAGER)
     private Set<CourseSubject> courseSubjects;
     /**
      * The students of the course.
      */
-    @OneToMany(cascade=ALL, mappedBy="course",fetch=FetchType.EAGER)
+    @OneToMany(cascade=CascadeType.MERGE, mappedBy="course",fetch=FetchType.EAGER)
     private Set<Student> students;
     /**
      * This method returns the course id.

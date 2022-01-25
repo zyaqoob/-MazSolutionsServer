@@ -44,7 +44,10 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Student entity) {
-        super.create(entity);
+        if(!em.contains(entity)){
+                em.merge(entity);
+            }
+            em.flush();
     }
 
     @PUT

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -62,7 +63,7 @@ public class Student extends User implements Serializable {
     /**
      * Exam sessions where the student are being evaluated.
      */
-    @OneToMany(cascade = ALL, mappedBy = "student",fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "student",fetch=FetchType.EAGER)
     private Set<ExamSession> sessions;
     /**
      * Course where the student is registered.
