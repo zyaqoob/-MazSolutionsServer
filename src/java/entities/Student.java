@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,6 +41,12 @@ import javax.xml.bind.annotation.XmlTransient;
     ),
     @NamedQuery(
         name="findStudentByExSes",query="SELECT es.student FROM ExamSession es WHERE es.idExamSession=:idExamSession"
+    ),
+    @NamedQuery(
+        name="findStudentByEmail",query="SELECT s FROM Student s WHERE s.email=:email"
+    ),
+    @NamedQuery(
+        name="findStudentsByTeacher",query="Select s FROM Student s, Teacher t WHERE t.fullName=:full_name AND t.teacherCourse.name=s.course.name"
     )
 })
 @Entity
@@ -54,9 +61,9 @@ public class Student extends User implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date year;
     /**
-     * Examn sessions where the student are being evaluated.
+     * Exam sessions where the student are being evaluated.
      */
-    @OneToMany(cascade = ALL, mappedBy = "student",fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "student",fetch=FetchType.EAGER)
     private Set<ExamSession> sessions;
     /**
      * Course where the student is registered.
@@ -84,6 +91,7 @@ public class Student extends User implements Serializable {
      *
      * @return This method returns a Set with the exam sessions of the student.
      */
+    @XmlTransient
     public Set<ExamSession> getSessions() {
         return sessions;
     }
@@ -100,7 +108,6 @@ public class Student extends User implements Serializable {
      *
      * @return This method returns a course.
      */
-    @XmlTransient
     public Course getCourse() {
         return course;
     }

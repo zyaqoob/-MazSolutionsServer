@@ -44,7 +44,10 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Student entity) {
-        super.create(entity);
+        if(!em.contains(entity)){
+                em.merge(entity);
+            }
+            em.flush();
     }
 
     @PUT
@@ -67,6 +70,35 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
         Student student = null;
         try {
             student = (Student) em.createNamedQuery("findStudentById").setParameter("idUser", id).getSingleResult();
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        
+        return student;
+    }
+    @GET
+    @Path("teacher/{fullname}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Set<Student> find(@PathParam("fullname") String name) {
+        Set<Student> students = null;
+        try {
+            students = new HashSet<>(em.createNamedQuery("findStudentsByTeacher").setParameter("full_name", name).getResultList());
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        
+        return students;
+    }
+    
+    @GET
+    @Path("student/{email}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Student findStudentByEmail(@PathParam("email") String email) {
+        Student student = null;
+        try {
+            student = (Student) em.createNamedQuery("findStudentByEmail").setParameter("email", email).getSingleResult();
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);

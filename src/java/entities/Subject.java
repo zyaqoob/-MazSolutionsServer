@@ -8,6 +8,7 @@ package entities;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
@@ -69,13 +70,13 @@ public class Subject implements Serializable {
     //Password to register in the subject
     private int totalHours;
     //TeacherCourse where the subject appears
-    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
+    @OneToMany(cascade=CascadeType.MERGE,mappedBy="subject",fetch=EAGER)
     private Set<TeacherCourseSubject> teacherCourseSubjects;
     //Collection of exams that the subject has had
-    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
+    @OneToMany(cascade=CascadeType.MERGE,mappedBy="subject",fetch=EAGER)
     private Set<Exam>exams;
     //Collection of courses where the subject is teached
-    @OneToMany(cascade=ALL,mappedBy="subject",fetch=EAGER)
+    @OneToMany(cascade=CascadeType.MERGE,mappedBy="subject",fetch=EAGER)
     private Set<CourseSubject> courseSubjects;
     /**
     * Method that return the identifier of the subject.

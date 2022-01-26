@@ -34,7 +34,7 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
-    private Logger LOGGER=Logger.getLogger(TeacherFacadeREST.class);
+    private Logger LOGGER = Logger.getLogger(TeacherFacadeREST.class);
 
     public TeacherFacadeREST() {
         super(Teacher.class);
@@ -45,7 +45,10 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Teacher entity) {
         try {
-            super.create(entity);
+            if(!em.contains(entity)){
+                em.merge(entity);
+            }
+            em.flush();
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
@@ -57,7 +60,7 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(@PathParam("id") Long id, Teacher entity) {
         try {
-             super.edit(entity);
+            super.edit(entity);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
@@ -65,16 +68,16 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     }
 
     @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        
+    @Path("{login}")
+    public void remove(@PathParam("login") String login) {
         try {
-            super.remove(super.find(id));
+            Teacher teacher = findTeacherByName(login);
+            super.remove(teacher);
         } catch (Exception e) {
-             LOGGER.severe(e.getMessage());
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
-       
+
     }
 
     @GET
@@ -84,7 +87,7 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         try {
             return super.find(id);
         } catch (Exception e) {
-             LOGGER.severe(e.getMessage());
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
     }
@@ -101,46 +104,63 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         }
         return teachers;
     }
+
     @GET
     @Path("subject/{name}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<Teacher> findTeachersBySubject(@PathParam("name") String subject_name){
-        Set<Teacher> teachers=null;
+    public Set<Teacher> findTeachersBySubject(@PathParam("name") String subject_name) {
+        Set<Teacher> teachers = null;
         try {
-            teachers=new HashSet<>(em.createNamedQuery("findTeacherBySubject").setParameter("subject_name", subject_name).getResultList());
+            teachers = new HashSet<>(em.createNamedQuery("findTeacherBySubject").setParameter("subject_name", subject_name).getResultList());
         } catch (Exception e) {
-             LOGGER.severe(e.getMessage());
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
         return teachers;
     }
+    @GET
+    @Path("login/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Teacher findTeacherByName(@PathParam("login")String login){
+        Teacher teacher=null;
+        try{
+            teacher=(Teacher) em.createNamedQuery("findTeacherByLogin").setParameter("login", login).getSingleResult();
+        }catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return teacher;
+    }
+
     @GET
     @Path("course/{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<Teacher> findTeachersByCourse(@PathParam("id") Long id){
-        Set<Teacher> teachers= null;
+    public Set<Teacher> findTeachersByCourse(@PathParam("id") Long id) {
+        Set<Teacher> teachers = null;
         try {
-            teachers=new HashSet<>(em.createNamedQuery("findTeacherByCourse").setParameter("id_teacher_course", id).getResultList());
+            teachers = new HashSet<>(em.createNamedQuery("findTeacherByCourse").setParameter("id_teacher_course", id).getResultList());
         } catch (Exception e) {
-             LOGGER.severe(e.getMessage());
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
-            
+
         }
         return teachers;
     }
+
     @GET
     @Path("student/{name}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<Teacher> findTeachersByStudent(@PathParam("name") String name){
-        Set<Teacher> teachers=null;
+    public Set<Teacher> findTeachersByStudent(@PathParam("name") String name) {
+        Set<Teacher> teachers = null;
         try {
-            teachers=new HashSet<>(em.createNamedQuery("findTeachersByStudent").setParameter("student_name", name).getResultList());
+            teachers = new HashSet<>(em.createNamedQuery("findTeachersByStudent").setParameter("student_name", name).getResultList());
         } catch (Exception e) {
-             LOGGER.severe(e.getMessage());
+            LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
         return teachers;
     }
+
     @GET
     @Override
     @Produces({MediaType.APPLICATION_JSON})
@@ -158,7 +178,7 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     @Produces({MediaType.APPLICATION_XML})
     public List<Teacher> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         try {
-             return super.findRange(new int[]{from, to});
+            return super.findRange(new int[]{from, to});
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
@@ -183,7 +203,7 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
             return em;
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new InternalServerErrorException(e);      
+            throw new InternalServerErrorException(e);
         }
     }
 

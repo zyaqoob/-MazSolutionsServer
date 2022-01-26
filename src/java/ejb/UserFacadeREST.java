@@ -93,7 +93,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
         user.setPassword(userChild.getPassword());
         user.setLastPasswordChange(userChild.getLastPasswordChange());
         user.setLastSignIn(userChild.getLastSignIn());
-        user.setUserId(userChild.getIdUser());
+        user.setIdUser(userChild.getIdUser());
         user.setPrivilege(userChild.getPrivilege());
         user.setTelephone(userChild.getTelephone());
         user.setBirthDate(userChild.getBirthDate());
@@ -135,7 +135,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             user.setPassword(userChild.getPassword());
             user.setLastPasswordChange(userChild.getLastPasswordChange());
             user.setLastSignIn(userChild.getLastSignIn());
-            user.setUserId(userChild.getIdUser());
+            user.setIdUser(userChild.getIdUser());
             user.setPrivilege(userChild.getPrivilege());
             user.setTelephone(userChild.getTelephone());
             user.setBirthDate(userChild.getBirthDate());
@@ -171,7 +171,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             user.setPassword(userChild.getPassword());
             user.setLastPasswordChange(userChild.getLastPasswordChange());
             user.setLastSignIn(userChild.getLastSignIn());
-            user.setUserId(userChild.getIdUser());
+            user.setIdUser(userChild.getIdUser());
             user.setPrivilege(userChild.getPrivilege());
             user.setTelephone(userChild.getTelephone());
             user.setBirthDate(userChild.getBirthDate());
@@ -209,7 +209,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             user.setPassword(userChild.getPassword());
             user.setLastPasswordChange(userChild.getLastPasswordChange());
             user.setLastSignIn(userChild.getLastSignIn());
-            user.setUserId(userChild.getIdUser());
+            user.setIdUser(userChild.getIdUser());
             user.setPrivilege(userChild.getPrivilege());
             user.setTelephone(userChild.getTelephone());
             user.setBirthDate(userChild.getBirthDate());

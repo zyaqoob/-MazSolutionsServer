@@ -72,7 +72,8 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
         try {
-            super.remove(super.find(id));
+            TeacherCourse teacherCourse = find(id);
+            super.remove(teacherCourse);
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
@@ -117,8 +118,8 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
     @GET
     @Path("teacher/{fullname}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<TeacherCourse> findTeacherCoursesByTeacher(@PathParam("fullname")String fullName) {
-        Set<TeacherCourse> teacherCourses = null;       
+    public Set<TeacherCourse> findTeacherCoursesByTeacher(@PathParam("fullname") String fullName) {
+        Set<TeacherCourse> teacherCourses = null;
         try {
             teacherCourses = new HashSet<>(em.createNamedQuery("findTeacherCoursesByTeacher").setParameter("fullName", fullName).getResultList());
         } catch (Exception e) {
@@ -129,12 +130,26 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
     }
 
     @GET
+    @Path("name/{name}")
+    @Produces({MediaType.APPLICATION_XML})
+    public TeacherCourse findTeacherCourseByName(@PathParam("name") String name) {
+        TeacherCourse teacherCourse = null;
+        try {
+            teacherCourse = (TeacherCourse) em.createNamedQuery("findTeacherCourseByName").setParameter("name", name).getSingleResult();
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return teacherCourse;
+    }
+
+    @GET
     @Path("subject/{name}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<TeacherCourse> findTeacherCoursesBySubject(@PathParam("name")String name) {
+    public Set<TeacherCourse> findTeacherCoursesBySubject(@PathParam("name") String name) {
         Set<TeacherCourse> teacherCourses = null;
         try {
-            teacherCourses = new HashSet<>(em.createNamedQuery("findTeacherCoursesBySubject").setParameter("name",name).getResultList());
+            teacherCourses = new HashSet<>(em.createNamedQuery("findTeacherCoursesBySubject").setParameter("name", name).getResultList());
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
