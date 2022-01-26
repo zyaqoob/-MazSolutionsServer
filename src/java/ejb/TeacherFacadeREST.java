@@ -45,7 +45,10 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Teacher entity) {
         try {
-            super.create(entity);
+            if(!em.contains(entity)){
+                em.merge(entity);
+            }
+            em.flush();
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
