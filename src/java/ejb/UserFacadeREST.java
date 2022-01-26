@@ -132,7 +132,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             user.setFullName(userChild.getFullName());
             user.setEmail(userChild.getEmail());
             user.setLogin(userChild.getLogin());
-            user.setPassword(userChild.getPassword());
+            user.setPassword(password);
             user.setLastPasswordChange(userChild.getLastPasswordChange());
             user.setLastSignIn(userChild.getLastSignIn());
             user.setIdUser(userChild.getIdUser());
@@ -140,10 +140,10 @@ public class UserFacadeREST extends AbstractFacade<User> {
             user.setTelephone(userChild.getTelephone());
             user.setBirthDate(userChild.getBirthDate());
             user.setStatus(userChild.getStatus());
-            if (em.contains(user)) {
+            if (em.contains(userChild)) {
                 userChild.setPassword(hashedPassword);
                 sendPasswordToUser(password, userChild.getEmail());
-            } else if (!em.contains(user)) {
+            } else{
                 em.merge(userChild);
             }
         } catch (Exception e) {
