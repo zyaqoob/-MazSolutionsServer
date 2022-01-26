@@ -45,7 +45,10 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
     @Consumes({MediaType.APPLICATION_XML})
     public void create(ExamSession entity) {
         try {
-            super.create(entity);
+             if(!em.contains(entity)){
+                em.merge(entity);
+            }
+            em.flush();
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
