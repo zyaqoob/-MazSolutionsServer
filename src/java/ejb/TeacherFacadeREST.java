@@ -6,6 +6,7 @@
 package ejb;
 
 import com.sun.istack.internal.logging.Logger;
+import crypto.Crypto;
 import entities.Teacher;
 import java.util.HashSet;
 import java.util.List;
@@ -44,8 +45,11 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Teacher entity) {
+        String password = Crypto.descifrar(entity.getPassword());
+        password = Crypto.hashPassword(password);
+        entity.setPassword(password);
         try {
-            if(!em.contains(entity)){
+            if (!em.contains(entity)) {
                 em.merge(entity);
             }
             em.flush();
@@ -118,14 +122,15 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         }
         return teachers;
     }
+
     @GET
     @Path("login/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public Teacher findTeacherByName(@PathParam("login")String login){
-        Teacher teacher=null;
-        try{
-            teacher=(Teacher) em.createNamedQuery("findTeacherByLogin").setParameter("login", login).getSingleResult();
-        }catch (Exception e) {
+    public Teacher findTeacherByName(@PathParam("login") String login) {
+        Teacher teacher = null;
+        try {
+            teacher = (Teacher) em.createNamedQuery("findTeacherByLogin").setParameter("login", login).getSingleResult();
+        } catch (Exception e) {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
