@@ -6,6 +6,7 @@
 package ejb;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import crypto.Crypto;
 import entities.Course;
 import entities.Student;
 import java.util.HashSet;
@@ -44,10 +45,13 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
     @Override
     @Consumes({MediaType.APPLICATION_XML})
     public void create(Student entity) {
-        if(!em.contains(entity)){
-                em.merge(entity);
-            }
-            em.flush();
+        String password = Crypto.descifrar(entity.getPassword());
+        password = Crypto.hashPassword(password);
+        entity.setPassword(password);
+        if (!em.contains(entity)) {
+            em.merge(entity);
+        }
+        em.flush();
     }
 
     @PUT
@@ -74,9 +78,10 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
-        
+
         return student;
     }
+
     @GET
     @Path("teacher/{fullname}")
     @Produces({MediaType.APPLICATION_XML})
@@ -88,10 +93,10 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
-        
+
         return students;
     }
-    
+
     @GET
     @Path("student/{email}")
     @Produces({MediaType.APPLICATION_XML})
@@ -103,10 +108,10 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
-        
+
         return student;
     }
-    
+
     @GET
     @Override
     @Produces({MediaType.APPLICATION_JSON})
@@ -127,9 +132,8 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-    
+
     //custom querys
-    
     @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<Student> findAllStudents() {
@@ -141,20 +145,20 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
         }
         return students;
     }
-    
+
     @GET
     @Path("course/{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<Student>findStudentsByCourse(@PathParam("id") Long id){
-        Set<Student>students=null;
-        try{
-            students=new HashSet<>(em.createNamedQuery("findStudentsByCourse").setParameter("idCourse",id).getResultList());
-        }catch(Exception e){
+    public Set<Student> findStudentsByCourse(@PathParam("id") Long id) {
+        Set<Student> students = null;
+        try {
+            students = new HashSet<>(em.createNamedQuery("findStudentsByCourse").setParameter("idCourse", id).getResultList());
+        } catch (Exception e) {
             throw new InternalServerErrorException(e);
         }
         return students;
     }
-    
+
     @GET
     @Path("examSession/{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -162,7 +166,7 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
         Student student = null;
         try {
             student = (Student) em.createNamedQuery("findStudentByExSes")
-                    .setParameter("idExamSession",id)
+                    .setParameter("idExamSession", id)
                     .getSingleResult();
         } catch (Exception e) {
             throw new InternalServerErrorException(e);
@@ -174,5 +178,5 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

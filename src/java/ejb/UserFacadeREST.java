@@ -105,7 +105,6 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
     public List<User> findAll() {
-        mensaje = Crypto.cifrar("abcd*1234");
         return super.findAll();
     }
 
