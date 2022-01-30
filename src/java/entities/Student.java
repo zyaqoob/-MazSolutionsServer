@@ -47,7 +47,9 @@ import javax.xml.bind.annotation.XmlTransient;
     ),
     @NamedQuery(
         name="findStudentsByTeacher",query="Select s FROM Student s, Teacher t WHERE t.fullName=:full_name AND t.teacherCourse.name=s.course.name"
-    )
+    ),
+    @NamedQuery(name="findExistingStudent",
+            query="SELECT s from Student s WHERE s.login=:login or s.email=:email")
 })
 @Entity
 @Table(name = "student", schema = "maz_solutions")

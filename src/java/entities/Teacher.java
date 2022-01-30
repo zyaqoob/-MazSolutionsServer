@@ -32,7 +32,10 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT t FROM Teacher t")
     ,@NamedQuery(name = "findTeacherByCourse",
             query = "SELECT t FROM Teacher t WHERE t.teacherCourse.idTeacherCourse=:id_teacher_course")
-    ,@NamedQuery(name="findTeacherByLogin",query="SELECT t from Teacher t WHERE t.login=:login")
+    ,@NamedQuery(name = "findTeacherByLogin", 
+            query = "SELECT t from Teacher t WHERE t.login=:login")
+    ,@NamedQuery(name = "findExistingTeacher",
+            query = "SELECT t from Teacher t WHERE t.login=:login or t.email=:email")
 })
 @Entity
 @Table(name = "teacher", schema = "maz_solutions")
@@ -72,7 +75,7 @@ public class Teacher extends User implements Serializable {
      *
      * @return teacherCourses.
      */
-    public  TeacherCourse getTeacherCourse() {
+    public TeacherCourse getTeacherCourse() {
         return teacherCourse;
     }
 

@@ -24,7 +24,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -48,6 +50,9 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
         String password = Crypto.descifrar(entity.getPassword());
         password = Crypto.hashPassword(password);
         entity.setPassword(password);
+        if (findExistingStudent(entity.getEmail(), entity.getLogin()) > 0 ) {
+                throw new WebApplicationException(Response.Status.CONFLICT);
+            }
         if (!em.contains(entity)) {
             em.merge(entity);
         }
@@ -58,13 +63,23 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(@PathParam("id") Long id, Student entity) {
+        if (findExistingStudent(entity.getEmail(), entity.getLogin()) != null) {
+                throw new WebApplicationException(Response.Status.CONFLICT);
+            }
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+        
+        try{
+            super.remove(super.find(id));
+        }catch(Exception e){
+            
+            throw new InternalServerErrorException(e);
+            
+        }
     }
 
     @GET
@@ -177,6 +192,14 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    @GET
+    @Path("existing/{email}/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Integer findExistingStudent(@PathParam("email") String email, @PathParam("login") String login) {
+           
+        return em.createNamedQuery("findExistingStudent").setParameter("login", login).setParameter("email", email).getResultList().size();
     }
 
 }
