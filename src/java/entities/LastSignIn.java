@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,6 +25,12 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author 2dam
  */
+
+@NamedQueries({
+    @NamedQuery(
+            name = "findByUserLogin", query = "SELECT l FROM LastSignIn l WHERE l.user =:user ORDER BY l.lastSignIn ASC")
+}
+)
 @Entity
 @Table(name="lastSignIn",schema="maz_solutions")
 @XmlRootElement

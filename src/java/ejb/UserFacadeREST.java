@@ -7,11 +7,16 @@
 package ejb;
 
 import crypto.Crypto;
+import entities.LastSignIn;
 import entities.User;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -65,7 +70,10 @@ public class UserFacadeREST extends AbstractFacade<User> {
         String password = Crypto.descifrar(entity.getPassword());
         password = Crypto.hashPassword(password);
         entity.setPassword(password);
-        super.create(entity);
+        if (!em.contains(entity)) {
+            em.merge(entity);
+        }
+        em.flush();
     }
 
     @PUT
@@ -213,9 +221,22 @@ public class UserFacadeREST extends AbstractFacade<User> {
             user.setTelephone(userChild.getTelephone());
             user.setBirthDate(userChild.getBirthDate());
             user.setStatus(userChild.getStatus());
-            if (user == null) {
-                throw new NotAuthorizedException("Authentication failure");
+            
+            
+            List<LastSignIn> lastSignIns = new ArrayList<>();
+            lastSignIns = (ArrayList) em.createNamedQuery("findByUserLogin").setParameter("user", user).getResultList();
+            if (lastSignIns.size() < 10) {
+                LastSignIn lastSignIn = new LastSignIn();
+                lastSignIn.setId(null);
+                lastSignIn.setLastSignIn(Calendar.getInstance());
+                lastSignIn.setUser(user);
+                em.persist(lastSignIn);
+            } else {
+                LastSignIn lis = lastSignIns.get(0);
+                lis.setLastSignIn(Calendar.getInstance());
+                em.merge(lis);
             }
+
         } catch (NotAuthorizedException e) {
             throw new NotAuthorizedException(e);
         }
@@ -243,6 +264,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     private void sendPasswordToUser(String password, String correo) {
         try {
+            String email, emailPassword;
+            email=Crypto.descifrarEmail(ResourceBundle.getBundle("crypto.CipherKey").getString("KEY"));
+            emailPassword=Crypto.descifrarPassword(ResourceBundle.getBundle("crypto.CipherKey").getString("KEY"));
             Properties properties = new Properties();
             //Que tipo de email
             properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -257,7 +281,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             Session session = Session.getInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication("mazsolutionsgi2@gmail.com", "abcd*1234");
+                    return new PasswordAuthentication(email, emailPassword);
                 }
             });
             Message message = new MimeMessage(session);
