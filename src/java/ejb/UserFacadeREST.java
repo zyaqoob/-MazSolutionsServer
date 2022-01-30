@@ -6,9 +6,11 @@
  */
 package ejb;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import crypto.Crypto;
 import entities.LastSignIn;
 import entities.User;
+import exceptions.UserAlreadyExistException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -44,8 +47,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -65,15 +70,21 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(User entity) {
-        String password = Crypto.descifrar(entity.getPassword());
-        password = Crypto.hashPassword(password);
-        entity.setPassword(password);
-        if (!em.contains(entity)) {
-            em.merge(entity);
-        }
-        em.flush();
+    @Consumes({MediaType.APPLICATION_XML})
+    public void create(User entity) throws WebApplicationException{
+        
+            String password = Crypto.descifrar(entity.getPassword());
+            password = Crypto.hashPassword(password);
+            entity.setPassword(password);
+            if (findExistingUser(entity.getEmail(), entity.getLogin()) != null) {
+                throw new WebApplicationException(Response.Status.CONFLICT);
+            }
+            if (!em.contains(entity)) {
+                em.merge(entity);
+            }
+            em.flush();
+        
+
     }
 
     @PUT
@@ -150,7 +161,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             if (em.contains(userChild)) {
                 userChild.setPassword(hashedPassword);
                 sendPasswordToUser(password, userChild.getEmail());
-            } else{
+            } else {
                 em.merge(userChild);
             }
         } catch (Exception e) {
@@ -224,8 +235,7 @@ public class UserFacadeREST extends AbstractFacade<User> {
             user.setTelephone(userChild.getTelephone());
             user.setBirthDate(userChild.getBirthDate());
             user.setStatus(userChild.getStatus());
-            
-            
+
             List<LastSignIn> lastSignIns = new ArrayList<>();
             lastSignIns = (ArrayList) em.createNamedQuery("findByUserLogin").setParameter("user", user).getResultList();
             if (lastSignIns.size() < 10) {
@@ -268,8 +278,8 @@ public class UserFacadeREST extends AbstractFacade<User> {
     private void sendPasswordToUser(String password, String correo) {
         try {
             String email, emailPassword;
-            email=Crypto.descifrarEmail(ResourceBundle.getBundle("crypto.CipherKey").getString("KEY"));
-            emailPassword=Crypto.descifrarPassword(ResourceBundle.getBundle("crypto.CipherKey").getString("KEY"));
+            email = Crypto.descifrarEmail(ResourceBundle.getBundle("crypto.CipherKey").getString("KEY"));
+            emailPassword = Crypto.descifrarPassword(ResourceBundle.getBundle("crypto.CipherKey").getString("KEY"));
             Properties properties = new Properties();
             //Que tipo de email
             properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -310,5 +320,16 @@ public class UserFacadeREST extends AbstractFacade<User> {
             Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    @GET
+    @Path("existing/{email}/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User findExistingUser(@PathParam("email") String email, @PathParam("login") String login) {
+        User user = null;
+
+        user = (User) em.createNamedQuery("findExistingUser").setParameter("login", login).setParameter("email", email).getSingleResult();
+       
+        return user;
     }
 }

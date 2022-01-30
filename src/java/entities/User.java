@@ -42,7 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name="findUserByEmail", 
             query="SELECT u FROM User u WHERE u.email=:email"),
     @NamedQuery(name="findUserByPassword",
-            query="SELECT u FROM User u WHERE u.password=:password and u.login=:login")
+            query="SELECT u FROM User u WHERE u.password=:password and u.login=:login"),
+    @NamedQuery(name="findExistingUser",
+            query="SELECT u from User u WHERE u.login=:login or u.email=:email")
 })
 @Entity
 @Table(name="user",schema="maz_solutions")

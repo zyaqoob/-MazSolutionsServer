@@ -23,7 +23,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -48,6 +50,9 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         String password = Crypto.descifrar(entity.getPassword());
         password = Crypto.hashPassword(password);
         entity.setPassword(password);
+        if (findExistingTeacher(entity.getEmail(), entity.getLogin()) != null) {
+                throw new WebApplicationException(Response.Status.CONFLICT);
+            }
         try {
             if (!em.contains(entity)) {
                 em.merge(entity);
@@ -210,6 +215,15 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e);
         }
+    }
+    
+    @GET
+    @Path("existing/{email}/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Integer findExistingTeacher(@PathParam("email") String email, @PathParam("login") String login) {
+        
+        return em.createNamedQuery("findExistingTeacher").setParameter("login", login).setParameter("email", email).getResultList().size();
+        
     }
 
 }
