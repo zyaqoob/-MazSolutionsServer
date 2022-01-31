@@ -50,9 +50,6 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         String password = Crypto.descifrar(entity.getPassword());
         password = Crypto.hashPassword(password);
         entity.setPassword(password);
-        if (findExistingTeacher(entity.getEmail(), entity.getLogin()) != null) {
-                throw new WebApplicationException(Response.Status.CONFLICT);
-            }
         try {
             if (!em.contains(entity)) {
                 em.merge(entity);
@@ -60,7 +57,7 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
             em.flush();
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new InternalServerErrorException(e);
+            throw new WebApplicationException(Response.Status.CONFLICT);
         }
     }
 

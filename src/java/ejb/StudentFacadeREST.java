@@ -50,23 +50,27 @@ public class StudentFacadeREST extends AbstractFacade<Student> {
         String password = Crypto.descifrar(entity.getPassword());
         password = Crypto.hashPassword(password);
         entity.setPassword(password);
-        if (findExistingStudent(entity.getEmail(), entity.getLogin()) > 0 ) {
-                throw new WebApplicationException(Response.Status.CONFLICT);
+        try {
+            if (!em.contains(entity)) {
+                em.merge(entity);
             }
-        if (!em.contains(entity)) {
-            em.merge(entity);
+            em.flush();
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new WebApplicationException(Response.Status.CONFLICT);
         }
-        em.flush();
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML})
     public void edit(@PathParam("id") Long id, Student entity) {
-        if (findExistingStudent(entity.getEmail(), entity.getLogin()) != null) {
-                throw new WebApplicationException(Response.Status.CONFLICT);
-            }
-        super.edit(entity);
+        try {
+            super.edit(entity);
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @DELETE
