@@ -5,7 +5,7 @@
  */
 package ejb;
 
-import com.sun.istack.internal.logging.Logger;
+import java.util.logging.Logger;
 import crypto.Crypto;
 import entities.Teacher;
 import java.util.HashSet;
@@ -29,7 +29,7 @@ import javax.ws.rs.core.Response;
 
 /**
  *
- * @author 2dam
+ * @author Zeeshan
  */
 @Stateless
 @Path("entities.teacher")
@@ -37,7 +37,7 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
-    private Logger LOGGER = Logger.getLogger(TeacherFacadeREST.class);
+    private Logger LOGGER = Logger.getLogger(SubjectFacadeREST.class.getName());
 
     public TeacherFacadeREST() {
         super(Teacher.class);
@@ -213,14 +213,14 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
             throw new InternalServerErrorException(e);
         }
     }
-    
+
     @GET
     @Path("existing/{email}/{login}")
     @Produces({MediaType.APPLICATION_XML})
     public Integer findExistingTeacher(@PathParam("email") String email, @PathParam("login") String login) {
-        
+
         return em.createNamedQuery("findExistingTeacher").setParameter("login", login).setParameter("email", email).getResultList().size();
-        
+
     }
 
 }

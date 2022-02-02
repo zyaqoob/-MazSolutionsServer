@@ -5,9 +5,6 @@
  */
 package ejb;
 
-import crypto.Crypto;
-import entities.Course;
-import entities.Student;
 import entities.Subject;
 import java.util.HashSet;
 import java.util.List;

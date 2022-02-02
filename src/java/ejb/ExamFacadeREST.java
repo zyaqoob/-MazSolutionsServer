@@ -5,13 +5,13 @@
  */
 package ejb;
 
-import com.sun.istack.internal.logging.Logger;
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
+
 import entities.Exam;
-import entities.ExamSession;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,7 +28,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Zeeshan
  */
 @Stateless
 @Path("entities.exam")
@@ -36,7 +36,7 @@ public class ExamFacadeREST extends AbstractFacade<Exam> {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
-    private Logger LOGGER = Logger.getLogger(ExamFacadeREST.class);
+   private static final Logger LOGGER = Logger.getLogger(ExamFacadeREST.class.getName());
 
     public ExamFacadeREST() {
         super(Exam.class);

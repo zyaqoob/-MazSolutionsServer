@@ -6,16 +6,11 @@
  */
 package ejb;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import crypto.Crypto;
 import entities.LastSignIn;
 import entities.User;
-import exceptions.UserAlreadyExistException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -36,7 +31,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -59,7 +53,8 @@ import javax.ws.rs.core.Response;
 @Stateless
 @Path("entities.user")
 public class UserFacadeREST extends AbstractFacade<User> {
-
+    
+     private Logger LOGGER = Logger.getLogger(SubjectFacadeREST.class.getName());
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
     private String mensaje;
