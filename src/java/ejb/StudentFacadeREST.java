@@ -5,13 +5,13 @@
  */
 package ejb;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 import crypto.Crypto;
-import entities.Course;
 import entities.Student;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,7 +35,7 @@ import javax.ws.rs.core.Response;
 @Stateless
 @Path("entities.student")
 public class StudentFacadeREST extends AbstractFacade<Student> {
-
+private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.getName());
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
 

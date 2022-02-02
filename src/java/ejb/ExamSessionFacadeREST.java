@@ -5,7 +5,7 @@
  */
 package ejb;
 
-import com.sun.istack.internal.logging.Logger;
+import java.util.logging.Logger;
 import entities.ExamSession;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Zeeshan
  */
 @Stateless
 @Path("entities.examsession")
@@ -34,7 +34,7 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
 
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
-    private Logger LOGGER = Logger.getLogger(ExamSessionFacadeREST.class);
+    private static final Logger LOGGER = Logger.getLogger(ExamSessionFacadeREST.class.getName());
 
     public ExamSessionFacadeREST() {
         super(ExamSession.class);

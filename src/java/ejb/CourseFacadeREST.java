@@ -5,10 +5,8 @@
  */
 package ejb;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import java.util.logging.Logger;
 import entities.Course;
-import entities.Student;
-import entities.Subject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +32,7 @@ import javax.ws.rs.core.MediaType;
 @Path("entities.course")
 public class CourseFacadeREST extends AbstractFacade<Course> {
 
+    private static final Logger LOGGER = Logger.getLogger(CourseFacadeREST.class.getName());
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
 
@@ -81,7 +80,7 @@ public class CourseFacadeREST extends AbstractFacade<Course> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-    
+
     //custom queries
     @GET
     @Path("{id}")
@@ -96,7 +95,7 @@ public class CourseFacadeREST extends AbstractFacade<Course> {
         }
         return course;
     }
-    
+
     @GET
     @Path("course/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -110,7 +109,7 @@ public class CourseFacadeREST extends AbstractFacade<Course> {
         }
         return course;
     }
-    
+
     @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<Course> findAllCourses() {
@@ -122,6 +121,7 @@ public class CourseFacadeREST extends AbstractFacade<Course> {
         }
         return courses;
     }
+
     @GET
     @Path("student/{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -129,28 +129,30 @@ public class CourseFacadeREST extends AbstractFacade<Course> {
         Course course = null;
         try {
             course = (Course) em.createNamedQuery("findCourseByStudent")
-                    .setParameter("idUser",id)
+                    .setParameter("idUser", id)
                     .getSingleResult();
         } catch (Exception e) {
             throw new InternalServerErrorException(e);
         }
         return course;
     }
+
     @GET
     @Path("subject/{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public Set<Course>findCoursesBySubject(@PathParam("id") Long id){
-        Set<Course>courses=null;
-        try{
-            courses=new HashSet<>(em.createNamedQuery("findCoursesBySubject").setParameter("idSubject",id).getResultList());
-        }catch(Exception e){
+    public Set<Course> findCoursesBySubject(@PathParam("id") Long id) {
+        Set<Course> courses = null;
+        try {
+            courses = new HashSet<>(em.createNamedQuery("findCoursesBySubject").setParameter("idSubject", id).getResultList());
+        } catch (Exception e) {
             throw new InternalServerErrorException(e);
         }
         return courses;
     }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }
