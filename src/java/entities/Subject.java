@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *Class that represents Subject entity.
  * @author Aitor Ruiz de Gauna
  */
 /**
@@ -87,7 +87,7 @@ public class Subject implements Serializable {
     }
     /**
     * Method that set the value of the identifier of the subject.
-    * @param idSubject
+    * @param idSubject idsubject
     */
     public void setIdSubject(Long idSubject) {
         this.idSubject = idSubject;
@@ -101,7 +101,7 @@ public class Subject implements Serializable {
     }
     /**
     * Method that set the value of the name of the subject.
-    * @param name
+    * @param name name
     */
     public void setName(String name) {
         this.name = name;
@@ -115,7 +115,7 @@ public class Subject implements Serializable {
     }
     /**
     * Method that set the value of the password of the subject.
-    * @param totalHours
+    * @param totalHours totalHours
     */
     public void setTotalHours(int totalHours) {
         this.totalHours = totalHours;
@@ -130,7 +130,7 @@ public class Subject implements Serializable {
     }
     /**
      * Method that set the value of the TeacherCourse of the subject.
-     * @param teacherCourseSubjects
+     * @param teacherCourseSubjects teacherCourseSubject
      */
     public void setTeacherCourseSubjects(Set<TeacherCourseSubject> teacherCourseSubjects) {    
         this.teacherCourseSubjects = teacherCourseSubjects;
@@ -146,7 +146,7 @@ public class Subject implements Serializable {
     }
     /**
      * Method that set the value of the exams of the subject.
-     * @param exams 
+     * @param exams  exams collection
      */
     public void setExams(Set<Exam> exams) {
         this.exams = exams;
@@ -161,14 +161,14 @@ public class Subject implements Serializable {
     }
     /**
      * Method that set the value of the courses where the subject is teached.
-     * @param courseSubjects 
+     * @param courseSubjects courseSubject
      */
     public void setCourseSubjects(Set<CourseSubject> courseSubjects) {
         this.courseSubjects = courseSubjects;
     }  
     /**
      * Integer representation for Subject instance.
-     * @return 
+     * @return hash
      */
     @Override    
     public int hashCode() {
@@ -180,7 +180,7 @@ public class Subject implements Serializable {
     /**
      * 
      * Method that compares if two objects of Subjects are equals.
-     * @param object
+     * @param object object
      * @return boolean
      */
     @Override

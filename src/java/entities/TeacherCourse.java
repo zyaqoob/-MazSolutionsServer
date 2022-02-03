@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *Class that represents TeacherCourse entity.
  * @author Aitor Ruiz de Gauna
  */
 /**
@@ -93,16 +93,24 @@ public class TeacherCourse implements Serializable {
      * Method that set the value of the object of the class TeacherCourseId that
      * contains the id's of TeacherCourse.
      *
-     * @param idTeacherCourse
+     * @param idTeacherCourse idTeacherCourse to set
      */
     public void setIdTeacherCourse(Long idTeacherCourse) {
         this.idTeacherCourse = idTeacherCourse;
     }
 
+    /**
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -119,7 +127,7 @@ public class TeacherCourse implements Serializable {
     /**
      * Method that set the value of the dateStart of the TeacherCourse.
      *
-     * @param dateStart
+     * @param dateStart dateStart
      */
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
@@ -128,7 +136,7 @@ public class TeacherCourse implements Serializable {
     /**
      * Method that return the value of the dateEnd of TeacherCourse.
      *
-     * @return
+     * @return dateEnd
      */
     public Date getDateEnd() {
         return dateEnd;
@@ -137,7 +145,7 @@ public class TeacherCourse implements Serializable {
     /**
      * Method that set the value of the dateEnd of TeacherCourse.
      *
-     * @param dateEnd
+     * @param dateEnd dateEnd
      */
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
@@ -147,7 +155,7 @@ public class TeacherCourse implements Serializable {
      * Method that return the value of the collection of subjects of
      * TeacherCourse.
      *
-     * @return
+     * @return teacherCourseSUbject collection
      */
     @XmlTransient
     public Set<TeacherCourseSubject> getTeacherCourseSubjects() {
@@ -157,7 +165,7 @@ public class TeacherCourse implements Serializable {
     /**
      * Method that set the value of the collection of subjects of TeacherCourse.
      *
-     * @param teacherCourseSubjects
+     * @param teacherCourseSubjects teacherCourseSubjects collection
      */
     public void setTeacherCourseSubjects(Set<TeacherCourseSubject> teacherCourseSubjects) {
         this.teacherCourseSubjects = teacherCourseSubjects;
@@ -167,7 +175,7 @@ public class TeacherCourse implements Serializable {
      * Method that return the value of the collection of teachers of
      * TeacherCourse.
      *
-     * @return teacher
+     * @return teachers collection
      */
     @XmlTransient
     public Set<Teacher> getTeachers() {
@@ -177,7 +185,7 @@ public class TeacherCourse implements Serializable {
     /**
      * Method that set the value of the collection of subjects of TeacherCourse.
      *
-     * @param teachers
+     * @param teachers teachers collection to set
      */
     public void setTeachers(Set<Teacher> teachers) {
         this.teachers = teachers;
@@ -186,7 +194,7 @@ public class TeacherCourse implements Serializable {
     /**
      * Integer representation for TeacherCourse instance.
      *
-     * @return
+     * @return hash
      */
     @Override
     public int hashCode() {
@@ -198,7 +206,7 @@ public class TeacherCourse implements Serializable {
     /**
      * Method that compares if two objects of TeacherCourse are equals.
      *
-     * @param obj
+     * @param obj object
      * @return boolean
      */
     @Override

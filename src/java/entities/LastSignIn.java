@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *Class that represents LastSignIn entity.
  * @author 2dam
  */
 
@@ -47,30 +47,51 @@ public class LastSignIn implements Serializable {
     @ManyToOne
     private User user;
     
-    
+    /**
+     *
+     * @return lastsignin
+     */
     public Calendar getLastSignIn() {
         return lastSignIn;
     }
 
+    /**
+     *
+     * @param lastSignIn lastsignin to set
+     */
     public void setLastSignIn(Calendar lastSignIn) {
         this.lastSignIn = lastSignIn;
     }
     
+    /**
+     *
+     * @return user
+     */
     @XmlTransient
     public User getUser() {
         return user;
     }
 
+    /**
+     *
+     * @param user user to set
+     */
     public void setUser(User user) {
         this.user = user;
     }
     
-    
-
+    /**
+     *
+     * @return id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id id to set
+     */
     public void setId(Long id) {
         this.id = id;
     }

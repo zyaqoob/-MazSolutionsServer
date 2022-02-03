@@ -29,8 +29,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- *
- * @author 2dam
+ * Class that manages StudentFacadeREST
+ * @author Miguel
  */
 @Stateless
 @Path("entities.student")
@@ -39,10 +39,17 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
     @PersistenceContext(unitName = "MazSolutionsServerPU")
     private EntityManager em;
 
+    /**
+     *  Constructor
+     */
     public StudentFacadeREST() {
         super(Student.class);
     }
 
+    /**
+     *entity managers create method implementation.
+     * @param entity student
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
@@ -61,6 +68,11 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         }
     }
 
+    /**
+     * entity managers edit method implementation.
+     * @param id id of the student
+     * @param entity student
+     */
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML})
@@ -73,6 +85,10 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         }
     }
 
+    /**
+     *  entity managers remove method implementation.
+     * @param id id of the student
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
@@ -86,6 +102,11 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         }
     }
 
+    /**
+     * method to find a student
+     * @param id id of the student
+     * @return an object of the student based on the id.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -101,6 +122,11 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         return student;
     }
 
+    /**
+     *  method to find student for a teacher
+     * @param name teacher of the name
+     * @return a collection of the student based on the teacher name.
+     */
     @GET
     @Path("teacher/{fullname}")
     @Produces({MediaType.APPLICATION_XML})
@@ -116,6 +142,11 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         return students;
     }
 
+    /**
+     *  method to find student by email.
+     * @param email email of the student
+     * @return an object of the student based on the email of the student
+     */
     @GET
     @Path("student/{email}")
     @Produces({MediaType.APPLICATION_XML})
@@ -131,13 +162,13 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         return student;
     }
 
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Student> findAll() {
-        return super.findAll();
-    }
-
+   
+    /**
+     *
+     * @param from from
+     * @param to to
+     * @return range
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML})
@@ -145,6 +176,10 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         return super.findRange(new int[]{from, to});
     }
 
+    /**
+     *entity managers count method implementation.
+     * @return the total number of the existing records of student.
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -153,6 +188,11 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
     }
 
     //custom querys
+
+    /**
+     *  method to find all the student.
+     * @return a collection of all the existing student.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<Student> findAllStudents() {
@@ -165,6 +205,11 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         return students;
     }
 
+    /**
+     *  method to find student by course
+     * @param id id of the course
+     * @return a collection of the student based on the course.
+     */
     @GET
     @Path("course/{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -178,6 +223,11 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         return students;
     }
 
+    /**
+     * method to find student by exam session
+     * @param id id of the exam session
+     * @return an object of the student based on the exam session
+     */
     @GET
     @Path("examSession/{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -193,11 +243,21 @@ private static final Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.ge
         return student;
     }
 
+    /**
+     *  
+     * @return an object of the entity manager.
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
     
+    /**
+     *  method to find existing student 
+     * @param email email of the student
+     * @param login login of the student
+     * @return confirmation if the student exists or not,
+     */
     @GET
     @Path("existing/{email}/{login}")
     @Produces({MediaType.APPLICATION_XML})

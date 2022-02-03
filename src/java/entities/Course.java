@@ -84,63 +84,63 @@ public class Course implements Serializable {
     private Set<Student> students;
     /**
      * This method returns the course id.
-     * @return 
+     * @return id course
      */
     public Long getIdCourse() {
         return idCourse;
     }
     /**
      * This method set the course id.
-     * @param idCourse 
+     * @param idCourse id of the couse
      */
     public void setIdCourse(Long idCourse) {
         this.idCourse = idCourse;
     }
     /**
      * This method returns the course name.
-     * @return 
+     * @return name of the course
      */
     public String getName() {
         return name;
     }
     /**
      * This method set the course name.
-     * @param name 
+     * @param name  name of the course
      */
     public void setName(String name) {
         this.name = name;
     }
     /**
      * This method return the date start of the course.
-     * @return 
+     * @return datestart of the course
      */
     public Date getDateStart() {
         return dateStart;
     }
     /**
      * This method set the date start of the course.
-     * @param dateStart 
+     * @param dateStart datestart of course
      */
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
     /**
      * This method returns the date end of the course.
-     * @return 
+     * @return dateEnd of the course
      */
     public Date getDateEnd() {
         return dateEnd;
     }
     /**
      * This method set the date end of the course.
-     * @param dateEnd 
+     * @param dateEnd dateEnd of the course
      */
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
     /**
      * This method return a set of the subjects from the course.
-     * @return 
+     * @return  courseSubejct collection
      */
     @XmlTransient
     public Set<CourseSubject> getCourseSubjects() {
@@ -148,14 +148,14 @@ public class Course implements Serializable {
     }
     /**
      * This method set a set of subjects in the course.
-     * @param courseSubjects
+     * @param courseSubjects courseSubejct collection
      */
     public void setCourseSubject(Set<CourseSubject> courseSubjects) {    
         this.courseSubjects = courseSubjects;
     }
     /**
      * This method get a set of students from the course.
-     * @return 
+     * @return collection of student
      */
     @XmlTransient
     public Set<Student> getStudents() {
@@ -163,14 +163,14 @@ public class Course implements Serializable {
     }
     /**
      * This method set a set of students in the course.
-     * @param students 
+     * @param students  collection of student
      */
     public void setStudents(Set<Student> students) {
         this.students = students;
     }
     /**
      * Integer representation for Course instance.
-     * @return 
+     * @return hash
      */
     @Override
     public int hashCode() {
