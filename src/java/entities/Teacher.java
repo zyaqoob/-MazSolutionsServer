@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entity representing Teacher that extends from user.
+ * Class that represents  Teacher entity that extends from user.
  *
  * @author Zeeshan Yaqoob
  */
@@ -91,7 +91,7 @@ public class Teacher extends User implements Serializable {
     /**
      * Integer representation of Teacher instance.
      *
-     * @return
+     * @return hash
      */
     @Override
     public int hashCode() {
@@ -129,7 +129,7 @@ public class Teacher extends User implements Serializable {
 
     /**
      *
-     * @return
+     * @return string
      */
     @Override
     public String toString() {

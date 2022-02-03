@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ *  Class that represents TeacherCourseSubject entity.
  * @author Aitor Ruiz de Gauna,Miguel Sanchez,Zeeshan Yaqoob.
  */
 /**
@@ -58,7 +58,7 @@ public class TeacherCourseSubject implements Serializable {
     }
     /**
      * Method that set the value of the id's.
-     * @param teacherCourseSubjectId 
+     * @param teacherCourseSubjectId teacherCourseSubjectId 
      */
     public void setTeacherCourseSubjectId(TeacherCourseSubjectId teacherCourseSubjectId) {
         this.teacherCourseSubjectId = teacherCourseSubjectId;
@@ -72,7 +72,7 @@ public class TeacherCourseSubject implements Serializable {
     }
     /**
      * Method that set the value of the totalHours
-     * @param totalHours 
+     * @param totalHours totalHours 
      */
     public void setTotalHours(float totalHours) {
         this.totalHours = totalHours;
@@ -86,7 +86,7 @@ public class TeacherCourseSubject implements Serializable {
     }
      /**
      * Method that set the value of the TeacherCourse.
-     * @param teacherCourse 
+     * @param teacherCourse teacherCourse 
      */
     public void setTeacherCourse(TeacherCourse teacherCourse) {
         this.teacherCourse = teacherCourse;
@@ -100,14 +100,14 @@ public class TeacherCourseSubject implements Serializable {
     }
     /**
      * Method that set the value of the subject.
-     * @param subject 
+     * @param subject subject 
      */
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
      /**
      * Integer representation for TeacherCourseSubject instance.
-     * @return 
+     * @return hash
      */
     @Override
     public int hashCode() {

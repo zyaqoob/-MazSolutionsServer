@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entity representing Exam.
+ * Class that represents Exam entity.
  *
  * @author Zeeshan Yaqoob
  */
@@ -139,7 +139,7 @@ public class Exam implements Serializable {
     /**
      * Integer representation of Exam instance
      *
-     * @return
+     * @return hash
      */
     @Override
     public int hashCode() {
@@ -151,7 +151,6 @@ public class Exam implements Serializable {
     /**
      * Compares two objects of Exam.
      *
-     * @param object the other Exam object to compare.
      * @return true if they are same.
      */
     @Override

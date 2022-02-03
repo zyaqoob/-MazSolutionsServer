@@ -28,7 +28,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * Class that manages TeacherCourseFacadeREST
  * @author Aitor Ruiz de Gauna.
  */
 @Stateless
@@ -39,10 +39,17 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
     private EntityManager em;
     private Logger LOGGER = Logger.getLogger(TeacherCourseFacadeREST.class.getName());
 
+    /**
+     * Constructor
+     */
     public TeacherCourseFacadeREST() {
         super(TeacherCourse.class);
     }
 
+    /**
+     *  entity managers create method implementation.
+     * @param entity teacher course
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
@@ -55,6 +62,10 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
         }
     }
 
+    /**
+     *entity managers edit method implementation.
+     * @param entity teacher course
+     */
     @PUT
     @Path("{id}")
     @Override
@@ -68,6 +79,10 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
         }
     }
 
+    /**
+     *entity managers remove method implementation.
+     * @param id id of the teacher course
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
@@ -80,6 +95,11 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
         }
     }
 
+    /**
+     *  method to find teacher course
+     * @param id id of the teacher course.
+     * @return an object of the teacher course based on the id.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -95,13 +115,13 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
     }
 
     //Metodo para borrar tanto aqui como en el abstract.
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<TeacherCourse> findAll() {
-        return super.findAll();
-    }
 
+    
+
+    /**
+     *  Method to find all the existing teachercourse.
+     * @return a collection of all the existing teacher courses.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<TeacherCourse> findAllTeacherCourses() {
@@ -115,6 +135,11 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
         return teacherCourses;
     }
 
+    /**
+     * method to find teacher course for teacher
+     * @param fullName full name of the teacher
+     * @return a  collection of the teachercourse based on the full name of the teacher.
+     */
     @GET
     @Path("teacher/{fullname}")
     @Produces({MediaType.APPLICATION_XML})
@@ -129,6 +154,11 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
         return teacherCourses;
     }
 
+    /**
+     * method to find teachercourse for the name.
+     * @param name name of the teachercourse
+     * @return an object of the teachercourse based on the name of teacher course.
+     */
     @GET
     @Path("name/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -143,6 +173,11 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
         return teacherCourse;
     }
 
+    /**
+     *  method to find teachercourse for subject
+     * @param name name of the subject
+     * @return a collection of the teacher course based on the name of the subject
+     */
     @GET
     @Path("subject/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -157,11 +192,21 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
         return teacherCourses;
     }
 
+    /**
+     *
+     * @return an obejct of the entity manager
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     *
+     * @param from from
+     * @param to to
+     * @return range
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML})
@@ -170,6 +215,10 @@ public class TeacherCourseFacadeREST extends AbstractFacade<TeacherCourse> {
         return super.findRange(new int[]{from, to});
     }
 
+    /**
+     *
+     * @return total number of the existing teacher course
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)

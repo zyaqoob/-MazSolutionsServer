@@ -47,7 +47,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- *
+ *  Class that manages UserFacadeREST
  * @author 2dam
  */
 @Stateless
@@ -59,10 +59,18 @@ public class UserFacadeREST extends AbstractFacade<User> {
     private EntityManager em;
     private String mensaje;
 
+    /**
+     *
+     */
     public UserFacadeREST() {
         super(User.class);
     }
 
+    /**
+     *entity managers create method implementation.
+     * @param entity user
+     * @throws WebApplicationException if user exists.
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
@@ -82,6 +90,11 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     }
 
+    /**
+     *entity managers edit method implementation.
+     * @param id id of the user
+     * @param entity user
+     */
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -89,15 +102,24 @@ public class UserFacadeREST extends AbstractFacade<User> {
         super.edit(entity);
     }
 
+    /**
+     *entity managers remove method implementation.
+     * @param id id of the user
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
         super.remove(super.find(id));
     }
 
+    /**
+     * method to find user
+     * @param id id of the user
+     * @return an object of the user based on id
+     */
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML})
     public User find(@PathParam("id") Long id) {
         User userChild = super.find(id);
         User user = new User();
@@ -115,16 +137,25 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return user;
     }
 
+    /**
+     * method to find all existing users
+     * @return a collection of the users,
+     */
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML})
     public List<User> findAll() {
         return super.findAll();
     }
 
+    /**
+     *  method to find user by email
+     * @param email email of the user.
+     * @return an obejct of the the user.
+     */
     @GET
     @Path("email/{email}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML})
     public User findUserByEmail(@PathParam("email") String email) {
         User user = null;
         String password;
@@ -165,6 +196,13 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return user;
     }
 
+    /**
+     * method ton change password of the user
+     * @param login login of the user
+     * @param password old password of the user
+     * @param newPassword new password of the user
+     * @return an obejct of the user.
+     */
     @GET
     @Path("password/{login}/{password}/{newPassword}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
@@ -205,9 +243,15 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return user;
     }
 
+    /**
+     *  Method to signin to app-
+     * @param login login ofn the user
+     * @param password password of the user
+     * @return an object of the user.
+     */
     @GET
     @Path("login/{login}/{password}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML})
     public User login(@PathParam("login") String login, @PathParam("password") String password) {
         User user = null;
         try {
@@ -251,6 +295,12 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return user;
     }
 
+    /**
+     *  
+     * @param from from
+     * @param to to
+     * @return range
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -258,6 +308,10 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return super.findRange(new int[]{from, to});
     }
 
+    /**
+     *
+     * @return total number of the user,
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -265,11 +319,20 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return String.valueOf(super.count());
     }
 
+    /**
+     *
+     * @return an object of the entity manager
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * Method to reset the password of the user.
+     * @param password new generated password
+     * @param correo email of the user
+     */
     private void sendPasswordToUser(String password, String correo) {
         try {
             String email, emailPassword;
@@ -317,6 +380,12 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     }
 
+    /**
+     * Method to find existing user
+     * @param email email of the user
+     * @param login login of the user
+     * @return an object of the user.
+     */
     @GET
     @Path("existing/{email}/{login}")
     @Produces({MediaType.APPLICATION_XML})

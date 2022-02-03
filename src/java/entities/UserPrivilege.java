@@ -11,6 +11,24 @@ package entities;
  */
 public enum UserPrivilege {
     
-    USER, ADMIN, STUDENT, TEACHER
+    /**
+     *
+     */
+    USER,
+
+    /**
+     *
+     */
+    ADMIN,
+
+    /**
+     *
+     */
+    STUDENT,
+
+    /**
+     *
+     */
+    TEACHER
     
 }

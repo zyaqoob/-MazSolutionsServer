@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entity representing ExamSession.
+ * Class that represents ExamSession entity.
  *
  * @author Zeeshan Yaqoob
  */
@@ -180,7 +180,7 @@ public class ExamSession implements Serializable {
     /**
      * Interger representation of examSession instance.
      *
-     * @return
+     * @return hash
      */
     @Override
     public int hashCode() {

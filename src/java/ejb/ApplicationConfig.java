@@ -9,12 +9,16 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 /**
- *
+ *  Config class
  * @author 2dam
  */
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {
 
+    /**
+     *
+     * @return resources
+     */
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();

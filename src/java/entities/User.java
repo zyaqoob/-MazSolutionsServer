@@ -105,11 +105,19 @@ public class User implements Serializable {
     @OneToMany(cascade = ALL, mappedBy = "user",fetch=FetchType.EAGER)
     private Set<LastSignIn> lastSignIn;
 
+    /**
+     *
+     * @return lastsignin
+     */
     @XmlTransient
     public Set<LastSignIn> getLastSignIn() {
         return lastSignIn;
     }
 
+    /**
+     *
+     * @param lastSignIn lastsignin to set
+     */
     public void setLastSignIn(Set<LastSignIn> lastSignIn) {
         this.lastSignIn = lastSignIn;
     }
@@ -261,7 +269,7 @@ public class User implements Serializable {
     
     /**
      * Method that returns an integer representation of user instance.
-     * @return 
+     * @return hash
      */
     @Override
     public int hashCode() {

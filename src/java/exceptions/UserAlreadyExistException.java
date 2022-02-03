@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 public class UserAlreadyExistException extends WebApplicationException{
     /**
      * Method getErrorMessage that return the error message.
-     * @return String
+     * 
      */
     public UserAlreadyExistException() {
         super(Response.Status.CONFLICT); // 409

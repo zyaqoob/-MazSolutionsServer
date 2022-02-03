@@ -28,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
+ * Class that manages TeacherFacadeREST
  *
  * @author Zeeshan
  */
@@ -39,10 +40,18 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     private EntityManager em;
     private Logger LOGGER = Logger.getLogger(SubjectFacadeREST.class.getName());
 
+    /**
+     * Constructor
+     */
     public TeacherFacadeREST() {
         super(Teacher.class);
     }
 
+    /**
+     * entity managers create method implementation.
+     *
+     * @param entity teacher
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
@@ -61,6 +70,12 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         }
     }
 
+    /**
+     * entity managers edit method implementation.
+     *
+     * @param id id of the teacher
+     * @param entity teacher
+     */
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML})
@@ -73,6 +88,11 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         }
     }
 
+    /**
+     * entity managers remove method implementation.
+     *
+     * @param login login of the teacher.
+     */
     @DELETE
     @Path("{login}")
     public void remove(@PathParam("login") String login) {
@@ -86,6 +106,12 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
 
     }
 
+    /**
+     * method to find teacher
+     *
+     * @param id id of the teacher
+     * @return an object of the teacher based on the id.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -98,6 +124,11 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         }
     }
 
+    /**
+     * method to find all the existing teachers
+     *
+     * @return a collection of teacher
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<Teacher> findAllTeacher() {
@@ -111,6 +142,12 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         return teachers;
     }
 
+    /**
+     * method to find teachers for subject
+     *
+     * @param subject_name subject name
+     * @return a collection of the teachers based on the name of the subject.
+     */
     @GET
     @Path("subject/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -125,6 +162,12 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         return teachers;
     }
 
+    /**
+     * method to find teacher for login
+     *
+     * @param login login of the teacher
+     * @return an obejct of the teacher based on the login.
+     */
     @GET
     @Path("login/{login}")
     @Produces({MediaType.APPLICATION_XML})
@@ -139,6 +182,12 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         return teacher;
     }
 
+    /**
+     * method to find tecahers for course
+     *
+     * @param id id of the course
+     * @return a collection of the tecaher based on the is of the course
+     */
     @GET
     @Path("course/{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -154,6 +203,12 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         return teachers;
     }
 
+    /**
+     * method to find teachers for student
+     *
+     * @param name name of the student
+     * @return a collection of the teachers based on student name.
+     */
     @GET
     @Path("student/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -168,18 +223,12 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         return teachers;
     }
 
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Teacher> findAll() {
-        try {
-            return super.findAll();
-        } catch (Exception e) {
-            LOGGER.severe(e.getMessage());
-            throw new InternalServerErrorException(e);
-        }
-    }
-
+    /**
+     *
+     * @param from from
+     * @param to to
+     * @return range
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML})
@@ -192,6 +241,10 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         }
     }
 
+    /**
+     *
+     * @return total number of existing teachers
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -204,6 +257,10 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         }
     }
 
+    /**
+     *
+     * @return an object of entity manager.
+     */
     @Override
     protected EntityManager getEntityManager() {
         try {
@@ -214,6 +271,13 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
         }
     }
 
+    /**
+     * method to find tecaher for login and email
+     *
+     * @param email email of teacher
+     * @param login login of teacher
+     * @return confirmation if the tecaher exists or not.
+     */
     @GET
     @Path("existing/{email}/{login}")
     @Produces({MediaType.APPLICATION_XML})

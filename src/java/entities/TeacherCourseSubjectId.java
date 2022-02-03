@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- *
+ * Class that represents TeacherCouserSubjectID entity.
  * @author Aitor Ruiz de Gauna,Miguel Sanchez,Zeeshan Yaqoob.
  */
 /**
@@ -33,7 +33,7 @@ public class TeacherCourseSubjectId implements Serializable {
     }
     /**
      * Method that set the value of the idTeacherCourse
-     * @param idTeacherCourse 
+     * @param idTeacherCourse idTeacherCourse 
      */
     public void setIdTeacherCourse(Long idTeacherCourse) {
         this.idTeacherCourse = idTeacherCourse;
@@ -47,14 +47,14 @@ public class TeacherCourseSubjectId implements Serializable {
     }
     /**
      * Method that set the value of the idSubject
-     * @param idSubject 
+     * @param idSubject idSubject
      */
     public void setIdSubject(Long idSubject) {
         this.idSubject = idSubject;
     }
      /**
      * Integer representation for TeacherCourseSubjectId instance.
-     * @return 
+     * @return hash
      */
     @Override
     public int hashCode() {

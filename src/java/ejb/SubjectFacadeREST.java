@@ -25,7 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * Class that manages SubjectFacadeREST
  * @author Aitor Ruiz de Gauna
  */
 @Stateless
@@ -36,12 +36,15 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
     private EntityManager em;
     private Logger LOGGER = Logger.getLogger(SubjectFacadeREST.class.getName());
 
+    /**
+     *  Constructor
+     */
     public SubjectFacadeREST() {
         super(Subject.class);
     }
     /**
-     * 
-     * @param entity 
+     * entity managers create method implementation.
+     * @param entity  subject
      */
     @POST
     @Override
@@ -50,8 +53,8 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
           super.create(entity);
     }
     /**
-     * 
-     * @param entity 
+     * entity managers edit method implementation.
+     * @param entity subject
      */
     @PUT
     @Path("{id}")
@@ -61,12 +64,21 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         super.edit(entity);
     }
 
+    /**
+     *  entity managers remove method implementation.
+     * @param id id of the subject.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
         super.remove(super.find(id));
     }
    
+    /**
+     *  method to find one subject
+     * @param id id of the subject
+     * @return an object of subject based on the id of the subject.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -79,16 +91,13 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         }
         return subject;
     }
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Subject>findAll(){
-        try{
-            return super.findAll();
-        }catch(Exception e){
-            throw new InternalServerErrorException(e);
-        }
-    }
+
+    
+
+    /**
+     * Method to find all the existing subjects.
+     * @return a collection of all the existing subjects.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<Subject> findAllSubject() {
@@ -101,7 +110,13 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         }
         return subjects;
     }
-   @GET
+
+    /**
+     * method to find subject for student
+     * @param fullName full name of the student
+     * @return a collection of the subjects based on the full name of the students.
+     */
+    @GET
     @Path("student/{fullName}")
     @Produces({MediaType.APPLICATION_XML})
     public Set<Subject>findSubjectsByStudent(@PathParam("fullName")String fullName){
@@ -113,6 +128,12 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         }
         return subjects;
     }
+
+    /**
+     * method to find subjects for a course
+     * @param name name of the course
+     * @return a collection of the subject based on the course name.
+     */
     @GET
     @Path("course/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -125,6 +146,12 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         }
         return subjects;
     }
+
+    /**
+     * method to find subjects for the teacher course.
+     * @param name name of teacher course
+     * @return a collection of the subjects based on the name of the teacher course
+     */
     @GET
     @Path("teacherCourse/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -137,6 +164,12 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         }
         return subjects;
     }
+
+    /**
+     * method to find subject for exam
+     * @param id of the exam
+     * @return an object of subject based on the id of the exam.
+     */
     @GET
     @Path("exam/{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -149,11 +182,22 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         }
         return subject;
     }
+
+    /**
+     *
+     * @return an object of entity manager,
+     */
     @Override
     protected EntityManager getEntityManager() {
        return em;
     }
     
+    /**
+     *
+     * @param from from
+     * @param to to
+     * @return range
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML})
@@ -161,6 +205,10 @@ public class SubjectFacadeREST extends AbstractFacade<Subject>{
         return super.findRange(new int[]{from, to});
     }
 
+    /**
+     *entity managers count method implementation.
+     * @return total number of all the existing subjects.
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)

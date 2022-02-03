@@ -25,7 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * Class that manages ExamSessionFacadeREST
  * @author Zeeshan
  */
 @Stateless
@@ -36,10 +36,17 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
     private EntityManager em;
     private static final Logger LOGGER = Logger.getLogger(ExamSessionFacadeREST.class.getName());
 
+    /**
+     *  Constructor
+     */
     public ExamSessionFacadeREST() {
         super(ExamSession.class);
     }
 
+    /**
+     *  entity managers create method implementation.
+     * @param entity exam session.
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML})
@@ -56,6 +63,11 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
 
     }
 
+    /**
+     *  entity managers edit method implementation.
+     * @param id id of the exam session
+     * @param entity exam session
+     */
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML})
@@ -68,6 +80,10 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
         }
     }
 
+    /**
+     *  entity managers remove method implementation.
+     * @param id id of the exam session.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
@@ -79,6 +95,11 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
         }
     }
 
+    /**
+     *
+     * @param id id of the exam session
+     * @return an object of the exam session based on id.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -91,18 +112,12 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
         }
     }
 
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<ExamSession> findAll() {
-        try {
-            return super.findAll();
-        } catch (Exception e) {
-            LOGGER.severe(e.getMessage());
-            throw new InternalServerErrorException(e);
-        }
-    }
+    
 
+    /**
+     * Method that find all the existing exam sessions.
+     * @return a collection of exam session.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML})
     public Set<ExamSession> findAllExamSession() {
@@ -116,6 +131,11 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
         return examSessions;
     }
 
+    /**
+     *  method that find exam session based on the name of the student.
+     * @param fullname full name of the student
+     * @return c a collection of the exam sessions based on the student name.
+     */
     @GET
     @Path("student/{fullname}")
     @Produces({MediaType.APPLICATION_XML})
@@ -130,6 +150,11 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
         return examSessions;
     }
 
+    /**
+     *  method that find exam session based on the name of the subject.
+     * @param subject_name subject name.
+     * @return a collection of the exam session based on the subject name.
+     */
     @GET
     @Path("subject/{name}")
     @Produces({MediaType.APPLICATION_XML})
@@ -144,6 +169,12 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
         return examSessions;
     }
 
+    /**
+     *
+     * @param from from
+     * @param to to
+     * @return range
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML})
@@ -156,6 +187,10 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
         }
     }
 
+    /**
+     * entity managers count method implementation.
+     * @return total number of existing exam session 
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -168,6 +203,10 @@ public class ExamSessionFacadeREST extends AbstractFacade<ExamSession> {
         }
     }
 
+    /**
+     *
+     * @return an object of entity manager.
+     */
     @Override
     protected EntityManager getEntityManager() {
         try {

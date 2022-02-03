@@ -23,8 +23,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
 
 /**
- *
- * @author 2dam
+ * Class that manages CourseSubjectFacadeREST
+ * @author Miguel
  */
 @Stateless
 @Path("entities.coursesubject")
@@ -54,17 +54,29 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
         return key;
     }
 
+    /**
+     * Constructor.
+     */
     public CourseSubjectFacadeREST() {
         super(CourseSubject.class);
     }
 
+    /**
+     *  entity managers create method implementation.
+     * @param entity CouseSubject
+     */
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
     public void create(CourseSubject entity) {
         super.create(entity);
     }
 
+    /**
+     * entity managers edit method implementation.
+     * @param id id of the CourseSubject
+     * @param entity CouseSubject
+     */
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML})
@@ -72,6 +84,10 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
         super.edit(entity);
     }
 
+    /**
+     *  entity managers remove method implementation.
+     * @param id id of the coursesubject.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") PathSegment id) {
@@ -79,6 +95,11 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
         super.remove(super.find(key));
     }
 
+    /**
+     *
+     * @param id of the couse subject
+     * @return an object of the courseSubject.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML})
@@ -87,6 +108,10 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
         return super.find(key);
     }
 
+    /**
+     *  entity managers find all method implementation.
+     * @return a collection of the CourseSubject.
+     */
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML})
@@ -94,6 +119,12 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
         return super.findAll();
     }
 
+    /**
+     *
+     * @param from from
+     * @param to to
+     * @return range
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML})
@@ -101,6 +132,10 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
         return super.findRange(new int[]{from, to});
     }
 
+    /**
+     *
+     * @return total number of the records of the coursesubject.
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -108,6 +143,10 @@ public class CourseSubjectFacadeREST extends AbstractFacade<CourseSubject> {
         return String.valueOf(super.count());
     }
 
+    /**
+     *
+     * @return an object of the entity manager.
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;

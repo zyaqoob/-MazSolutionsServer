@@ -36,11 +36,16 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- *
+ *  Class that manages password encryption and decryption.
  * @author Miguel Sanchez, Zeeshan Yaqoob, Aitor Ruiz de Gauna
  */
 public class Crypto {
 
+    /**
+     *
+     * @param mensaje mensaje
+     * @return hexadecimal
+     */
     public static String cifrar(String mensaje) {
         PublicKey publicKey;
         String path=Crypto.class.getResource("PublicKey.txt").getPath();
@@ -63,6 +68,11 @@ public class Crypto {
         return hexadecimal(encodedMessage);
     }
 
+    /**
+     *
+     * @param password password
+     * @return decifered password
+     */
     public static String descifrar(String password) {
         //password=new String(hexStringToByteArray(password));
         KeyFactory factoriaRSA;
@@ -110,6 +120,11 @@ public class Crypto {
         return ret;
     }
     
+    /**
+     *
+     * @param password password
+     * @return hashedPassword
+     */
     public static String hashPassword(String password){
         MessageDigest messageDigest;
         String base64=null;
@@ -144,8 +159,11 @@ public class Crypto {
         return hex.toUpperCase();
     }
 
-
-    
+    /**
+     *
+     * @param password password
+     * @return bytes of message
+     */
     public static byte[] hexStringToByteArray(String password) {
         int len = password.length();
         byte[] mensajeByte = new byte[len / 2];
@@ -160,6 +178,7 @@ public class Crypto {
      * lo retorna
      *
      * @param clave La clave del usuario
+     * @return decoded message
      */
     public static String descifrarEmail(String clave) {
         String ret = null;
@@ -206,6 +225,11 @@ public class Crypto {
         return ret;
     }
     
+    /**
+     *
+     * @param clave clave
+     * @return dicifered
+     */
     public static String descifrarPassword(String clave) {
         String ret = null;
         Cipher cipher;
